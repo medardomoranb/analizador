@@ -145,6 +145,7 @@ t_TIMES_ASSIGN = r'\*='
 t_DIVIDE_ASSIGN = r'/='
 t_MOD_ASSIGN = r'%='
 
+# --- INICIO tokens de Mario Alvarado ---
 t_EQUALS = r'=='
 t_NOTEQUAL = r'!='
 t_GT = r'>'
@@ -155,6 +156,7 @@ t_LE = r'<='
 t_AND = r'&&'
 t_OR = r'\|\|'
 t_NOT = r'!'
+# --- FIN tokens de Mario Alvarado ---
 
 t_BITAND = r'&'
 t_BITOR = r'\|'
