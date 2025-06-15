@@ -126,6 +126,18 @@ tokens = [
     'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'LBRACKET', 'RBRACKET',
     'COMMA', 'DOT', 'SEMICOLON', 'COLON', 'QUESTION', 'ARROW',
 
+    # --- INICIO tokens adicionales de Andres Layedra ---
+    'FLOAT_LITERAL',     # Ej: 36.6f
+    'TRUE_LITERAL',      # true como literal
+    'FALSE_LITERAL',     # false como literal
+    'XML_COMMENT',       # Comentarios de documentación ///
+    'DATE_LITERAL',      # Ej: "2025-06-14"
+    'HEX_NUMBER',        # Ej: 0x1F4
+    'BIN_NUMBER',        # Ej: 0b1010
+    # --- FIN tokens adicionales de Andres Layedra ---
+
+
+
 ] + list(reserved.values())
 
 # Expresiones regulares para tokens simples
@@ -187,6 +199,31 @@ def t_ID(t):
     t.type = reserved.get(t.value, 'ID')  # Verifica si es palabra reservada
     return t
 
+# --- INICIO 1 definiciones de tokens de Andres Layedra ---
+
+def t_FLOAT_LITERAL(t):
+    r'\d+\.\d+f'
+    t.value = float(t.value[:-1])  # Quita la 'f'
+    return t
+
+def t_DATE_LITERAL(t):
+    r'"\d{4}-\d{2}-\d{2}"'
+    t.value = t.value.strip('"')
+    return t
+
+def t_HEX_NUMBER(t):
+    r'0x[0-9A-Fa-f]+'
+    t.value = int(t.value, 16)
+    return t
+
+def t_BIN_NUMBER(t):
+    r'0b[01]+'
+    t.value = int(t.value, 2)
+    return t
+
+
+# --- FIN 1 definiciones de tokens de Andres Layedra ---
+
 def t_NUMBER(t):
     r'\d+(\.\d+)?([eE][+-]?\d+)?'
     t.value = float(t.value) if '.' in t.value or 'e' in t.value.lower() else int(t.value)
@@ -201,6 +238,30 @@ def t_CHAR_LITERAL(t):
     r"'([^'\\]|\\.)'"
     t.value = t.value[1:-1]
     return t
+
+
+
+# --- INICIO 2 definiciones de tokens de Andres Layedra ---
+
+def t_TRUE_LITERAL(t):
+    r'\btrue\b'
+    t.type = reserved.get(t.value, 'TRUE_LITERAL')
+    t.value = True
+    return t
+
+def t_FALSE_LITERAL(t):
+    r'\bfalse\b'
+    t.type = reserved.get(t.value, 'FALSE_LITERAL')
+    t.value = False
+    return t
+
+def t_XML_COMMENT(t):
+    r'///[^\n]*'
+    t.type = 'XML_COMMENT'
+    return t
+
+
+# --- FIN 2 definiciones de tokens de Andres Layedra ---
 
 t_ignore = ' \t\r'
 
