@@ -221,7 +221,6 @@ def t_BIN_NUMBER(t):
     t.value = int(t.value, 2)
     return t
 
-
 # --- FIN 1 definiciones de tokens de Andres Layedra ---
 
 def t_NUMBER(t):
