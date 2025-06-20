@@ -110,6 +110,7 @@ reserved = {
 tokens = [
     'ID',
     'NUMBER',
+    'CLASS_NAME',
     'STRING_LITERAL',
     'CHAR_LITERAL',
 
@@ -193,10 +194,21 @@ t_ARROW = r'=>'
 
 
 # Reglas con acciones
+expecting_class_name = False
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
-    t.type = reserved.get(t.value, 'ID')  # Verifica si es palabra reservada
+    global expecting_class_name
+
+    if expecting_class_name:
+        t.type = 'CLASS_NAME'
+        expecting_class_name = False
+    else:
+        t.type = reserved.get(t.value, 'ID')
+
+    if t.value == 'class':
+        expecting_class_name = True
+
     return t
 
 # --- INICIO 1 definiciones de tokens de Andres Layedra ---

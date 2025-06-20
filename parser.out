@@ -1,0 +1,2247 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ABSTRACT
+    ARROW
+    AS
+    BASE
+    BIN_NUMBER
+    BITAND
+    BITNOT
+    BITOR
+    BITXOR
+    BREAK
+    BYTE
+    CASE
+    CATCH
+    CHAR_LITERAL
+    CHECKED
+    COLON
+    CONST
+    CONTINUE
+    DATE_LITERAL
+    DECIMAL
+    DECREMENT
+    DEFAULT
+    DELEGATE
+    DIVIDE_ASSIGN
+    DO
+    DOUBLE
+    ENUM
+    EVENT
+    EXPLICIT
+    EXTERN
+    FALSE_LITERAL
+    FINALLY
+    FIXED
+    FLOAT_LITERAL
+    FOR
+    FOREACH
+    GOTO
+    HEX_NUMBER
+    IMPLICIT
+    IN
+    INCREMENT
+    INTERFACE
+    INTERNAL
+    IS
+    LBRACKET
+    LOCK
+    LONG
+    LSHIFT
+    MINUS_ASSIGN
+    MOD
+    MOD_ASSIGN
+    NAMESPACE
+    NOT
+    NULL
+    OBJECT
+    OPERATOR
+    OUT
+    OVERRIDE
+    PARAMS
+    PLUS_ASSIGN
+    QUESTION
+    RBRACKET
+    READONLY
+    REF
+    RSHIFT
+    SBYTE
+    SEALED
+    SHORT
+    SIZEOF
+    STACKALLOC
+    STATIC
+    STRUCT
+    SWITCH
+    THIS
+    THROW
+    TIMES_ASSIGN
+    TRUE_LITERAL
+    TRY
+    TYPEOF
+    UINT
+    ULONG
+    UNCHECKED
+    UNSAFE
+    USHORT
+    VIRTUAL
+    VOID
+    VOLATILE
+    WHILE
+    XML_COMMENT
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> using_list clase_list
+Rule 2     using_list -> using
+Rule 3     using_list -> using_list using
+Rule 4     using_list -> empty
+Rule 5     using -> USING ID SEMICOLON
+Rule 6     clase_list -> clase
+Rule 7     clase_list -> clase_list clase
+Rule 8     modificador -> PUBLIC
+Rule 9     modificador -> PRIVATE
+Rule 10    modificador -> PROTECTED
+Rule 11    modificador -> empty
+Rule 12    clase -> modificador CLASS CLASS_NAME LBRACE cuerpo_clase RBRACE
+Rule 13    cuerpo_clase -> propiedad
+Rule 14    cuerpo_clase -> metodo
+Rule 15    cuerpo_clase -> cuerpo_clase propiedad
+Rule 16    cuerpo_clase -> cuerpo_clase metodo
+Rule 17    propiedad -> tipo ID ASSIGN expresion SEMICOLON
+Rule 18    metodo -> tipo ID LPAREN parametros RPAREN LBRACE instrucciones RBRACE
+Rule 19    parametros -> tipo ID
+Rule 20    parametros -> parametros COMMA tipo ID
+Rule 21    parametros -> empty
+Rule 22    instrucciones -> instruccion
+Rule 23    instrucciones -> instrucciones instruccion
+Rule 24    instruccion -> impresion
+Rule 25    instruccion -> lectura
+Rule 26    instruccion -> asignacion
+Rule 27    instruccion -> control
+Rule 28    instruccion -> instruccion_return
+Rule 29    impresion -> ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON
+Rule 30    lectura -> ID DOT ID LPAREN RPAREN SEMICOLON
+Rule 31    asignacion -> tipo ID ASSIGN expresion SEMICOLON
+Rule 32    asignacion -> tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON
+Rule 33    instruccion_return -> RETURN expresion SEMICOLON
+Rule 34    expresion -> expresion PLUS expresion
+Rule 35    expresion -> expresion MINUS expresion
+Rule 36    expresion -> expresion TIMES expresion
+Rule 37    expresion -> expresion DIVIDE expresion
+Rule 38    expresion -> NUMBER
+Rule 39    expresion -> ID
+Rule 40    expresion -> STRING_LITERAL
+Rule 41    expresion -> TRUE
+Rule 42    expresion -> FALSE
+Rule 43    condicion -> expresion GT expresion
+Rule 44    condicion -> expresion LT expresion
+Rule 45    condicion -> expresion GE expresion
+Rule 46    condicion -> expresion LE expresion
+Rule 47    condicion -> expresion EQUALS expresion
+Rule 48    condicion -> expresion NOTEQUAL expresion
+Rule 49    condicion -> condicion AND condicion
+Rule 50    condicion -> condicion OR condicion
+Rule 51    control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE
+Rule 52    control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE
+Rule 53    tipo -> INT
+Rule 54    tipo -> FLOAT
+Rule 55    tipo -> STRING
+Rule 56    tipo -> CHAR
+Rule 57    tipo -> BOOL
+Rule 58    tipo -> ID
+Rule 59    empty -> <empty>
+
+Terminals, with rules where they appear
+
+ABSTRACT             : 
+AND                  : 49
+ARROW                : 
+AS                   : 
+ASSIGN               : 17 31 32
+BASE                 : 
+BIN_NUMBER           : 
+BITAND               : 
+BITNOT               : 
+BITOR                : 
+BITXOR               : 
+BOOL                 : 57
+BREAK                : 
+BYTE                 : 
+CASE                 : 
+CATCH                : 
+CHAR                 : 56
+CHAR_LITERAL         : 
+CHECKED              : 
+CLASS                : 12
+CLASS_NAME           : 12
+COLON                : 
+COMMA                : 20
+CONST                : 
+CONTINUE             : 
+DATE_LITERAL         : 
+DECIMAL              : 
+DECREMENT            : 
+DEFAULT              : 
+DELEGATE             : 
+DIVIDE               : 37
+DIVIDE_ASSIGN        : 
+DO                   : 
+DOT                  : 29 30
+DOUBLE               : 
+ELSE                 : 52
+ENUM                 : 
+EQUALS               : 47
+EVENT                : 
+EXPLICIT             : 
+EXTERN               : 
+FALSE                : 42
+FALSE_LITERAL        : 
+FINALLY              : 
+FIXED                : 
+FLOAT                : 54
+FLOAT_LITERAL        : 
+FOR                  : 
+FOREACH              : 
+GE                   : 45
+GOTO                 : 
+GT                   : 43
+HEX_NUMBER           : 
+ID                   : 5 17 18 19 20 29 29 30 30 31 32 32 39 58
+IF                   : 51 52
+IMPLICIT             : 
+IN                   : 
+INCREMENT            : 
+INT                  : 53
+INTERFACE            : 
+INTERNAL             : 
+IS                   : 
+LBRACE               : 12 18 51 52 52
+LBRACKET             : 
+LE                   : 46
+LOCK                 : 
+LONG                 : 
+LPAREN               : 18 29 30 32 51 52
+LSHIFT               : 
+LT                   : 44
+MINUS                : 35
+MINUS_ASSIGN         : 
+MOD                  : 
+MOD_ASSIGN           : 
+NAMESPACE            : 
+NEW                  : 32
+NOT                  : 
+NOTEQUAL             : 48
+NULL                 : 
+NUMBER               : 38
+OBJECT               : 
+OPERATOR             : 
+OR                   : 50
+OUT                  : 
+OVERRIDE             : 
+PARAMS               : 
+PLUS                 : 34
+PLUS_ASSIGN          : 
+PRIVATE              : 9
+PROTECTED            : 10
+PUBLIC               : 8
+QUESTION             : 
+RBRACE               : 12 18 51 52 52
+RBRACKET             : 
+READONLY             : 
+REF                  : 
+RETURN               : 33
+RPAREN               : 18 29 30 32 51 52
+RSHIFT               : 
+SBYTE                : 
+SEALED               : 
+SEMICOLON            : 5 17 29 30 31 32 33
+SHORT                : 
+SIZEOF               : 
+STACKALLOC           : 
+STATIC               : 
+STRING               : 55
+STRING_LITERAL       : 29 40
+STRUCT               : 
+SWITCH               : 
+THIS                 : 
+THROW                : 
+TIMES                : 36
+TIMES_ASSIGN         : 
+TRUE                 : 41
+TRUE_LITERAL         : 
+TRY                  : 
+TYPEOF               : 
+UINT                 : 
+ULONG                : 
+UNCHECKED            : 
+UNSAFE               : 
+USHORT               : 
+USING                : 5
+VIRTUAL              : 
+VOID                 : 
+VOLATILE             : 
+WHILE                : 
+XML_COMMENT          : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+asignacion           : 26
+clase                : 6 7
+clase_list           : 1 7
+condicion            : 49 49 50 50 51 52
+control              : 27
+cuerpo_clase         : 12 15 16
+empty                : 4 11 21
+expresion            : 17 31 33 34 34 35 35 36 36 37 37 43 43 44 44 45 45 46 46 47 47 48 48
+impresion            : 24
+instruccion          : 22 23
+instruccion_return   : 28
+instrucciones        : 18 23 51 52 52
+lectura              : 25
+metodo               : 14 16
+modificador          : 12
+parametros           : 18 20
+program              : 0
+propiedad            : 13 15
+tipo                 : 17 18 19 20 31 32
+using                : 2 3
+using_list           : 1 3
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . using_list clase_list
+    (2) using_list -> . using
+    (3) using_list -> . using_list using
+    (4) using_list -> . empty
+    (5) using -> . USING ID SEMICOLON
+    (59) empty -> .
+
+  ! shift/reduce conflict for USING resolved as shift
+    USING           shift and go to state 5
+    PUBLIC          reduce using rule 59 (empty -> .)
+    PRIVATE         reduce using rule 59 (empty -> .)
+    PROTECTED       reduce using rule 59 (empty -> .)
+    CLASS           reduce using rule 59 (empty -> .)
+
+  ! USING           [ reduce using rule 59 (empty -> .) ]
+
+    program                        shift and go to state 1
+    using_list                     shift and go to state 2
+    using                          shift and go to state 3
+    empty                          shift and go to state 4
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> using_list . clase_list
+    (3) using_list -> using_list . using
+    (6) clase_list -> . clase
+    (7) clase_list -> . clase_list clase
+    (5) using -> . USING ID SEMICOLON
+    (12) clase -> . modificador CLASS CLASS_NAME LBRACE cuerpo_clase RBRACE
+    (8) modificador -> . PUBLIC
+    (9) modificador -> . PRIVATE
+    (10) modificador -> . PROTECTED
+    (11) modificador -> . empty
+    (59) empty -> .
+
+    USING           shift and go to state 5
+    PUBLIC          shift and go to state 10
+    PRIVATE         shift and go to state 11
+    PROTECTED       shift and go to state 12
+    CLASS           reduce using rule 59 (empty -> .)
+
+    clase_list                     shift and go to state 6
+    using                          shift and go to state 7
+    clase                          shift and go to state 8
+    modificador                    shift and go to state 9
+    empty                          shift and go to state 13
+
+state 3
+
+    (2) using_list -> using .
+
+    USING           reduce using rule 2 (using_list -> using .)
+    PUBLIC          reduce using rule 2 (using_list -> using .)
+    PRIVATE         reduce using rule 2 (using_list -> using .)
+    PROTECTED       reduce using rule 2 (using_list -> using .)
+    CLASS           reduce using rule 2 (using_list -> using .)
+
+
+state 4
+
+    (4) using_list -> empty .
+
+    USING           reduce using rule 4 (using_list -> empty .)
+    PUBLIC          reduce using rule 4 (using_list -> empty .)
+    PRIVATE         reduce using rule 4 (using_list -> empty .)
+    PROTECTED       reduce using rule 4 (using_list -> empty .)
+    CLASS           reduce using rule 4 (using_list -> empty .)
+
+
+state 5
+
+    (5) using -> USING . ID SEMICOLON
+
+    ID              shift and go to state 14
+
+
+state 6
+
+    (1) program -> using_list clase_list .
+    (7) clase_list -> clase_list . clase
+    (12) clase -> . modificador CLASS CLASS_NAME LBRACE cuerpo_clase RBRACE
+    (8) modificador -> . PUBLIC
+    (9) modificador -> . PRIVATE
+    (10) modificador -> . PROTECTED
+    (11) modificador -> . empty
+    (59) empty -> .
+
+    $end            reduce using rule 1 (program -> using_list clase_list .)
+    PUBLIC          shift and go to state 10
+    PRIVATE         shift and go to state 11
+    PROTECTED       shift and go to state 12
+    CLASS           reduce using rule 59 (empty -> .)
+
+    clase                          shift and go to state 15
+    modificador                    shift and go to state 9
+    empty                          shift and go to state 13
+
+state 7
+
+    (3) using_list -> using_list using .
+
+    USING           reduce using rule 3 (using_list -> using_list using .)
+    PUBLIC          reduce using rule 3 (using_list -> using_list using .)
+    PRIVATE         reduce using rule 3 (using_list -> using_list using .)
+    PROTECTED       reduce using rule 3 (using_list -> using_list using .)
+    CLASS           reduce using rule 3 (using_list -> using_list using .)
+
+
+state 8
+
+    (6) clase_list -> clase .
+
+    PUBLIC          reduce using rule 6 (clase_list -> clase .)
+    PRIVATE         reduce using rule 6 (clase_list -> clase .)
+    PROTECTED       reduce using rule 6 (clase_list -> clase .)
+    CLASS           reduce using rule 6 (clase_list -> clase .)
+    $end            reduce using rule 6 (clase_list -> clase .)
+
+
+state 9
+
+    (12) clase -> modificador . CLASS CLASS_NAME LBRACE cuerpo_clase RBRACE
+
+    CLASS           shift and go to state 16
+
+
+state 10
+
+    (8) modificador -> PUBLIC .
+
+    CLASS           reduce using rule 8 (modificador -> PUBLIC .)
+
+
+state 11
+
+    (9) modificador -> PRIVATE .
+
+    CLASS           reduce using rule 9 (modificador -> PRIVATE .)
+
+
+state 12
+
+    (10) modificador -> PROTECTED .
+
+    CLASS           reduce using rule 10 (modificador -> PROTECTED .)
+
+
+state 13
+
+    (11) modificador -> empty .
+
+    CLASS           reduce using rule 11 (modificador -> empty .)
+
+
+state 14
+
+    (5) using -> USING ID . SEMICOLON
+
+    SEMICOLON       shift and go to state 17
+
+
+state 15
+
+    (7) clase_list -> clase_list clase .
+
+    PUBLIC          reduce using rule 7 (clase_list -> clase_list clase .)
+    PRIVATE         reduce using rule 7 (clase_list -> clase_list clase .)
+    PROTECTED       reduce using rule 7 (clase_list -> clase_list clase .)
+    CLASS           reduce using rule 7 (clase_list -> clase_list clase .)
+    $end            reduce using rule 7 (clase_list -> clase_list clase .)
+
+
+state 16
+
+    (12) clase -> modificador CLASS . CLASS_NAME LBRACE cuerpo_clase RBRACE
+
+    CLASS_NAME      shift and go to state 18
+
+
+state 17
+
+    (5) using -> USING ID SEMICOLON .
+
+    USING           reduce using rule 5 (using -> USING ID SEMICOLON .)
+    PUBLIC          reduce using rule 5 (using -> USING ID SEMICOLON .)
+    PRIVATE         reduce using rule 5 (using -> USING ID SEMICOLON .)
+    PROTECTED       reduce using rule 5 (using -> USING ID SEMICOLON .)
+    CLASS           reduce using rule 5 (using -> USING ID SEMICOLON .)
+
+
+state 18
+
+    (12) clase -> modificador CLASS CLASS_NAME . LBRACE cuerpo_clase RBRACE
+
+    LBRACE          shift and go to state 19
+
+
+state 19
+
+    (12) clase -> modificador CLASS CLASS_NAME LBRACE . cuerpo_clase RBRACE
+    (13) cuerpo_clase -> . propiedad
+    (14) cuerpo_clase -> . metodo
+    (15) cuerpo_clase -> . cuerpo_clase propiedad
+    (16) cuerpo_clase -> . cuerpo_clase metodo
+    (17) propiedad -> . tipo ID ASSIGN expresion SEMICOLON
+    (18) metodo -> . tipo ID LPAREN parametros RPAREN LBRACE instrucciones RBRACE
+    (53) tipo -> . INT
+    (54) tipo -> . FLOAT
+    (55) tipo -> . STRING
+    (56) tipo -> . CHAR
+    (57) tipo -> . BOOL
+    (58) tipo -> . ID
+
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    CHAR            shift and go to state 28
+    BOOL            shift and go to state 29
+    ID              shift and go to state 24
+
+    cuerpo_clase                   shift and go to state 20
+    propiedad                      shift and go to state 21
+    metodo                         shift and go to state 22
+    tipo                           shift and go to state 23
+
+state 20
+
+    (12) clase -> modificador CLASS CLASS_NAME LBRACE cuerpo_clase . RBRACE
+    (15) cuerpo_clase -> cuerpo_clase . propiedad
+    (16) cuerpo_clase -> cuerpo_clase . metodo
+    (17) propiedad -> . tipo ID ASSIGN expresion SEMICOLON
+    (18) metodo -> . tipo ID LPAREN parametros RPAREN LBRACE instrucciones RBRACE
+    (53) tipo -> . INT
+    (54) tipo -> . FLOAT
+    (55) tipo -> . STRING
+    (56) tipo -> . CHAR
+    (57) tipo -> . BOOL
+    (58) tipo -> . ID
+
+    RBRACE          shift and go to state 30
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    CHAR            shift and go to state 28
+    BOOL            shift and go to state 29
+    ID              shift and go to state 24
+
+    propiedad                      shift and go to state 31
+    metodo                         shift and go to state 32
+    tipo                           shift and go to state 23
+
+state 21
+
+    (13) cuerpo_clase -> propiedad .
+
+    RBRACE          reduce using rule 13 (cuerpo_clase -> propiedad .)
+    INT             reduce using rule 13 (cuerpo_clase -> propiedad .)
+    FLOAT           reduce using rule 13 (cuerpo_clase -> propiedad .)
+    STRING          reduce using rule 13 (cuerpo_clase -> propiedad .)
+    CHAR            reduce using rule 13 (cuerpo_clase -> propiedad .)
+    BOOL            reduce using rule 13 (cuerpo_clase -> propiedad .)
+    ID              reduce using rule 13 (cuerpo_clase -> propiedad .)
+
+
+state 22
+
+    (14) cuerpo_clase -> metodo .
+
+    RBRACE          reduce using rule 14 (cuerpo_clase -> metodo .)
+    INT             reduce using rule 14 (cuerpo_clase -> metodo .)
+    FLOAT           reduce using rule 14 (cuerpo_clase -> metodo .)
+    STRING          reduce using rule 14 (cuerpo_clase -> metodo .)
+    CHAR            reduce using rule 14 (cuerpo_clase -> metodo .)
+    BOOL            reduce using rule 14 (cuerpo_clase -> metodo .)
+    ID              reduce using rule 14 (cuerpo_clase -> metodo .)
+
+
+state 23
+
+    (17) propiedad -> tipo . ID ASSIGN expresion SEMICOLON
+    (18) metodo -> tipo . ID LPAREN parametros RPAREN LBRACE instrucciones RBRACE
+
+    ID              shift and go to state 33
+
+
+state 24
+
+    (58) tipo -> ID .
+
+    ID              reduce using rule 58 (tipo -> ID .)
+
+
+state 25
+
+    (53) tipo -> INT .
+
+    ID              reduce using rule 53 (tipo -> INT .)
+
+
+state 26
+
+    (54) tipo -> FLOAT .
+
+    ID              reduce using rule 54 (tipo -> FLOAT .)
+
+
+state 27
+
+    (55) tipo -> STRING .
+
+    ID              reduce using rule 55 (tipo -> STRING .)
+
+
+state 28
+
+    (56) tipo -> CHAR .
+
+    ID              reduce using rule 56 (tipo -> CHAR .)
+
+
+state 29
+
+    (57) tipo -> BOOL .
+
+    ID              reduce using rule 57 (tipo -> BOOL .)
+
+
+state 30
+
+    (12) clase -> modificador CLASS CLASS_NAME LBRACE cuerpo_clase RBRACE .
+
+    PUBLIC          reduce using rule 12 (clase -> modificador CLASS CLASS_NAME LBRACE cuerpo_clase RBRACE .)
+    PRIVATE         reduce using rule 12 (clase -> modificador CLASS CLASS_NAME LBRACE cuerpo_clase RBRACE .)
+    PROTECTED       reduce using rule 12 (clase -> modificador CLASS CLASS_NAME LBRACE cuerpo_clase RBRACE .)
+    CLASS           reduce using rule 12 (clase -> modificador CLASS CLASS_NAME LBRACE cuerpo_clase RBRACE .)
+    $end            reduce using rule 12 (clase -> modificador CLASS CLASS_NAME LBRACE cuerpo_clase RBRACE .)
+
+
+state 31
+
+    (15) cuerpo_clase -> cuerpo_clase propiedad .
+
+    RBRACE          reduce using rule 15 (cuerpo_clase -> cuerpo_clase propiedad .)
+    INT             reduce using rule 15 (cuerpo_clase -> cuerpo_clase propiedad .)
+    FLOAT           reduce using rule 15 (cuerpo_clase -> cuerpo_clase propiedad .)
+    STRING          reduce using rule 15 (cuerpo_clase -> cuerpo_clase propiedad .)
+    CHAR            reduce using rule 15 (cuerpo_clase -> cuerpo_clase propiedad .)
+    BOOL            reduce using rule 15 (cuerpo_clase -> cuerpo_clase propiedad .)
+    ID              reduce using rule 15 (cuerpo_clase -> cuerpo_clase propiedad .)
+
+
+state 32
+
+    (16) cuerpo_clase -> cuerpo_clase metodo .
+
+    RBRACE          reduce using rule 16 (cuerpo_clase -> cuerpo_clase metodo .)
+    INT             reduce using rule 16 (cuerpo_clase -> cuerpo_clase metodo .)
+    FLOAT           reduce using rule 16 (cuerpo_clase -> cuerpo_clase metodo .)
+    STRING          reduce using rule 16 (cuerpo_clase -> cuerpo_clase metodo .)
+    CHAR            reduce using rule 16 (cuerpo_clase -> cuerpo_clase metodo .)
+    BOOL            reduce using rule 16 (cuerpo_clase -> cuerpo_clase metodo .)
+    ID              reduce using rule 16 (cuerpo_clase -> cuerpo_clase metodo .)
+
+
+state 33
+
+    (17) propiedad -> tipo ID . ASSIGN expresion SEMICOLON
+    (18) metodo -> tipo ID . LPAREN parametros RPAREN LBRACE instrucciones RBRACE
+
+    ASSIGN          shift and go to state 34
+    LPAREN          shift and go to state 35
+
+
+state 34
+
+    (17) propiedad -> tipo ID ASSIGN . expresion SEMICOLON
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    expresion                      shift and go to state 37
+
+state 35
+
+    (18) metodo -> tipo ID LPAREN . parametros RPAREN LBRACE instrucciones RBRACE
+    (19) parametros -> . tipo ID
+    (20) parametros -> . parametros COMMA tipo ID
+    (21) parametros -> . empty
+    (53) tipo -> . INT
+    (54) tipo -> . FLOAT
+    (55) tipo -> . STRING
+    (56) tipo -> . CHAR
+    (57) tipo -> . BOOL
+    (58) tipo -> . ID
+    (59) empty -> .
+
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    CHAR            shift and go to state 28
+    BOOL            shift and go to state 29
+    ID              shift and go to state 24
+    RPAREN          reduce using rule 59 (empty -> .)
+    COMMA           reduce using rule 59 (empty -> .)
+
+    tipo                           shift and go to state 42
+    parametros                     shift and go to state 43
+    empty                          shift and go to state 44
+
+state 36
+
+    (39) expresion -> ID .
+
+    SEMICOLON       reduce using rule 39 (expresion -> ID .)
+    PLUS            reduce using rule 39 (expresion -> ID .)
+    MINUS           reduce using rule 39 (expresion -> ID .)
+    TIMES           reduce using rule 39 (expresion -> ID .)
+    DIVIDE          reduce using rule 39 (expresion -> ID .)
+    GT              reduce using rule 39 (expresion -> ID .)
+    LT              reduce using rule 39 (expresion -> ID .)
+    GE              reduce using rule 39 (expresion -> ID .)
+    LE              reduce using rule 39 (expresion -> ID .)
+    EQUALS          reduce using rule 39 (expresion -> ID .)
+    NOTEQUAL        reduce using rule 39 (expresion -> ID .)
+    RPAREN          reduce using rule 39 (expresion -> ID .)
+    AND             reduce using rule 39 (expresion -> ID .)
+    OR              reduce using rule 39 (expresion -> ID .)
+
+
+state 37
+
+    (17) propiedad -> tipo ID ASSIGN expresion . SEMICOLON
+    (34) expresion -> expresion . PLUS expresion
+    (35) expresion -> expresion . MINUS expresion
+    (36) expresion -> expresion . TIMES expresion
+    (37) expresion -> expresion . DIVIDE expresion
+
+    SEMICOLON       shift and go to state 45
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
+
+
+state 38
+
+    (38) expresion -> NUMBER .
+
+    SEMICOLON       reduce using rule 38 (expresion -> NUMBER .)
+    PLUS            reduce using rule 38 (expresion -> NUMBER .)
+    MINUS           reduce using rule 38 (expresion -> NUMBER .)
+    TIMES           reduce using rule 38 (expresion -> NUMBER .)
+    DIVIDE          reduce using rule 38 (expresion -> NUMBER .)
+    GT              reduce using rule 38 (expresion -> NUMBER .)
+    LT              reduce using rule 38 (expresion -> NUMBER .)
+    GE              reduce using rule 38 (expresion -> NUMBER .)
+    LE              reduce using rule 38 (expresion -> NUMBER .)
+    EQUALS          reduce using rule 38 (expresion -> NUMBER .)
+    NOTEQUAL        reduce using rule 38 (expresion -> NUMBER .)
+    RPAREN          reduce using rule 38 (expresion -> NUMBER .)
+    AND             reduce using rule 38 (expresion -> NUMBER .)
+    OR              reduce using rule 38 (expresion -> NUMBER .)
+
+
+state 39
+
+    (40) expresion -> STRING_LITERAL .
+
+    SEMICOLON       reduce using rule 40 (expresion -> STRING_LITERAL .)
+    PLUS            reduce using rule 40 (expresion -> STRING_LITERAL .)
+    MINUS           reduce using rule 40 (expresion -> STRING_LITERAL .)
+    TIMES           reduce using rule 40 (expresion -> STRING_LITERAL .)
+    DIVIDE          reduce using rule 40 (expresion -> STRING_LITERAL .)
+    GT              reduce using rule 40 (expresion -> STRING_LITERAL .)
+    LT              reduce using rule 40 (expresion -> STRING_LITERAL .)
+    GE              reduce using rule 40 (expresion -> STRING_LITERAL .)
+    LE              reduce using rule 40 (expresion -> STRING_LITERAL .)
+    EQUALS          reduce using rule 40 (expresion -> STRING_LITERAL .)
+    NOTEQUAL        reduce using rule 40 (expresion -> STRING_LITERAL .)
+    RPAREN          reduce using rule 40 (expresion -> STRING_LITERAL .)
+    AND             reduce using rule 40 (expresion -> STRING_LITERAL .)
+    OR              reduce using rule 40 (expresion -> STRING_LITERAL .)
+
+
+state 40
+
+    (41) expresion -> TRUE .
+
+    SEMICOLON       reduce using rule 41 (expresion -> TRUE .)
+    PLUS            reduce using rule 41 (expresion -> TRUE .)
+    MINUS           reduce using rule 41 (expresion -> TRUE .)
+    TIMES           reduce using rule 41 (expresion -> TRUE .)
+    DIVIDE          reduce using rule 41 (expresion -> TRUE .)
+    GT              reduce using rule 41 (expresion -> TRUE .)
+    LT              reduce using rule 41 (expresion -> TRUE .)
+    GE              reduce using rule 41 (expresion -> TRUE .)
+    LE              reduce using rule 41 (expresion -> TRUE .)
+    EQUALS          reduce using rule 41 (expresion -> TRUE .)
+    NOTEQUAL        reduce using rule 41 (expresion -> TRUE .)
+    RPAREN          reduce using rule 41 (expresion -> TRUE .)
+    AND             reduce using rule 41 (expresion -> TRUE .)
+    OR              reduce using rule 41 (expresion -> TRUE .)
+
+
+state 41
+
+    (42) expresion -> FALSE .
+
+    SEMICOLON       reduce using rule 42 (expresion -> FALSE .)
+    PLUS            reduce using rule 42 (expresion -> FALSE .)
+    MINUS           reduce using rule 42 (expresion -> FALSE .)
+    TIMES           reduce using rule 42 (expresion -> FALSE .)
+    DIVIDE          reduce using rule 42 (expresion -> FALSE .)
+    GT              reduce using rule 42 (expresion -> FALSE .)
+    LT              reduce using rule 42 (expresion -> FALSE .)
+    GE              reduce using rule 42 (expresion -> FALSE .)
+    LE              reduce using rule 42 (expresion -> FALSE .)
+    EQUALS          reduce using rule 42 (expresion -> FALSE .)
+    NOTEQUAL        reduce using rule 42 (expresion -> FALSE .)
+    RPAREN          reduce using rule 42 (expresion -> FALSE .)
+    AND             reduce using rule 42 (expresion -> FALSE .)
+    OR              reduce using rule 42 (expresion -> FALSE .)
+
+
+state 42
+
+    (19) parametros -> tipo . ID
+
+    ID              shift and go to state 50
+
+
+state 43
+
+    (18) metodo -> tipo ID LPAREN parametros . RPAREN LBRACE instrucciones RBRACE
+    (20) parametros -> parametros . COMMA tipo ID
+
+    RPAREN          shift and go to state 51
+    COMMA           shift and go to state 52
+
+
+state 44
+
+    (21) parametros -> empty .
+
+    RPAREN          reduce using rule 21 (parametros -> empty .)
+    COMMA           reduce using rule 21 (parametros -> empty .)
+
+
+state 45
+
+    (17) propiedad -> tipo ID ASSIGN expresion SEMICOLON .
+
+    RBRACE          reduce using rule 17 (propiedad -> tipo ID ASSIGN expresion SEMICOLON .)
+    INT             reduce using rule 17 (propiedad -> tipo ID ASSIGN expresion SEMICOLON .)
+    FLOAT           reduce using rule 17 (propiedad -> tipo ID ASSIGN expresion SEMICOLON .)
+    STRING          reduce using rule 17 (propiedad -> tipo ID ASSIGN expresion SEMICOLON .)
+    CHAR            reduce using rule 17 (propiedad -> tipo ID ASSIGN expresion SEMICOLON .)
+    BOOL            reduce using rule 17 (propiedad -> tipo ID ASSIGN expresion SEMICOLON .)
+    ID              reduce using rule 17 (propiedad -> tipo ID ASSIGN expresion SEMICOLON .)
+
+
+state 46
+
+    (34) expresion -> expresion PLUS . expresion
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    expresion                      shift and go to state 53
+
+state 47
+
+    (35) expresion -> expresion MINUS . expresion
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    expresion                      shift and go to state 54
+
+state 48
+
+    (36) expresion -> expresion TIMES . expresion
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    expresion                      shift and go to state 55
+
+state 49
+
+    (37) expresion -> expresion DIVIDE . expresion
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    expresion                      shift and go to state 56
+
+state 50
+
+    (19) parametros -> tipo ID .
+
+    RPAREN          reduce using rule 19 (parametros -> tipo ID .)
+    COMMA           reduce using rule 19 (parametros -> tipo ID .)
+
+
+state 51
+
+    (18) metodo -> tipo ID LPAREN parametros RPAREN . LBRACE instrucciones RBRACE
+
+    LBRACE          shift and go to state 57
+
+
+state 52
+
+    (20) parametros -> parametros COMMA . tipo ID
+    (53) tipo -> . INT
+    (54) tipo -> . FLOAT
+    (55) tipo -> . STRING
+    (56) tipo -> . CHAR
+    (57) tipo -> . BOOL
+    (58) tipo -> . ID
+
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    CHAR            shift and go to state 28
+    BOOL            shift and go to state 29
+    ID              shift and go to state 24
+
+    tipo                           shift and go to state 58
+
+state 53
+
+    (34) expresion -> expresion PLUS expresion .
+    (34) expresion -> expresion . PLUS expresion
+    (35) expresion -> expresion . MINUS expresion
+    (36) expresion -> expresion . TIMES expresion
+    (37) expresion -> expresion . DIVIDE expresion
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    SEMICOLON       reduce using rule 34 (expresion -> expresion PLUS expresion .)
+    GT              reduce using rule 34 (expresion -> expresion PLUS expresion .)
+    LT              reduce using rule 34 (expresion -> expresion PLUS expresion .)
+    GE              reduce using rule 34 (expresion -> expresion PLUS expresion .)
+    LE              reduce using rule 34 (expresion -> expresion PLUS expresion .)
+    EQUALS          reduce using rule 34 (expresion -> expresion PLUS expresion .)
+    NOTEQUAL        reduce using rule 34 (expresion -> expresion PLUS expresion .)
+    RPAREN          reduce using rule 34 (expresion -> expresion PLUS expresion .)
+    AND             reduce using rule 34 (expresion -> expresion PLUS expresion .)
+    OR              reduce using rule 34 (expresion -> expresion PLUS expresion .)
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
+
+  ! PLUS            [ reduce using rule 34 (expresion -> expresion PLUS expresion .) ]
+  ! MINUS           [ reduce using rule 34 (expresion -> expresion PLUS expresion .) ]
+  ! TIMES           [ reduce using rule 34 (expresion -> expresion PLUS expresion .) ]
+  ! DIVIDE          [ reduce using rule 34 (expresion -> expresion PLUS expresion .) ]
+
+
+state 54
+
+    (35) expresion -> expresion MINUS expresion .
+    (34) expresion -> expresion . PLUS expresion
+    (35) expresion -> expresion . MINUS expresion
+    (36) expresion -> expresion . TIMES expresion
+    (37) expresion -> expresion . DIVIDE expresion
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    SEMICOLON       reduce using rule 35 (expresion -> expresion MINUS expresion .)
+    GT              reduce using rule 35 (expresion -> expresion MINUS expresion .)
+    LT              reduce using rule 35 (expresion -> expresion MINUS expresion .)
+    GE              reduce using rule 35 (expresion -> expresion MINUS expresion .)
+    LE              reduce using rule 35 (expresion -> expresion MINUS expresion .)
+    EQUALS          reduce using rule 35 (expresion -> expresion MINUS expresion .)
+    NOTEQUAL        reduce using rule 35 (expresion -> expresion MINUS expresion .)
+    RPAREN          reduce using rule 35 (expresion -> expresion MINUS expresion .)
+    AND             reduce using rule 35 (expresion -> expresion MINUS expresion .)
+    OR              reduce using rule 35 (expresion -> expresion MINUS expresion .)
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
+
+  ! PLUS            [ reduce using rule 35 (expresion -> expresion MINUS expresion .) ]
+  ! MINUS           [ reduce using rule 35 (expresion -> expresion MINUS expresion .) ]
+  ! TIMES           [ reduce using rule 35 (expresion -> expresion MINUS expresion .) ]
+  ! DIVIDE          [ reduce using rule 35 (expresion -> expresion MINUS expresion .) ]
+
+
+state 55
+
+    (36) expresion -> expresion TIMES expresion .
+    (34) expresion -> expresion . PLUS expresion
+    (35) expresion -> expresion . MINUS expresion
+    (36) expresion -> expresion . TIMES expresion
+    (37) expresion -> expresion . DIVIDE expresion
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    SEMICOLON       reduce using rule 36 (expresion -> expresion TIMES expresion .)
+    GT              reduce using rule 36 (expresion -> expresion TIMES expresion .)
+    LT              reduce using rule 36 (expresion -> expresion TIMES expresion .)
+    GE              reduce using rule 36 (expresion -> expresion TIMES expresion .)
+    LE              reduce using rule 36 (expresion -> expresion TIMES expresion .)
+    EQUALS          reduce using rule 36 (expresion -> expresion TIMES expresion .)
+    NOTEQUAL        reduce using rule 36 (expresion -> expresion TIMES expresion .)
+    RPAREN          reduce using rule 36 (expresion -> expresion TIMES expresion .)
+    AND             reduce using rule 36 (expresion -> expresion TIMES expresion .)
+    OR              reduce using rule 36 (expresion -> expresion TIMES expresion .)
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
+
+  ! PLUS            [ reduce using rule 36 (expresion -> expresion TIMES expresion .) ]
+  ! MINUS           [ reduce using rule 36 (expresion -> expresion TIMES expresion .) ]
+  ! TIMES           [ reduce using rule 36 (expresion -> expresion TIMES expresion .) ]
+  ! DIVIDE          [ reduce using rule 36 (expresion -> expresion TIMES expresion .) ]
+
+
+state 56
+
+    (37) expresion -> expresion DIVIDE expresion .
+    (34) expresion -> expresion . PLUS expresion
+    (35) expresion -> expresion . MINUS expresion
+    (36) expresion -> expresion . TIMES expresion
+    (37) expresion -> expresion . DIVIDE expresion
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    SEMICOLON       reduce using rule 37 (expresion -> expresion DIVIDE expresion .)
+    GT              reduce using rule 37 (expresion -> expresion DIVIDE expresion .)
+    LT              reduce using rule 37 (expresion -> expresion DIVIDE expresion .)
+    GE              reduce using rule 37 (expresion -> expresion DIVIDE expresion .)
+    LE              reduce using rule 37 (expresion -> expresion DIVIDE expresion .)
+    EQUALS          reduce using rule 37 (expresion -> expresion DIVIDE expresion .)
+    NOTEQUAL        reduce using rule 37 (expresion -> expresion DIVIDE expresion .)
+    RPAREN          reduce using rule 37 (expresion -> expresion DIVIDE expresion .)
+    AND             reduce using rule 37 (expresion -> expresion DIVIDE expresion .)
+    OR              reduce using rule 37 (expresion -> expresion DIVIDE expresion .)
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
+
+  ! PLUS            [ reduce using rule 37 (expresion -> expresion DIVIDE expresion .) ]
+  ! MINUS           [ reduce using rule 37 (expresion -> expresion DIVIDE expresion .) ]
+  ! TIMES           [ reduce using rule 37 (expresion -> expresion DIVIDE expresion .) ]
+  ! DIVIDE          [ reduce using rule 37 (expresion -> expresion DIVIDE expresion .) ]
+
+
+state 57
+
+    (18) metodo -> tipo ID LPAREN parametros RPAREN LBRACE . instrucciones RBRACE
+    (22) instrucciones -> . instruccion
+    (23) instrucciones -> . instrucciones instruccion
+    (24) instruccion -> . impresion
+    (25) instruccion -> . lectura
+    (26) instruccion -> . asignacion
+    (27) instruccion -> . control
+    (28) instruccion -> . instruccion_return
+    (29) impresion -> . ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON
+    (30) lectura -> . ID DOT ID LPAREN RPAREN SEMICOLON
+    (31) asignacion -> . tipo ID ASSIGN expresion SEMICOLON
+    (32) asignacion -> . tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON
+    (51) control -> . IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE
+    (52) control -> . IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE
+    (33) instruccion_return -> . RETURN expresion SEMICOLON
+    (53) tipo -> . INT
+    (54) tipo -> . FLOAT
+    (55) tipo -> . STRING
+    (56) tipo -> . CHAR
+    (57) tipo -> . BOOL
+    (58) tipo -> . ID
+
+    ID              shift and go to state 60
+    IF              shift and go to state 68
+    RETURN          shift and go to state 69
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    CHAR            shift and go to state 28
+    BOOL            shift and go to state 29
+
+    tipo                           shift and go to state 59
+    instrucciones                  shift and go to state 61
+    instruccion                    shift and go to state 62
+    impresion                      shift and go to state 63
+    lectura                        shift and go to state 64
+    asignacion                     shift and go to state 65
+    control                        shift and go to state 66
+    instruccion_return             shift and go to state 67
+
+state 58
+
+    (20) parametros -> parametros COMMA tipo . ID
+
+    ID              shift and go to state 70
+
+
+state 59
+
+    (31) asignacion -> tipo . ID ASSIGN expresion SEMICOLON
+    (32) asignacion -> tipo . ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON
+
+    ID              shift and go to state 71
+
+
+state 60
+
+    (29) impresion -> ID . DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON
+    (30) lectura -> ID . DOT ID LPAREN RPAREN SEMICOLON
+    (58) tipo -> ID .
+
+    DOT             shift and go to state 72
+    ID              reduce using rule 58 (tipo -> ID .)
+
+
+state 61
+
+    (18) metodo -> tipo ID LPAREN parametros RPAREN LBRACE instrucciones . RBRACE
+    (23) instrucciones -> instrucciones . instruccion
+    (24) instruccion -> . impresion
+    (25) instruccion -> . lectura
+    (26) instruccion -> . asignacion
+    (27) instruccion -> . control
+    (28) instruccion -> . instruccion_return
+    (29) impresion -> . ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON
+    (30) lectura -> . ID DOT ID LPAREN RPAREN SEMICOLON
+    (31) asignacion -> . tipo ID ASSIGN expresion SEMICOLON
+    (32) asignacion -> . tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON
+    (51) control -> . IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE
+    (52) control -> . IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE
+    (33) instruccion_return -> . RETURN expresion SEMICOLON
+    (53) tipo -> . INT
+    (54) tipo -> . FLOAT
+    (55) tipo -> . STRING
+    (56) tipo -> . CHAR
+    (57) tipo -> . BOOL
+    (58) tipo -> . ID
+
+    RBRACE          shift and go to state 73
+    ID              shift and go to state 60
+    IF              shift and go to state 68
+    RETURN          shift and go to state 69
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    CHAR            shift and go to state 28
+    BOOL            shift and go to state 29
+
+    tipo                           shift and go to state 59
+    instruccion                    shift and go to state 74
+    impresion                      shift and go to state 63
+    lectura                        shift and go to state 64
+    asignacion                     shift and go to state 65
+    control                        shift and go to state 66
+    instruccion_return             shift and go to state 67
+
+state 62
+
+    (22) instrucciones -> instruccion .
+
+    RBRACE          reduce using rule 22 (instrucciones -> instruccion .)
+    ID              reduce using rule 22 (instrucciones -> instruccion .)
+    IF              reduce using rule 22 (instrucciones -> instruccion .)
+    RETURN          reduce using rule 22 (instrucciones -> instruccion .)
+    INT             reduce using rule 22 (instrucciones -> instruccion .)
+    FLOAT           reduce using rule 22 (instrucciones -> instruccion .)
+    STRING          reduce using rule 22 (instrucciones -> instruccion .)
+    CHAR            reduce using rule 22 (instrucciones -> instruccion .)
+    BOOL            reduce using rule 22 (instrucciones -> instruccion .)
+
+
+state 63
+
+    (24) instruccion -> impresion .
+
+    RBRACE          reduce using rule 24 (instruccion -> impresion .)
+    ID              reduce using rule 24 (instruccion -> impresion .)
+    IF              reduce using rule 24 (instruccion -> impresion .)
+    RETURN          reduce using rule 24 (instruccion -> impresion .)
+    INT             reduce using rule 24 (instruccion -> impresion .)
+    FLOAT           reduce using rule 24 (instruccion -> impresion .)
+    STRING          reduce using rule 24 (instruccion -> impresion .)
+    CHAR            reduce using rule 24 (instruccion -> impresion .)
+    BOOL            reduce using rule 24 (instruccion -> impresion .)
+
+
+state 64
+
+    (25) instruccion -> lectura .
+
+    RBRACE          reduce using rule 25 (instruccion -> lectura .)
+    ID              reduce using rule 25 (instruccion -> lectura .)
+    IF              reduce using rule 25 (instruccion -> lectura .)
+    RETURN          reduce using rule 25 (instruccion -> lectura .)
+    INT             reduce using rule 25 (instruccion -> lectura .)
+    FLOAT           reduce using rule 25 (instruccion -> lectura .)
+    STRING          reduce using rule 25 (instruccion -> lectura .)
+    CHAR            reduce using rule 25 (instruccion -> lectura .)
+    BOOL            reduce using rule 25 (instruccion -> lectura .)
+
+
+state 65
+
+    (26) instruccion -> asignacion .
+
+    RBRACE          reduce using rule 26 (instruccion -> asignacion .)
+    ID              reduce using rule 26 (instruccion -> asignacion .)
+    IF              reduce using rule 26 (instruccion -> asignacion .)
+    RETURN          reduce using rule 26 (instruccion -> asignacion .)
+    INT             reduce using rule 26 (instruccion -> asignacion .)
+    FLOAT           reduce using rule 26 (instruccion -> asignacion .)
+    STRING          reduce using rule 26 (instruccion -> asignacion .)
+    CHAR            reduce using rule 26 (instruccion -> asignacion .)
+    BOOL            reduce using rule 26 (instruccion -> asignacion .)
+
+
+state 66
+
+    (27) instruccion -> control .
+
+    RBRACE          reduce using rule 27 (instruccion -> control .)
+    ID              reduce using rule 27 (instruccion -> control .)
+    IF              reduce using rule 27 (instruccion -> control .)
+    RETURN          reduce using rule 27 (instruccion -> control .)
+    INT             reduce using rule 27 (instruccion -> control .)
+    FLOAT           reduce using rule 27 (instruccion -> control .)
+    STRING          reduce using rule 27 (instruccion -> control .)
+    CHAR            reduce using rule 27 (instruccion -> control .)
+    BOOL            reduce using rule 27 (instruccion -> control .)
+
+
+state 67
+
+    (28) instruccion -> instruccion_return .
+
+    RBRACE          reduce using rule 28 (instruccion -> instruccion_return .)
+    ID              reduce using rule 28 (instruccion -> instruccion_return .)
+    IF              reduce using rule 28 (instruccion -> instruccion_return .)
+    RETURN          reduce using rule 28 (instruccion -> instruccion_return .)
+    INT             reduce using rule 28 (instruccion -> instruccion_return .)
+    FLOAT           reduce using rule 28 (instruccion -> instruccion_return .)
+    STRING          reduce using rule 28 (instruccion -> instruccion_return .)
+    CHAR            reduce using rule 28 (instruccion -> instruccion_return .)
+    BOOL            reduce using rule 28 (instruccion -> instruccion_return .)
+
+
+state 68
+
+    (51) control -> IF . LPAREN condicion RPAREN LBRACE instrucciones RBRACE
+    (52) control -> IF . LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE
+
+    LPAREN          shift and go to state 75
+
+
+state 69
+
+    (33) instruccion_return -> RETURN . expresion SEMICOLON
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    expresion                      shift and go to state 76
+
+state 70
+
+    (20) parametros -> parametros COMMA tipo ID .
+
+    RPAREN          reduce using rule 20 (parametros -> parametros COMMA tipo ID .)
+    COMMA           reduce using rule 20 (parametros -> parametros COMMA tipo ID .)
+
+
+state 71
+
+    (31) asignacion -> tipo ID . ASSIGN expresion SEMICOLON
+    (32) asignacion -> tipo ID . ASSIGN NEW ID LPAREN RPAREN SEMICOLON
+
+    ASSIGN          shift and go to state 77
+
+
+state 72
+
+    (29) impresion -> ID DOT . ID LPAREN STRING_LITERAL RPAREN SEMICOLON
+    (30) lectura -> ID DOT . ID LPAREN RPAREN SEMICOLON
+
+    ID              shift and go to state 78
+
+
+state 73
+
+    (18) metodo -> tipo ID LPAREN parametros RPAREN LBRACE instrucciones RBRACE .
+
+    RBRACE          reduce using rule 18 (metodo -> tipo ID LPAREN parametros RPAREN LBRACE instrucciones RBRACE .)
+    INT             reduce using rule 18 (metodo -> tipo ID LPAREN parametros RPAREN LBRACE instrucciones RBRACE .)
+    FLOAT           reduce using rule 18 (metodo -> tipo ID LPAREN parametros RPAREN LBRACE instrucciones RBRACE .)
+    STRING          reduce using rule 18 (metodo -> tipo ID LPAREN parametros RPAREN LBRACE instrucciones RBRACE .)
+    CHAR            reduce using rule 18 (metodo -> tipo ID LPAREN parametros RPAREN LBRACE instrucciones RBRACE .)
+    BOOL            reduce using rule 18 (metodo -> tipo ID LPAREN parametros RPAREN LBRACE instrucciones RBRACE .)
+    ID              reduce using rule 18 (metodo -> tipo ID LPAREN parametros RPAREN LBRACE instrucciones RBRACE .)
+
+
+state 74
+
+    (23) instrucciones -> instrucciones instruccion .
+
+    RBRACE          reduce using rule 23 (instrucciones -> instrucciones instruccion .)
+    ID              reduce using rule 23 (instrucciones -> instrucciones instruccion .)
+    IF              reduce using rule 23 (instrucciones -> instrucciones instruccion .)
+    RETURN          reduce using rule 23 (instrucciones -> instrucciones instruccion .)
+    INT             reduce using rule 23 (instrucciones -> instrucciones instruccion .)
+    FLOAT           reduce using rule 23 (instrucciones -> instrucciones instruccion .)
+    STRING          reduce using rule 23 (instrucciones -> instrucciones instruccion .)
+    CHAR            reduce using rule 23 (instrucciones -> instrucciones instruccion .)
+    BOOL            reduce using rule 23 (instrucciones -> instrucciones instruccion .)
+
+
+state 75
+
+    (51) control -> IF LPAREN . condicion RPAREN LBRACE instrucciones RBRACE
+    (52) control -> IF LPAREN . condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE
+    (43) condicion -> . expresion GT expresion
+    (44) condicion -> . expresion LT expresion
+    (45) condicion -> . expresion GE expresion
+    (46) condicion -> . expresion LE expresion
+    (47) condicion -> . expresion EQUALS expresion
+    (48) condicion -> . expresion NOTEQUAL expresion
+    (49) condicion -> . condicion AND condicion
+    (50) condicion -> . condicion OR condicion
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    condicion                      shift and go to state 79
+    expresion                      shift and go to state 80
+
+state 76
+
+    (33) instruccion_return -> RETURN expresion . SEMICOLON
+    (34) expresion -> expresion . PLUS expresion
+    (35) expresion -> expresion . MINUS expresion
+    (36) expresion -> expresion . TIMES expresion
+    (37) expresion -> expresion . DIVIDE expresion
+
+    SEMICOLON       shift and go to state 81
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
+
+
+state 77
+
+    (31) asignacion -> tipo ID ASSIGN . expresion SEMICOLON
+    (32) asignacion -> tipo ID ASSIGN . NEW ID LPAREN RPAREN SEMICOLON
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NEW             shift and go to state 83
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    expresion                      shift and go to state 82
+
+state 78
+
+    (29) impresion -> ID DOT ID . LPAREN STRING_LITERAL RPAREN SEMICOLON
+    (30) lectura -> ID DOT ID . LPAREN RPAREN SEMICOLON
+
+    LPAREN          shift and go to state 84
+
+
+state 79
+
+    (51) control -> IF LPAREN condicion . RPAREN LBRACE instrucciones RBRACE
+    (52) control -> IF LPAREN condicion . RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE
+    (49) condicion -> condicion . AND condicion
+    (50) condicion -> condicion . OR condicion
+
+    RPAREN          shift and go to state 85
+    AND             shift and go to state 86
+    OR              shift and go to state 87
+
+
+state 80
+
+    (43) condicion -> expresion . GT expresion
+    (44) condicion -> expresion . LT expresion
+    (45) condicion -> expresion . GE expresion
+    (46) condicion -> expresion . LE expresion
+    (47) condicion -> expresion . EQUALS expresion
+    (48) condicion -> expresion . NOTEQUAL expresion
+    (34) expresion -> expresion . PLUS expresion
+    (35) expresion -> expresion . MINUS expresion
+    (36) expresion -> expresion . TIMES expresion
+    (37) expresion -> expresion . DIVIDE expresion
+
+    GT              shift and go to state 88
+    LT              shift and go to state 89
+    GE              shift and go to state 90
+    LE              shift and go to state 91
+    EQUALS          shift and go to state 92
+    NOTEQUAL        shift and go to state 93
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
+
+
+state 81
+
+    (33) instruccion_return -> RETURN expresion SEMICOLON .
+
+    RBRACE          reduce using rule 33 (instruccion_return -> RETURN expresion SEMICOLON .)
+    ID              reduce using rule 33 (instruccion_return -> RETURN expresion SEMICOLON .)
+    IF              reduce using rule 33 (instruccion_return -> RETURN expresion SEMICOLON .)
+    RETURN          reduce using rule 33 (instruccion_return -> RETURN expresion SEMICOLON .)
+    INT             reduce using rule 33 (instruccion_return -> RETURN expresion SEMICOLON .)
+    FLOAT           reduce using rule 33 (instruccion_return -> RETURN expresion SEMICOLON .)
+    STRING          reduce using rule 33 (instruccion_return -> RETURN expresion SEMICOLON .)
+    CHAR            reduce using rule 33 (instruccion_return -> RETURN expresion SEMICOLON .)
+    BOOL            reduce using rule 33 (instruccion_return -> RETURN expresion SEMICOLON .)
+
+
+state 82
+
+    (31) asignacion -> tipo ID ASSIGN expresion . SEMICOLON
+    (34) expresion -> expresion . PLUS expresion
+    (35) expresion -> expresion . MINUS expresion
+    (36) expresion -> expresion . TIMES expresion
+    (37) expresion -> expresion . DIVIDE expresion
+
+    SEMICOLON       shift and go to state 94
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
+
+
+state 83
+
+    (32) asignacion -> tipo ID ASSIGN NEW . ID LPAREN RPAREN SEMICOLON
+
+    ID              shift and go to state 95
+
+
+state 84
+
+    (29) impresion -> ID DOT ID LPAREN . STRING_LITERAL RPAREN SEMICOLON
+    (30) lectura -> ID DOT ID LPAREN . RPAREN SEMICOLON
+
+    STRING_LITERAL  shift and go to state 96
+    RPAREN          shift and go to state 97
+
+
+state 85
+
+    (51) control -> IF LPAREN condicion RPAREN . LBRACE instrucciones RBRACE
+    (52) control -> IF LPAREN condicion RPAREN . LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE
+
+    LBRACE          shift and go to state 98
+
+
+state 86
+
+    (49) condicion -> condicion AND . condicion
+    (43) condicion -> . expresion GT expresion
+    (44) condicion -> . expresion LT expresion
+    (45) condicion -> . expresion GE expresion
+    (46) condicion -> . expresion LE expresion
+    (47) condicion -> . expresion EQUALS expresion
+    (48) condicion -> . expresion NOTEQUAL expresion
+    (49) condicion -> . condicion AND condicion
+    (50) condicion -> . condicion OR condicion
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    condicion                      shift and go to state 99
+    expresion                      shift and go to state 80
+
+state 87
+
+    (50) condicion -> condicion OR . condicion
+    (43) condicion -> . expresion GT expresion
+    (44) condicion -> . expresion LT expresion
+    (45) condicion -> . expresion GE expresion
+    (46) condicion -> . expresion LE expresion
+    (47) condicion -> . expresion EQUALS expresion
+    (48) condicion -> . expresion NOTEQUAL expresion
+    (49) condicion -> . condicion AND condicion
+    (50) condicion -> . condicion OR condicion
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    condicion                      shift and go to state 100
+    expresion                      shift and go to state 80
+
+state 88
+
+    (43) condicion -> expresion GT . expresion
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    expresion                      shift and go to state 101
+
+state 89
+
+    (44) condicion -> expresion LT . expresion
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    expresion                      shift and go to state 102
+
+state 90
+
+    (45) condicion -> expresion GE . expresion
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    expresion                      shift and go to state 103
+
+state 91
+
+    (46) condicion -> expresion LE . expresion
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    expresion                      shift and go to state 104
+
+state 92
+
+    (47) condicion -> expresion EQUALS . expresion
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    expresion                      shift and go to state 105
+
+state 93
+
+    (48) condicion -> expresion NOTEQUAL . expresion
+    (34) expresion -> . expresion PLUS expresion
+    (35) expresion -> . expresion MINUS expresion
+    (36) expresion -> . expresion TIMES expresion
+    (37) expresion -> . expresion DIVIDE expresion
+    (38) expresion -> . NUMBER
+    (39) expresion -> . ID
+    (40) expresion -> . STRING_LITERAL
+    (41) expresion -> . TRUE
+    (42) expresion -> . FALSE
+
+    NUMBER          shift and go to state 38
+    ID              shift and go to state 36
+    STRING_LITERAL  shift and go to state 39
+    TRUE            shift and go to state 40
+    FALSE           shift and go to state 41
+
+    expresion                      shift and go to state 106
+
+state 94
+
+    (31) asignacion -> tipo ID ASSIGN expresion SEMICOLON .
+
+    RBRACE          reduce using rule 31 (asignacion -> tipo ID ASSIGN expresion SEMICOLON .)
+    ID              reduce using rule 31 (asignacion -> tipo ID ASSIGN expresion SEMICOLON .)
+    IF              reduce using rule 31 (asignacion -> tipo ID ASSIGN expresion SEMICOLON .)
+    RETURN          reduce using rule 31 (asignacion -> tipo ID ASSIGN expresion SEMICOLON .)
+    INT             reduce using rule 31 (asignacion -> tipo ID ASSIGN expresion SEMICOLON .)
+    FLOAT           reduce using rule 31 (asignacion -> tipo ID ASSIGN expresion SEMICOLON .)
+    STRING          reduce using rule 31 (asignacion -> tipo ID ASSIGN expresion SEMICOLON .)
+    CHAR            reduce using rule 31 (asignacion -> tipo ID ASSIGN expresion SEMICOLON .)
+    BOOL            reduce using rule 31 (asignacion -> tipo ID ASSIGN expresion SEMICOLON .)
+
+
+state 95
+
+    (32) asignacion -> tipo ID ASSIGN NEW ID . LPAREN RPAREN SEMICOLON
+
+    LPAREN          shift and go to state 107
+
+
+state 96
+
+    (29) impresion -> ID DOT ID LPAREN STRING_LITERAL . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 108
+
+
+state 97
+
+    (30) lectura -> ID DOT ID LPAREN RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 109
+
+
+state 98
+
+    (51) control -> IF LPAREN condicion RPAREN LBRACE . instrucciones RBRACE
+    (52) control -> IF LPAREN condicion RPAREN LBRACE . instrucciones RBRACE ELSE LBRACE instrucciones RBRACE
+    (22) instrucciones -> . instruccion
+    (23) instrucciones -> . instrucciones instruccion
+    (24) instruccion -> . impresion
+    (25) instruccion -> . lectura
+    (26) instruccion -> . asignacion
+    (27) instruccion -> . control
+    (28) instruccion -> . instruccion_return
+    (29) impresion -> . ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON
+    (30) lectura -> . ID DOT ID LPAREN RPAREN SEMICOLON
+    (31) asignacion -> . tipo ID ASSIGN expresion SEMICOLON
+    (32) asignacion -> . tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON
+    (51) control -> . IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE
+    (52) control -> . IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE
+    (33) instruccion_return -> . RETURN expresion SEMICOLON
+    (53) tipo -> . INT
+    (54) tipo -> . FLOAT
+    (55) tipo -> . STRING
+    (56) tipo -> . CHAR
+    (57) tipo -> . BOOL
+    (58) tipo -> . ID
+
+    ID              shift and go to state 60
+    IF              shift and go to state 68
+    RETURN          shift and go to state 69
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    CHAR            shift and go to state 28
+    BOOL            shift and go to state 29
+
+    instrucciones                  shift and go to state 110
+    instruccion                    shift and go to state 62
+    impresion                      shift and go to state 63
+    lectura                        shift and go to state 64
+    asignacion                     shift and go to state 65
+    control                        shift and go to state 66
+    instruccion_return             shift and go to state 67
+    tipo                           shift and go to state 59
+
+state 99
+
+    (49) condicion -> condicion AND condicion .
+    (49) condicion -> condicion . AND condicion
+    (50) condicion -> condicion . OR condicion
+
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    RPAREN          reduce using rule 49 (condicion -> condicion AND condicion .)
+    AND             shift and go to state 86
+    OR              shift and go to state 87
+
+  ! AND             [ reduce using rule 49 (condicion -> condicion AND condicion .) ]
+  ! OR              [ reduce using rule 49 (condicion -> condicion AND condicion .) ]
+
+
+state 100
+
+    (50) condicion -> condicion OR condicion .
+    (49) condicion -> condicion . AND condicion
+    (50) condicion -> condicion . OR condicion
+
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    RPAREN          reduce using rule 50 (condicion -> condicion OR condicion .)
+    AND             shift and go to state 86
+    OR              shift and go to state 87
+
+  ! AND             [ reduce using rule 50 (condicion -> condicion OR condicion .) ]
+  ! OR              [ reduce using rule 50 (condicion -> condicion OR condicion .) ]
+
+
+state 101
+
+    (43) condicion -> expresion GT expresion .
+    (34) expresion -> expresion . PLUS expresion
+    (35) expresion -> expresion . MINUS expresion
+    (36) expresion -> expresion . TIMES expresion
+    (37) expresion -> expresion . DIVIDE expresion
+
+    RPAREN          reduce using rule 43 (condicion -> expresion GT expresion .)
+    AND             reduce using rule 43 (condicion -> expresion GT expresion .)
+    OR              reduce using rule 43 (condicion -> expresion GT expresion .)
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
+
+
+state 102
+
+    (44) condicion -> expresion LT expresion .
+    (34) expresion -> expresion . PLUS expresion
+    (35) expresion -> expresion . MINUS expresion
+    (36) expresion -> expresion . TIMES expresion
+    (37) expresion -> expresion . DIVIDE expresion
+
+    RPAREN          reduce using rule 44 (condicion -> expresion LT expresion .)
+    AND             reduce using rule 44 (condicion -> expresion LT expresion .)
+    OR              reduce using rule 44 (condicion -> expresion LT expresion .)
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
+
+
+state 103
+
+    (45) condicion -> expresion GE expresion .
+    (34) expresion -> expresion . PLUS expresion
+    (35) expresion -> expresion . MINUS expresion
+    (36) expresion -> expresion . TIMES expresion
+    (37) expresion -> expresion . DIVIDE expresion
+
+    RPAREN          reduce using rule 45 (condicion -> expresion GE expresion .)
+    AND             reduce using rule 45 (condicion -> expresion GE expresion .)
+    OR              reduce using rule 45 (condicion -> expresion GE expresion .)
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
+
+
+state 104
+
+    (46) condicion -> expresion LE expresion .
+    (34) expresion -> expresion . PLUS expresion
+    (35) expresion -> expresion . MINUS expresion
+    (36) expresion -> expresion . TIMES expresion
+    (37) expresion -> expresion . DIVIDE expresion
+
+    RPAREN          reduce using rule 46 (condicion -> expresion LE expresion .)
+    AND             reduce using rule 46 (condicion -> expresion LE expresion .)
+    OR              reduce using rule 46 (condicion -> expresion LE expresion .)
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
+
+
+state 105
+
+    (47) condicion -> expresion EQUALS expresion .
+    (34) expresion -> expresion . PLUS expresion
+    (35) expresion -> expresion . MINUS expresion
+    (36) expresion -> expresion . TIMES expresion
+    (37) expresion -> expresion . DIVIDE expresion
+
+    RPAREN          reduce using rule 47 (condicion -> expresion EQUALS expresion .)
+    AND             reduce using rule 47 (condicion -> expresion EQUALS expresion .)
+    OR              reduce using rule 47 (condicion -> expresion EQUALS expresion .)
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
+
+
+state 106
+
+    (48) condicion -> expresion NOTEQUAL expresion .
+    (34) expresion -> expresion . PLUS expresion
+    (35) expresion -> expresion . MINUS expresion
+    (36) expresion -> expresion . TIMES expresion
+    (37) expresion -> expresion . DIVIDE expresion
+
+    RPAREN          reduce using rule 48 (condicion -> expresion NOTEQUAL expresion .)
+    AND             reduce using rule 48 (condicion -> expresion NOTEQUAL expresion .)
+    OR              reduce using rule 48 (condicion -> expresion NOTEQUAL expresion .)
+    PLUS            shift and go to state 46
+    MINUS           shift and go to state 47
+    TIMES           shift and go to state 48
+    DIVIDE          shift and go to state 49
+
+
+state 107
+
+    (32) asignacion -> tipo ID ASSIGN NEW ID LPAREN . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 111
+
+
+state 108
+
+    (29) impresion -> ID DOT ID LPAREN STRING_LITERAL RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 112
+
+
+state 109
+
+    (30) lectura -> ID DOT ID LPAREN RPAREN SEMICOLON .
+
+    RBRACE          reduce using rule 30 (lectura -> ID DOT ID LPAREN RPAREN SEMICOLON .)
+    ID              reduce using rule 30 (lectura -> ID DOT ID LPAREN RPAREN SEMICOLON .)
+    IF              reduce using rule 30 (lectura -> ID DOT ID LPAREN RPAREN SEMICOLON .)
+    RETURN          reduce using rule 30 (lectura -> ID DOT ID LPAREN RPAREN SEMICOLON .)
+    INT             reduce using rule 30 (lectura -> ID DOT ID LPAREN RPAREN SEMICOLON .)
+    FLOAT           reduce using rule 30 (lectura -> ID DOT ID LPAREN RPAREN SEMICOLON .)
+    STRING          reduce using rule 30 (lectura -> ID DOT ID LPAREN RPAREN SEMICOLON .)
+    CHAR            reduce using rule 30 (lectura -> ID DOT ID LPAREN RPAREN SEMICOLON .)
+    BOOL            reduce using rule 30 (lectura -> ID DOT ID LPAREN RPAREN SEMICOLON .)
+
+
+state 110
+
+    (51) control -> IF LPAREN condicion RPAREN LBRACE instrucciones . RBRACE
+    (52) control -> IF LPAREN condicion RPAREN LBRACE instrucciones . RBRACE ELSE LBRACE instrucciones RBRACE
+    (23) instrucciones -> instrucciones . instruccion
+    (24) instruccion -> . impresion
+    (25) instruccion -> . lectura
+    (26) instruccion -> . asignacion
+    (27) instruccion -> . control
+    (28) instruccion -> . instruccion_return
+    (29) impresion -> . ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON
+    (30) lectura -> . ID DOT ID LPAREN RPAREN SEMICOLON
+    (31) asignacion -> . tipo ID ASSIGN expresion SEMICOLON
+    (32) asignacion -> . tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON
+    (51) control -> . IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE
+    (52) control -> . IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE
+    (33) instruccion_return -> . RETURN expresion SEMICOLON
+    (53) tipo -> . INT
+    (54) tipo -> . FLOAT
+    (55) tipo -> . STRING
+    (56) tipo -> . CHAR
+    (57) tipo -> . BOOL
+    (58) tipo -> . ID
+
+    RBRACE          shift and go to state 113
+    ID              shift and go to state 60
+    IF              shift and go to state 68
+    RETURN          shift and go to state 69
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    CHAR            shift and go to state 28
+    BOOL            shift and go to state 29
+
+    instruccion                    shift and go to state 74
+    impresion                      shift and go to state 63
+    lectura                        shift and go to state 64
+    asignacion                     shift and go to state 65
+    control                        shift and go to state 66
+    instruccion_return             shift and go to state 67
+    tipo                           shift and go to state 59
+
+state 111
+
+    (32) asignacion -> tipo ID ASSIGN NEW ID LPAREN RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 114
+
+
+state 112
+
+    (29) impresion -> ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON .
+
+    RBRACE          reduce using rule 29 (impresion -> ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON .)
+    ID              reduce using rule 29 (impresion -> ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON .)
+    IF              reduce using rule 29 (impresion -> ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON .)
+    RETURN          reduce using rule 29 (impresion -> ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON .)
+    INT             reduce using rule 29 (impresion -> ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON .)
+    FLOAT           reduce using rule 29 (impresion -> ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON .)
+    STRING          reduce using rule 29 (impresion -> ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON .)
+    CHAR            reduce using rule 29 (impresion -> ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON .)
+    BOOL            reduce using rule 29 (impresion -> ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON .)
+
+
+state 113
+
+    (51) control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE .
+    (52) control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE . ELSE LBRACE instrucciones RBRACE
+
+    RBRACE          reduce using rule 51 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE .)
+    ID              reduce using rule 51 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE .)
+    IF              reduce using rule 51 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE .)
+    RETURN          reduce using rule 51 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE .)
+    INT             reduce using rule 51 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE .)
+    FLOAT           reduce using rule 51 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE .)
+    STRING          reduce using rule 51 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE .)
+    CHAR            reduce using rule 51 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE .)
+    BOOL            reduce using rule 51 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE .)
+    ELSE            shift and go to state 115
+
+
+state 114
+
+    (32) asignacion -> tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON .
+
+    RBRACE          reduce using rule 32 (asignacion -> tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON .)
+    ID              reduce using rule 32 (asignacion -> tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON .)
+    IF              reduce using rule 32 (asignacion -> tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON .)
+    RETURN          reduce using rule 32 (asignacion -> tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON .)
+    INT             reduce using rule 32 (asignacion -> tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON .)
+    FLOAT           reduce using rule 32 (asignacion -> tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON .)
+    STRING          reduce using rule 32 (asignacion -> tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON .)
+    CHAR            reduce using rule 32 (asignacion -> tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON .)
+    BOOL            reduce using rule 32 (asignacion -> tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON .)
+
+
+state 115
+
+    (52) control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE . LBRACE instrucciones RBRACE
+
+    LBRACE          shift and go to state 116
+
+
+state 116
+
+    (52) control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE . instrucciones RBRACE
+    (22) instrucciones -> . instruccion
+    (23) instrucciones -> . instrucciones instruccion
+    (24) instruccion -> . impresion
+    (25) instruccion -> . lectura
+    (26) instruccion -> . asignacion
+    (27) instruccion -> . control
+    (28) instruccion -> . instruccion_return
+    (29) impresion -> . ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON
+    (30) lectura -> . ID DOT ID LPAREN RPAREN SEMICOLON
+    (31) asignacion -> . tipo ID ASSIGN expresion SEMICOLON
+    (32) asignacion -> . tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON
+    (51) control -> . IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE
+    (52) control -> . IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE
+    (33) instruccion_return -> . RETURN expresion SEMICOLON
+    (53) tipo -> . INT
+    (54) tipo -> . FLOAT
+    (55) tipo -> . STRING
+    (56) tipo -> . CHAR
+    (57) tipo -> . BOOL
+    (58) tipo -> . ID
+
+    ID              shift and go to state 60
+    IF              shift and go to state 68
+    RETURN          shift and go to state 69
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    CHAR            shift and go to state 28
+    BOOL            shift and go to state 29
+
+    instrucciones                  shift and go to state 117
+    instruccion                    shift and go to state 62
+    impresion                      shift and go to state 63
+    lectura                        shift and go to state 64
+    asignacion                     shift and go to state 65
+    control                        shift and go to state 66
+    instruccion_return             shift and go to state 67
+    tipo                           shift and go to state 59
+
+state 117
+
+    (52) control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones . RBRACE
+    (23) instrucciones -> instrucciones . instruccion
+    (24) instruccion -> . impresion
+    (25) instruccion -> . lectura
+    (26) instruccion -> . asignacion
+    (27) instruccion -> . control
+    (28) instruccion -> . instruccion_return
+    (29) impresion -> . ID DOT ID LPAREN STRING_LITERAL RPAREN SEMICOLON
+    (30) lectura -> . ID DOT ID LPAREN RPAREN SEMICOLON
+    (31) asignacion -> . tipo ID ASSIGN expresion SEMICOLON
+    (32) asignacion -> . tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON
+    (51) control -> . IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE
+    (52) control -> . IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE
+    (33) instruccion_return -> . RETURN expresion SEMICOLON
+    (53) tipo -> . INT
+    (54) tipo -> . FLOAT
+    (55) tipo -> . STRING
+    (56) tipo -> . CHAR
+    (57) tipo -> . BOOL
+    (58) tipo -> . ID
+
+    RBRACE          shift and go to state 118
+    ID              shift and go to state 60
+    IF              shift and go to state 68
+    RETURN          shift and go to state 69
+    INT             shift and go to state 25
+    FLOAT           shift and go to state 26
+    STRING          shift and go to state 27
+    CHAR            shift and go to state 28
+    BOOL            shift and go to state 29
+
+    instruccion                    shift and go to state 74
+    impresion                      shift and go to state 63
+    lectura                        shift and go to state 64
+    asignacion                     shift and go to state 65
+    control                        shift and go to state 66
+    instruccion_return             shift and go to state 67
+    tipo                           shift and go to state 59
+
+state 118
+
+    (52) control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE .
+
+    RBRACE          reduce using rule 52 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE .)
+    ID              reduce using rule 52 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE .)
+    IF              reduce using rule 52 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE .)
+    RETURN          reduce using rule 52 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE .)
+    INT             reduce using rule 52 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE .)
+    FLOAT           reduce using rule 52 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE .)
+    STRING          reduce using rule 52 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE .)
+    CHAR            reduce using rule 52 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE .)
+    BOOL            reduce using rule 52 (control -> IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for USING in state 0 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 53 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 53 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 53 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 53 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 54 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 54 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 54 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 54 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 55 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 55 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 55 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 55 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 56 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 56 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 56 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 56 resolved as shift
+WARNING: shift/reduce conflict for AND in state 99 resolved as shift
+WARNING: shift/reduce conflict for OR in state 99 resolved as shift
+WARNING: shift/reduce conflict for AND in state 100 resolved as shift
+WARNING: shift/reduce conflict for OR in state 100 resolved as shift
