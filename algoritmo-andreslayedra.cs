@@ -40,72 +40,72 @@ public class Producto
         return false;
     }
 
-
-public enum Categoria
-{
-    Electronica,
-    Oficina,
-    Hogar
-}
-
-public struct Garantia
-{
-    public int anios;
-    public bool incluyeDanios;
-
-    public Garantia(int anios, bool incluyeDanios)
+    public enum Categoria
     {
-        this.anios = anios;
-        this.incluyeDanios = incluyeDanios;
+        Electronica,
+        Oficina,
+        Hogar
+    }
+
+    public struct Garantia
+    {
+        public int anios;
+        public bool incluyeDanios;
+
+        public Garantia(int anios, bool incluyeDanios)
+        {
+            this.anios = anios;
+            this.incluyeDanios = incluyeDanios;
+        }
     }
 }
 
-    public class Inventario
+public class Inventario
+{
+    public void ClasificarProducto(int codigo)
     {
-        public void ClasificarProducto(int codigo)
+        switch (codigo)
         {
-            switch (codigo)
-            {
-                case 100:
-                    Console.WriteLine("Producto clasificado como: Electrónica");
-                    break;
-                case 200:
-                    Console.WriteLine("Producto clasificado como: Oficina");
-                    break;
-                case 300:
-                    Console.WriteLine("Producto clasificado como: Hogar");
-                    break;
-                default:
-                    Console.WriteLine("Código no reconocido.");
-                    break;
-            }
-        }
-
-        public void MostrarCiclo()
-        {
-            for (int i = 1; i <= 3; i++)
-            {
-                if (i == 2)
-                {
-                    continue;
-                }
-
-                Console.WriteLine("Iteración número: " + i);
-
-                if (i == 3)
-                {
-                    break;
-                }
-            }
-        }
-
-        public void MostrarCaracteres()
-        {
-            char inicial = 'M';
-            char final = 'Z';
-            Console.WriteLine("Inicial: " + inicial + ", Final: " + final);
+            case 100:
+                Console.WriteLine("Producto clasificado como: Electrónica");
+                break;
+            case 200:
+                Console.WriteLine("Producto clasificado como: Oficina");
+                break;
+            case 300:
+                Console.WriteLine("Producto clasificado como: Hogar");
+                break;
+            default:
+                Console.WriteLine("Código no reconocido.");
+                break;
         }
     }
+
+    public void MostrarCiclo()
+    {
+        for (int i = 1; i <= 3; i++)
+        {
+            if (i == 2)
+            {
+                continue;
+            }
+
+            Console.WriteLine("Iteración número: " + i);
+
+            if (i == 3)
+            {
+                break;
+            }
+        }
+    }
+
+    public void MostrarCaracteres()
+    {
+        char inicial = 'M';
+        char final = 'Z';
+        Console.WriteLine("Inicial: " + inicial + ", Final: " + final);
+    }
+}
 
 /// <summary>
 /// Sección de prueba para tokens personalizados relacionados con productos e inventario.
@@ -131,9 +131,11 @@ public class DiagnosticoInventario
             Console.WriteLine("Producto inactivo.");
         }
     }
+
 }
 
-
+public class Programa
+{
     public static void Main(string[] args)
     {
         Producto p = new Producto();
@@ -144,9 +146,6 @@ public class DiagnosticoInventario
 
         DiagnosticoInventario d = new DiagnosticoInventario();
         d.EjecutarAnalisis();
-
+        d.MostrarMensaje();
     }
 }
-
-
-

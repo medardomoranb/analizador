@@ -49,7 +49,6 @@ reserved = {
     'event': 'EVENT',
     'explicit': 'EXPLICIT',
     'extern': 'EXTERN',
-    'false': 'FALSE',
     'finally': 'FINALLY',
     'fixed': 'FIXED',
     'float': 'FLOAT',
@@ -90,7 +89,6 @@ reserved = {
     'switch': 'SWITCH',
     'this': 'THIS',
     'throw': 'THROW',
-    'true': 'TRUE',
     'try': 'TRY',
     'typeof': 'TYPEOF',
     'uint': 'UINT',
@@ -133,8 +131,9 @@ tokens = [
     'FALSE_LITERAL',     # false como literal
     'XML_COMMENT',       # Comentarios de documentación ///
     'DATE_LITERAL',      # Ej: "2025-06-14"
-    'HEX_NUMBER',        # Ej: 0x1F4
-    'BIN_NUMBER',        # Ej: 0b1010
+    'HEX_LITERAL',       # Ej: 0x1F4
+    'BIN_LITERAL',      # Ej: 0b1010
+    'DECIMAL_LITERAL',
     # --- FIN tokens adicionales de Andres Layedra ---
 
 
@@ -220,18 +219,24 @@ def t_FLOAT_LITERAL(t):
     t.value = float(t.value[:-1])  # Quita la 'f'
     return t
 
+def t_DECIMAL_LITERAL(t):
+    r'\d+\.\d+([mM])'
+    t.value = float(t.value[:-1])
+    return t
+
+
 def t_DATE_LITERAL(t):
     r'"\d{4}-\d{2}-\d{2}"'
     t.value = t.value.strip('"')
     return t
 
-def t_HEX_NUMBER(t):
-    r'0x[0-9A-Fa-f]+'
+def t_HEX_LITERAL(t):
+    r'0[xX][0-9A-Fa-f]+'
     t.value = int(t.value, 16)
     return t
 
-def t_BIN_NUMBER(t):
-    r'0b[01]+'
+def t_BIN_LITERAL(t):
+    r'0[bB][01]+'
     t.value = int(t.value, 2)
     return t
 
@@ -244,35 +249,35 @@ def t_NUMBER(t):
     return t
 
 def t_STRING_LITERAL(t):
-    r'"([^"\\]|\\.)*"'
-    t.value = t.value[1:-1]  # Remover comillas
-    return t
-
-def t_CHAR_LITERAL(t):
-    r"'([^'\\]|\\.)'"
+    r'\"([^\\\n]|(\\.))*?\"'
     t.value = t.value[1:-1]
     return t
 
 
 
+def t_CHAR_LITERAL(t):
+    r"\'(\\.|[^\\'])\'"
+    t.value = t.value[1:-1]  # elimina las comillas
+    return t
+
 # --- INICIO 2 definiciones de tokens de Andres Layedra ---
 
 def t_TRUE_LITERAL(t):
     r'\btrue\b'
-    t.type = reserved.get(t.value, 'TRUE_LITERAL')
+    t.type = 'TRUE_LITERAL'
     t.value = True
     return t
 
 def t_FALSE_LITERAL(t):
     r'\bfalse\b'
-    t.type = reserved.get(t.value, 'FALSE_LITERAL')
+    t.type = 'FALSE_LITERAL'
     t.value = False
     return t
 
 def t_XML_COMMENT(t):
-    r'///[^\n]*'
-    t.type = 'XML_COMMENT'
+    r'\/\/\/[^\n]*'
     return t
+
 
 
 # --- FIN 2 definiciones de tokens de Andres Layedra ---
