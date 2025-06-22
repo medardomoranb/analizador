@@ -1,0 +1,5 @@
+Error sintáctico en línea 160: Token inesperado ')'
+Error sintáctico en línea 206: Token inesperado '('
+Error sintáctico en línea 216: Token inesperado 'codigo'
+Error sintáctico en línea 266: Token inesperado ')'
+Error sintáctico en línea 295: Token inesperado '.'
