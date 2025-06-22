@@ -195,6 +195,7 @@ t_ARROW = r'=>'
 
 # Reglas con acciones
 expecting_class_name = False
+clases_declaradas = set()
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
@@ -202,6 +203,7 @@ def t_ID(t):
 
     if expecting_class_name:
         t.type = 'CLASS_NAME'
+        clases_declaradas.add(t.value) # Añadir a conjunto de clases declaradas
         expecting_class_name = False
     else:
         t.type = reserved.get(t.value, 'ID')
