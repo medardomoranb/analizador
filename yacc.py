@@ -225,6 +225,31 @@ def p_control_if(p):
                | IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE'''
     pass
 
+# ========================
+# Reglas aportadas por Mario Alvarado
+# ========================
+
+# === 1. ESTRUCTURA DE DATOS ===
+# -------- Arreglo Simple ----------
+
+def p_arreglo_asignacion(p):
+    '''asignacion : tipo LBRACKET RBRACKET ID ASSIGN LBRACE lista_expresiones RBRACE SEMICOLON'''
+    pass
+# int [] notas = {10,9,8};
+
+# === 2. ESTRUCTURA DE CONTROL ===
+# -------- CICLO WHILE ----------
+
+def p_control_while(p):
+    '''control : WHILE LPAREN condicion RPAREN LBRACE instrucciones RBRACE'''
+    pass
+
+# === 3. TIPO DE FUNCION ===
+
+def p_funcion_void_sin_parametros(p):
+    '''metodo : modificador VOID ID LPAREN RPAREN LBRACE instrucciones RBRACE'''
+    pass
+# ejemplo: public void metodo() { ... }
 
 
 # ========================
