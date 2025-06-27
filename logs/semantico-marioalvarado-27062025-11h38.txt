@@ -1,0 +1,2 @@
+Errores semánticos encontrados:
+Línea 102: Variable 'estudiante' usada sin ser declarada.
