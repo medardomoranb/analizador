@@ -1,0 +1,2 @@
+Errores semánticos encontrados:
+Línea 109: Variable 'p' usada sin ser declarada.

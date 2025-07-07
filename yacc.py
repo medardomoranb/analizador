@@ -1,6 +1,8 @@
 import ply.yacc as yacc
 import datetime
 import os
+import sys
+from lex import tokens  
 
 # Importar los tokens desde el lexer
 from lex import tokens
@@ -347,26 +349,26 @@ def p_error(p):
 # -------------------------------
 parser = yacc.yacc()
 
-# -------------------------------
-# Selección de usuario
-# -------------------------------
-print("¿Quién está probando el parser?")
-print("1. Medardo Moran")
-print("2. Mario Alvarado")
-print("3. Andres Layedra")
+if len(sys.argv) > 1:
+    usuario_git = sys.argv[1]
+else:
+    print("¿Quién está probando el parser?")
+    print("1. Medardo Moran")
+    print("2. Mario Alvarado")
+    print("3. Andres Layedra")
 
-opciones = {
-    "1": "medardomoran",
-    "2": "marioalvarado",
-    "3": "andreslayedra"
-}
+    opciones = {
+        "1": "medardomoran",
+        "2": "marioalvarado",
+        "3": "andreslayedra"
+    }
 
-opcion = input("Ingrese el número correspondiente (1-3): ").strip()
-usuario_git = opciones.get(opcion)
+    opcion = input("Ingrese el número correspondiente (1-3): ").strip()
+    usuario_git = opciones.get(opcion)
 
-if not usuario_git:
-    print("Opción inválida.")
-    exit()
+    if not usuario_git:
+        print("Opción inválida.")
+        exit()
 
 # -------------------------------
 # Leer archivo personalizado

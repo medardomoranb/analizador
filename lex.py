@@ -1,26 +1,29 @@
 import ply.lex as lex
 import datetime
 import os
+import sys
 
-# SELECCIÓN DEL INTEGRANTE
-print("¿Quién está probando el programa?")
-print("1. Medardo Moran")
-print("2. Mario Alvarado")
-print("3. Andres Layedra")
 
-opciones = {
-    "1": "medardomoran",
-    "2": "marioalvarado",
-    "3": "andreslayedra"
-}
+if len(sys.argv) > 1:
+    usuario_git = sys.argv[1]
+else:
+    print("¿Quién está probando el programa?")
+    print("1. Medardo Moran")
+    print("2. Mario Alvarado")
+    print("3. Andres Layedra")
 
-opcion = input("Ingrese el número correspondiente (1-3): ").strip()
-usuario_git = opciones.get(opcion)
+    opciones = {
+        "1": "medardomoran",
+        "2": "marioalvarado",
+        "3": "andreslayedra"
+    }
 
-if not usuario_git:
-    print("Opción no válida. Terminando el programa.")
-    exit()
+    opcion = input("Ingrese el número correspondiente (1-3): ").strip()
+    usuario_git = opciones.get(opcion)
 
+    if not usuario_git:
+        print("Opción no válida. Terminando el programa.")
+        exit()
 
 
 # Palabras reservadas
@@ -324,6 +327,8 @@ lexer.input(data)
 for tok in lexer:
     logs.append(f"{tok.type:15} -> {tok.value}")
 
+for tok in lexer:
+    print(f"{tok.type:15} -> {tok.value}")
 
 # Guardar log
 now = datetime.datetime.now()

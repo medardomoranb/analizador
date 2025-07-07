@@ -1,29 +1,29 @@
 import os
 import datetime
-from lex import lexer
-from yacc import parser  # Usa el parser sin modificar yacc.py
-from yacc import errores as errores_sintacticos  # para evitar repetir errores
+import sys
+from lex import lexer  # importas lexer de lex.py
+from yacc import errores as errores_sintacticos
 
-# -------------------------------
-# Selección de usuario
-# -------------------------------
-print("¿Quién está probando el análisis semántico?")
-print("1. Medardo Moran")
-print("2. Mario Alvarado")
-print("3. Andres Layedra")
+if len(sys.argv) > 1:
+    usuario_git = sys.argv[1]
+else:
+    print("¿Quién está probando el análisis semántico?")
+    print("1. Medardo Moran")
+    print("2. Mario Alvarado")
+    print("3. Andres Layedra")
 
-opciones = {
-    "1": "medardomoran",
-    "2": "marioalvarado",
-    "3": "andreslayedra"
-}
+    opciones = {
+        "1": "medardomoran",
+        "2": "marioalvarado",
+        "3": "andreslayedra"
+    }
 
-opcion = input("Ingrese el número correspondiente (1-3): ").strip()
-usuario_git = opciones.get(opcion)
+    opcion = input("Ingrese el número correspondiente (1-3): ").strip()
+    usuario_git = opciones.get(opcion)
 
-if not usuario_git:
-    print("Opción inválida.")
-    exit()
+    if not usuario_git:
+        print("Opción inválida.")
+        exit()
 
 # -------------------------------
 # Leer archivo fuente
