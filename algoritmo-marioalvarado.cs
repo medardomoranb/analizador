@@ -3,7 +3,7 @@ using System;
 public class Estudiante
 {
     string nombre = "Lucía";
-    float nota = 8.5f;
+    float nota = 8.5;
 
     public void MostrarDatos()
     {
@@ -27,7 +27,7 @@ public class Estudiante
 
     public static void Main(string[] args)
     {
-        Estudiante estudiante = new Estudiante();
+        Estudiante estudiante =  new Estudiante();
         estudiante.MostrarDatos();
 
         bool aprobado = estudiante.EstaAprobado();

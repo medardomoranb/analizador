@@ -1,1 +1,0 @@
-Error sintáctico en línea 42: Token inesperado '8.5'

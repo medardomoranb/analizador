@@ -106,24 +106,24 @@ reserved = {
 # Lista de tokens
 
 tokens = [
-    'ID',
-    'NUMBER',
-    'CLASS_NAME',
+    'IDENTIFICADOR',
+    'NUMERO',
+    'NOMBRE_CLASE',
     'STRING_LITERAL',
     'CHAR_LITERAL',
 
     # Operadores
-    'PLUS', 'MINUS', 'TIMES', 'DIVIDE',
-    'MOD', 'INCREMENT', 'DECREMENT',
-    'ASSIGN', 'PLUS_ASSIGN', 'MINUS_ASSIGN',
-    'TIMES_ASSIGN', 'DIVIDE_ASSIGN', 'MOD_ASSIGN',
-    'EQUALS', 'NOTEQUAL', 'GT', 'LT', 'GE', 'LE',
+    'MAS', 'MENOS', 'MULTIPLICACION', 'DIVISION',
+    'MODULO', 'INCREMENTO', 'DECREMENTO',
+    'ASIGNACION', 'MAS_ASIGNACION', 'MENOS_ASIGNACION',
+    'MULTIPLICACION_ASIGNACION', 'DIVISION_ASIGNACION', 'MODULO_ASIGNACION',
+    'IGUAL', 'NO_IGUAL', 'MAYOR', 'MENOR', 'MAYOR_IGUAL', 'MENOR_IGUAL',
     'AND', 'OR', 'NOT', 'BITAND', 'BITOR', 'BITXOR', 'BITNOT',
-    'LSHIFT', 'RSHIFT',
+    'COMILLAS_ANGULARES_IZQ', 'COMILLAS_ANGULARES_DER',
 
     # Delimitadores
-    'LPAREN', 'RPAREN', 'LBRACE', 'RBRACE', 'LBRACKET', 'RBRACKET',
-    'COMMA', 'DOT', 'SEMICOLON', 'COLON', 'QUESTION', 'ARROW',
+    'PARENTESIS_IZQ', 'PARENTESIS_DER', 'LLAVE_IZQ', 'LLAVE_DER', 'CORCHETE_IZQ', 'CORCHETE_DER',
+    'COMA', 'PUNTO', 'PUNTO_COMA', 'DOS_PUNTOS', 'PREGUNTA', 'FLECHA',
 
     # --- INICIO tokens adicionales de Andres Layedra ---
     'FLOAT_LITERAL',     # Ej: 36.6f
@@ -142,28 +142,28 @@ tokens = [
 
 # Expresiones regulares para tokens simples
 
-t_PLUS = r'\+'
-t_MINUS = r'-'
-t_TIMES = r'\*'
-t_DIVIDE = r'/'
-t_MOD = r'%'
-t_INCREMENT = r'\+\+'
-t_DECREMENT = r'--'
+t_MAS = r'\+'
+t_MENOS = r'-'
+t_MULTIPLICACION = r'\*'
+t_DIVISION = r'/'
+t_MODULO = r'%'
+t_INCREMENTO = r'\+\+'
+t_DECREMENTO = r'--'
 
-t_ASSIGN = r'='
-t_PLUS_ASSIGN = r'\+='
-t_MINUS_ASSIGN = r'-='
-t_TIMES_ASSIGN = r'\*='
-t_DIVIDE_ASSIGN = r'/='
-t_MOD_ASSIGN = r'%='
+t_ASIGNACION = r'='
+t_MAS_ASIGNACION = r'\+='
+t_MENOS_ASIGNACION = r'-='
+t_MULTIPLICACION_ASIGNACION = r'\*='
+t_DIVISION_ASIGNACION = r'/='
+t_MODULO_ASIGNACION = r'%='
 
 # --- INICIO tokens de Mario Alvarado ---
-t_EQUALS = r'=='
-t_NOTEQUAL = r'!='
-t_GT = r'>'
-t_LT = r'<'
-t_GE = r'>='
-t_LE = r'<='
+t_IGUAL = r'=='
+t_NO_IGUAL = r'!='
+t_MAYOR = r'>'
+t_MENOR = r'<'
+t_MAYOR_IGUAL = r'>='
+t_MENOR_IGUAL = r'<='
 
 t_AND = r'&&'
 t_OR = r'\|\|'
@@ -174,38 +174,38 @@ t_BITAND = r'&'
 t_BITOR = r'\|'
 t_BITXOR = r'\^'
 t_BITNOT = r'~'
-t_LSHIFT = r'<<'
-t_RSHIFT = r'>>'
+t_COMILLAS_ANGULARES_IZQ = r'<<'
+t_COMILLAS_ANGULARES_DER = r'>>'
 
-t_LPAREN = r'\('
-t_RPAREN = r'\)'
-t_LBRACE = r'\{'
-t_RBRACE = r'\}'
-t_LBRACKET = r'\['
-t_RBRACKET = r'\]'
+t_PARENTESIS_IZQ = r'\('
+t_PARENTESIS_DER = r'\)'
+t_LLAVE_IZQ = r'\{'
+t_LLAVE_DER = r'\}'
+t_CORCHETE_IZQ = r'\['
+t_CORCHETE_DER = r'\]'
 
-t_COMMA = r','
-t_DOT = r'\.'
-t_SEMICOLON = r';'
-t_COLON = r':'
-t_QUESTION = r'\?'
-t_ARROW = r'=>'
+t_COMA = r','
+t_PUNTO = r'\.'
+t_PUNTO_COMA = r';'
+t_DOS_PUNTOS = r':'
+t_PREGUNTA = r'\?'
+t_FLECHA = r'=>'
 
 
 # Reglas con acciones
 expecting_class_name = False
 clases_declaradas = set()
 
-def t_ID(t):
+def t_IDENTIFICADOR(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     global expecting_class_name
 
     if expecting_class_name:
-        t.type = 'CLASS_NAME'
+        t.type = 'NOMBRE_CLASE'
         clases_declaradas.add(t.value) # Añadir a conjunto de clases declaradas
         expecting_class_name = False
     else:
-        t.type = reserved.get(t.value, 'ID')
+        t.type = reserved.get(t.value, 'IDENTIFICADOR')
 
     if t.value == 'class':
         expecting_class_name = True
@@ -243,7 +243,7 @@ def t_BIN_LITERAL(t):
 
 # --- FIN 1 definiciones de tokens de Andres Layedra ---
 
-def t_NUMBER(t):
+def t_NUMERO(t):
     r'\d+(\.\d+)?([eE][+-]?\d+)?'
     t.value = float(t.value) if '.' in t.value or 'e' in t.value.lower() else int(t.value)
     return t

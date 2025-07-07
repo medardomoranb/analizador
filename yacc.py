@@ -41,7 +41,7 @@ def p_using_list(p):
     pass
 
 def p_using(p):
-    'using : USING ID SEMICOLON'
+    'using : USING IDENTIFICADOR PUNTO_COMA'
     pass
 
 def p_clase_list(p):
@@ -68,8 +68,8 @@ def p_modificador_simple(p):
 
 
 def p_clase(p):
-    '''clase : modificador CLASS CLASS_NAME LBRACE cuerpo_clase RBRACE
-             | XML_COMMENT modificador CLASS CLASS_NAME LBRACE cuerpo_clase RBRACE'''
+    '''clase : modificador CLASS NOMBRE_CLASE LLAVE_IZQ cuerpo_clase LLAVE_DER
+             | XML_COMMENT modificador CLASS NOMBRE_CLASE LLAVE_IZQ cuerpo_clase LLAVE_DER'''
     pass
 
 
@@ -91,16 +91,16 @@ def p_cuerpo_clase(p):
 
 
 def p_propiedad(p):
-    '''propiedad : modificador tipo ID ASSIGN expresion SEMICOLON
-                 | modificador tipo ID SEMICOLON
-                 | tipo ID ASSIGN expresion SEMICOLON
-                 | tipo ID SEMICOLON
-                 | XML_COMMENT tipo ID ASSIGN expresion SEMICOLON
-                 | XML_COMMENT tipo ID SEMICOLON'''
+    '''propiedad : modificador tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
+                 | modificador tipo IDENTIFICADOR PUNTO_COMA
+                 | tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
+                 | tipo IDENTIFICADOR PUNTO_COMA
+                 | XML_COMMENT tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
+                 | XML_COMMENT tipo IDENTIFICADOR PUNTO_COMA'''
     pass
 
 def p_metodo_main(p):
-    '''metodo : modificador tipo_main ID LPAREN parametros_main RPAREN LBRACE instrucciones RBRACE'''
+    '''metodo : modificador tipo_main IDENTIFICADOR PARENTESIS_IZQ parametros_main PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER'''
     pass
 
 def p_tipo_main(p):
@@ -108,18 +108,18 @@ def p_tipo_main(p):
     pass
 
 def p_parametros_main(p):
-    '''parametros_main : tipo LBRACKET RBRACKET ID'''
+    '''parametros_main : tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR'''
 
 def p_metodo(p):
-    '''metodo : modificador tipo ID LPAREN parametros RPAREN LBRACE instrucciones RBRACE
-              | modificador tipo ID LPAREN tipo LBRACKET RBRACKET ID RPAREN LBRACE instrucciones RBRACE
-              | XML_COMMENT modificador tipo ID LPAREN parametros RPAREN LBRACE instrucciones RBRACE
-              | XML_COMMENT modificador tipo ID LPAREN tipo LBRACKET RBRACKET ID RPAREN LBRACE instrucciones RBRACE'''
+    '''metodo : modificador tipo IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER
+              | modificador tipo IDENTIFICADOR PARENTESIS_IZQ tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER
+              | XML_COMMENT modificador tipo IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER
+              | XML_COMMENT modificador tipo IDENTIFICADOR PARENTESIS_IZQ tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER'''
     pass
 
 def p_parametros(p):
     '''parametros : parametro
-                  | parametros COMMA parametro
+                  | parametros COMA parametro
                   | XML_COMMENT parametros
                   | empty'''
     print("DEBUG parámetros:", [str(t) for t in p.slice])  # <-- Añade esto
@@ -127,12 +127,12 @@ def p_parametros(p):
 
 
 def p_parametro(p):
-    '''parametro : tipo ID
-                 | tipo LBRACKET RBRACKET ID
-                 | tipo ID ASSIGN expresion
-                 | tipo LBRACKET RBRACKET ID ASSIGN expresion
-                 | XML_COMMENT tipo ID
-                 | XML_COMMENT tipo ID ASSIGN expresion'''
+    '''parametro : tipo IDENTIFICADOR
+                 | tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR
+                 | tipo IDENTIFICADOR ASIGNACION expresion
+                 | tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR ASIGNACION expresion
+                 | XML_COMMENT tipo IDENTIFICADOR
+                 | XML_COMMENT tipo IDENTIFICADOR ASIGNACION expresion'''
     pass
 
 
@@ -157,46 +157,46 @@ def p_instruccion(p):
     pass
 
 def p_imprimir(p):
-    '''impresion : ID DOT ID LPAREN expresion RPAREN SEMICOLON
-                 | ID DOT ID LPAREN lista_expresiones RPAREN SEMICOLON'''
+    '''impresion : IDENTIFICADOR PUNTO IDENTIFICADOR PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+                 | IDENTIFICADOR PUNTO IDENTIFICADOR PARENTESIS_IZQ lista_expresiones PARENTESIS_DER PUNTO_COMA'''
     pass    
 
 def p_lista_expresiones(p):
     '''lista_expresiones : expresion
-                         | lista_expresiones COMMA expresion'''
+                         | lista_expresiones COMA expresion'''
     pass
 
 
 
 def p_lectura(p):
-    'lectura : ID DOT ID LPAREN RPAREN SEMICOLON'
+    'lectura : IDENTIFICADOR PUNTO IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA'
     pass
 
 def p_asignacion(p):
-    '''asignacion : tipo ID ASSIGN expresion SEMICOLON
-                  | tipo ID ASSIGN NEW ID LPAREN RPAREN SEMICOLON'''
+    '''asignacion : tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
+                  | tipo IDENTIFICADOR ASIGNACION NEW IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA'''
     pass
 
 
 def p_instruccion_return(p):
-    '''instruccion_return : RETURN expresion SEMICOLON'''
+    '''instruccion_return : RETURN expresion PUNTO_COMA'''
     pass
 
 # -------------------------------
 # Expresiones y condiciones
 # -------------------------------
 def p_expresion_aritmetica(p):
-    '''expresion : expresion PLUS expresion
-                 | expresion MINUS expresion
-                 | expresion TIMES expresion
-                 | expresion DIVIDE expresion
+    '''expresion : expresion MAS expresion
+                 | expresion MENOS expresion
+                 | expresion MULTIPLICACION expresion
+                 | expresion DIVISION expresion
                  | DATE_LITERAL
                  | DECIMAL_LITERAL
                  | HEX_LITERAL
                  | BIN_LITERAL
-                 | NUMBER
+                 | NUMERO
                  | FLOAT_LITERAL
-                 | ID
+                 | IDENTIFICADOR
                  | STRING_LITERAL
                  | TRUE_LITERAL
                  | FALSE_LITERAL
@@ -204,25 +204,25 @@ def p_expresion_aritmetica(p):
     pass
 #---Expresiones adicionales de Andrés Layedra---
 def p_expresion_incremento(p):
-    '''expresion : ID INCREMENT
-                 | ID DECREMENT'''
+    '''expresion : IDENTIFICADOR INCREMENTO
+                 | IDENTIFICADOR DECREMENTO'''
     pass
 
 
 def p_condicion_logica(p):
-    '''condicion : expresion GT expresion
-                 | expresion LT expresion
-                 | expresion GE expresion
-                 | expresion LE expresion
-                 | expresion EQUALS expresion
-                 | expresion NOTEQUAL expresion
+    '''condicion : expresion MAYOR expresion
+                 | expresion MENOR expresion
+                 | expresion MAYOR_IGUAL expresion
+                 | expresion MENOR_IGUAL expresion
+                 | expresion IGUAL expresion
+                 | expresion NO_IGUAL expresion
                  | condicion AND condicion
                  | condicion OR condicion'''
     pass
 
 def p_control_if(p):
-    '''control : IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE
-               | IF LPAREN condicion RPAREN LBRACE instrucciones RBRACE ELSE LBRACE instrucciones RBRACE'''
+    '''control : IF PARENTESIS_IZQ condicion PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER
+               | IF PARENTESIS_IZQ condicion PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER ELSE LLAVE_IZQ instrucciones LLAVE_DER'''
     pass
 
 # ========================
@@ -233,7 +233,7 @@ def p_control_if(p):
 # -------- Arreglo Simple ----------
 
 def p_arreglo_asignacion(p):
-    '''asignacion : tipo LBRACKET RBRACKET ID ASSIGN LBRACE lista_expresiones RBRACE SEMICOLON'''
+    '''asignacion : tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_expresiones LLAVE_DER PUNTO_COMA'''
     pass
 # int [] notas = {10,9,8};
 
@@ -241,13 +241,13 @@ def p_arreglo_asignacion(p):
 # -------- CICLO WHILE ----------
 
 def p_control_while(p):
-    '''control : WHILE LPAREN condicion RPAREN LBRACE instrucciones RBRACE'''
+    '''control : WHILE PARENTESIS_IZQ condicion PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER'''
     pass
 
 # === 3. TIPO DE FUNCION ===
 
 def p_funcion_void_sin_parametros(p):
-    '''metodo : modificador VOID ID LPAREN RPAREN LBRACE instrucciones RBRACE'''
+    '''metodo : modificador VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER'''
     pass
 # ejemplo: public void metodo() { ... }
 
@@ -259,30 +259,30 @@ def p_funcion_void_sin_parametros(p):
 # === 1. ESTRUCTURA DE DATOS ===
 # -------- enum ----------
 def p_enum_decl(p):
-    'enum_decl : modificador ENUM ID LBRACE lista_identificadores RBRACE'
+    'enum_decl : modificador ENUM IDENTIFICADOR LLAVE_IZQ lista_identificadores LLAVE_DER'
     pass
 
 
 def p_lista_identificadores(p):
-    '''lista_identificadores : ID
-                             | lista_identificadores COMMA ID'''
+    '''lista_identificadores : IDENTIFICADOR
+                             | lista_identificadores COMA IDENTIFICADOR'''
     pass
 
 # -------- struct ----------
 def p_struct_decl(p):
-    'struct_decl : modificador STRUCT ID LBRACE cuerpo_clase RBRACE'
+    'struct_decl : modificador STRUCT IDENTIFICADOR LLAVE_IZQ cuerpo_clase LLAVE_DER'
     pass
 
 def p_llamada(p):
-    '''llamada : ID DOT ID LPAREN lista_expresiones RPAREN SEMICOLON
-               | ID DOT ID LPAREN RPAREN SEMICOLON'''
+    '''llamada : IDENTIFICADOR PUNTO IDENTIFICADOR PARENTESIS_IZQ lista_expresiones PARENTESIS_DER PUNTO_COMA
+               | IDENTIFICADOR PUNTO IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA'''
     pass
 
 
 # === 2. ESTRUCTURA DE CONTROL ===
 # -------- switch-case ----------
 def p_switch(p):
-    '''control : SWITCH LPAREN expresion RPAREN LBRACE lista_casos default_case RBRACE'''
+    '''control : SWITCH PARENTESIS_IZQ expresion PARENTESIS_DER LLAVE_IZQ lista_casos default_case LLAVE_DER'''
     pass
 
 def p_lista_casos(p):
@@ -291,27 +291,27 @@ def p_lista_casos(p):
     pass
 
 def p_caso(p):
-    'caso : CASE expresion COLON instrucciones BREAK SEMICOLON'
+    'caso : CASE expresion DOS_PUNTOS instrucciones BREAK PUNTO_COMA'
     pass
 
 def p_default_case(p):
-    '''default_case : DEFAULT COLON instrucciones BREAK SEMICOLON
+    '''default_case : DEFAULT DOS_PUNTOS instrucciones BREAK PUNTO_COMA
                     | empty'''
     pass
 
 # -------- ciclo for ----------
 def p_for(p):
-    '''control : FOR LPAREN tipo ID ASSIGN expresion SEMICOLON condicion SEMICOLON expresion RPAREN LBRACE instrucciones RBRACE'''
+    '''control : FOR PARENTESIS_IZQ tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA condicion PUNTO_COMA expresion PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER'''
     pass
 
 # -------- continue ----------
 def p_instruccion_continue(p):
-    'instruccion : CONTINUE SEMICOLON'
+    'instruccion : CONTINUE PUNTO_COMA'
     pass
 
 # -------- break ----------
 def p_instruccion_break(p):
-    'instruccion : BREAK SEMICOLON'
+    'instruccion : BREAK PUNTO_COMA'
     pass
 
 
@@ -326,7 +326,7 @@ def p_tipo(p):
             | CHAR
             | BOOL
             | VOID
-            | ID'''
+            | IDENTIFICADOR'''
     pass
 
 def p_empty(p):
