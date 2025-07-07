@@ -1,0 +1,5 @@
+Errores semánticos encontrados:
+Línea 357: Variable 'anios' ya fue declarada.
+Línea 357: Variable 'incluyeDanios' ya fue declarada.
+Línea 443: Variable 'p' usada sin ser declarada.
+Línea 449: Variable 'd' usada sin ser declarada.

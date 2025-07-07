@@ -50,7 +50,7 @@ lexer.input(data)
 tokens_extraidos = list(lexer)
 
 for i, token in enumerate(tokens_extraidos):
-    if token.type == "ID":
+    if token.type == "IDENTIFICADOR":
         prev = tokens_extraidos[i - 1] if i > 0 else None
         next_ = tokens_extraidos[i + 1] if i < len(tokens_extraidos) - 1 else None
 
@@ -61,7 +61,7 @@ for i, token in enumerate(tokens_extraidos):
                 )
             else:
                 variables_declaradas.add(token.value)
-        elif next_ and next_.type == "ASSIGN":
+        elif next_ and next_.type == "ASIGNACION":
             if token.value not in variables_declaradas:
                 errores_semanticos.append(
                     f"Línea {token.lineno}: Variable '{token.value}' usada sin ser declarada."
