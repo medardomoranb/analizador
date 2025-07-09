@@ -55,8 +55,6 @@ reserved = {
     'struct': 'STRUCT',
     'switch': 'SWITCH',
     'this': 'THIS',
-    'unchecked': 'UNCHECKED',
-    'unsafe': 'UNSAFE',
     'void': 'VOID',
     'while': 'WHILE'
 }
