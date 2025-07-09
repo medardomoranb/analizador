@@ -1,6 +1,3 @@
-USING           -> using
-IDENTIFICADOR   -> System
-PUNTO_COMA      -> ;
 PUBLIC          -> public
 CLASS           -> class
 NOMBRE_CLASE    -> Estudiante

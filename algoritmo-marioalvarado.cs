@@ -1,5 +1,3 @@
-using System;
-
 public class Estudiante
 {
     string nombre = "Lucía";

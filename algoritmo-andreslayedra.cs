@@ -1,5 +1,3 @@
-using System;
-
 public class Producto
 {
     string nombre = "Mouse inalámbrico";

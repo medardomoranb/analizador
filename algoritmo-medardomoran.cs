@@ -1,4 +1,3 @@
-
 public class Persona
 {
     int edad = 25;
