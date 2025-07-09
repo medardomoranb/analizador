@@ -25,7 +25,7 @@ public class Estudiante
 
     public static void Main(string[] args)
     {
-        Estudiante estudiante =  new Estudiante();
+        Estudiante estudiante = new Estudiante();
         estudiante.MostrarDatos();
 
         bool aprobado = estudiante.EstaAprobado();

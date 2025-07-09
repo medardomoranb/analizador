@@ -4,9 +4,6 @@ import os
 import sys
 from lex import tokens  
 
-# Importar los tokens desde el lexer
-from lex import tokens
-
 # -------------------------------
 # Variables para logs y errores
 # -------------------------------
@@ -18,8 +15,8 @@ errores = []
 
 # Programa principal
 def p_program(p):
-    '''program : using_list elementos_programa
-               | using_list XML_COMMENT elementos_programa'''
+    '''program : elementos_programa
+               | COMENTARIO_UNA_LINEA elementos_programa'''
     pass
 
 
@@ -30,20 +27,7 @@ def p_elementos_programa(p):
                           | elementos_programa clase
                           | elementos_programa enum_decl
                           | elementos_programa struct_decl
-                          | elementos_programa XML_COMMENT'''
-    pass
-
-
-
-
-def p_using_list(p):
-    '''using_list : using
-                  | using_list using
-                  | empty'''
-    pass
-
-def p_using(p):
-    'using : USING IDENTIFICADOR PUNTO_COMA'
+                          | elementos_programa COMENTARIO_UNA_LINEA'''
     pass
 
 def p_clase_list(p):
@@ -71,7 +55,7 @@ def p_modificador_simple(p):
 
 def p_clase(p):
     '''clase : modificador CLASS NOMBRE_CLASE LLAVE_IZQ cuerpo_clase LLAVE_DER
-             | XML_COMMENT modificador CLASS NOMBRE_CLASE LLAVE_IZQ cuerpo_clase LLAVE_DER'''
+             | COMENTARIO_UNA_LINEA modificador CLASS NOMBRE_CLASE LLAVE_IZQ cuerpo_clase LLAVE_DER'''
     pass
 
 
@@ -87,8 +71,8 @@ def p_cuerpo_clase(p):
                     | cuerpo_clase enum_decl
                     | cuerpo_clase struct_decl
                     | cuerpo_clase clase
-                    | cuerpo_clase XML_COMMENT
-                    | XML_COMMENT'''
+                    | cuerpo_clase COMENTARIO_UNA_LINEA
+                    | COMENTARIO_UNA_LINEA'''
     pass
 
 
@@ -97,8 +81,8 @@ def p_propiedad(p):
                  | modificador tipo IDENTIFICADOR PUNTO_COMA
                  | tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
                  | tipo IDENTIFICADOR PUNTO_COMA
-                 | XML_COMMENT tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
-                 | XML_COMMENT tipo IDENTIFICADOR PUNTO_COMA'''
+                 | COMENTARIO_UNA_LINEA tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
+                 | COMENTARIO_UNA_LINEA tipo IDENTIFICADOR PUNTO_COMA'''
     pass
 
 def p_metodo_main(p):
@@ -115,14 +99,14 @@ def p_parametros_main(p):
 def p_metodo(p):
     '''metodo : modificador tipo IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER
               | modificador tipo IDENTIFICADOR PARENTESIS_IZQ tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER
-              | XML_COMMENT modificador tipo IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER
-              | XML_COMMENT modificador tipo IDENTIFICADOR PARENTESIS_IZQ tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER'''
+              | COMENTARIO_UNA_LINEA modificador tipo IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER
+              | COMENTARIO_UNA_LINEA modificador tipo IDENTIFICADOR PARENTESIS_IZQ tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER'''
     pass
 
 def p_parametros(p):
     '''parametros : parametro
                   | parametros COMA parametro
-                  | XML_COMMENT parametros
+                  | COMENTARIO_UNA_LINEA parametros
                   | empty'''
     print("DEBUG parámetros:", [str(t) for t in p.slice])  # <-- Añade esto
     pass
@@ -133,8 +117,8 @@ def p_parametro(p):
                  | tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR
                  | tipo IDENTIFICADOR ASIGNACION expresion
                  | tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR ASIGNACION expresion
-                 | XML_COMMENT tipo IDENTIFICADOR
-                 | XML_COMMENT tipo IDENTIFICADOR ASIGNACION expresion'''
+                 | COMENTARIO_UNA_LINEA tipo IDENTIFICADOR
+                 | COMENTARIO_UNA_LINEA tipo IDENTIFICADOR ASIGNACION expresion'''
     pass
 
 
@@ -154,7 +138,7 @@ def p_instruccion(p):
                    | asignacion
                    | control
                    | instruccion_return
-                   | XML_COMMENT
+                   | COMENTARIO_UNA_LINEA
                    | propiedad'''
     pass
 
@@ -192,17 +176,14 @@ def p_expresion_aritmetica(p):
                  | expresion MENOS expresion
                  | expresion MULTIPLICACION expresion
                  | expresion DIVISION expresion
-                 | DATE_LITERAL
-                 | DECIMAL_LITERAL
-                 | HEX_LITERAL
-                 | BIN_LITERAL
-                 | NUMERO
-                 | FLOAT_LITERAL
+                 | expresion MAYOR_IGUAL expresion
                  | IDENTIFICADOR
-                 | STRING_LITERAL
-                 | TRUE_LITERAL
-                 | FALSE_LITERAL
-                 | CHAR_LITERAL'''
+                 | VALOR_ENTERO
+                 | VALOR_FLOTANTE
+                 | VALOR_STRING
+                 | VALOR_CHAR
+                 | VALOR_HEXADECIMAL
+                 | VALOR_BINARIO'''
     pass
 #---Expresiones adicionales de Andrés Layedra---
 def p_expresion_incremento(p):
@@ -218,8 +199,8 @@ def p_condicion_logica(p):
                  | expresion MENOR_IGUAL expresion
                  | expresion IGUAL expresion
                  | expresion NO_IGUAL expresion
-                 | condicion AND condicion
-                 | condicion OR condicion'''
+                 | condicion CONJUNCION condicion
+                 | condicion DISYUNCION condicion'''
     pass
 
 def p_control_if(p):

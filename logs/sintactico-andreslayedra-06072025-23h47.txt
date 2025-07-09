@@ -1,4 +1,0 @@
-Error sintáctico en línea 206: Token inesperado '('
-Error sintáctico en línea 216: Token inesperado 'int'
-Error sintáctico en línea 274: Token inesperado ')'
-Error sintáctico en línea 290: Token inesperado 'string'

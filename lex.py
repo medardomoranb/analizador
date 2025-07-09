@@ -25,9 +25,7 @@ else:
         print("Opción no válida. Terminando el programa.")
         exit()
 
-
-# Palabras reservadas
-
+# Diccionario de palabras reservadas
 reserved = {
     'bool': 'BOOL',
     'break': 'BREAK',
@@ -60,13 +58,18 @@ reserved = {
 }
 
 # Lista de tokens
-
 tokens = [
     'IDENTIFICADOR',
-    'NUMERO',
     'NOMBRE_CLASE',
-    'STRING_LITERAL',
-    'CHAR_LITERAL',
+    'COMENTARIO_UNA_LINEA', # //
+
+    # Valores: por Andres Layedra
+    'VALOR_ENTERO',
+    'VALOR_FLOTANTE',
+    'VALOR_STRING',
+    'VALOR_CHAR',
+    'VALOR_HEXADECIMAL',       # Ej: 0x1F4
+    'VALOR_BINARIO',      # Ej: 0b1010
 
     # Operadores
     'MAS', 'MENOS', 'MULTIPLICACION', 'DIVISION',
@@ -74,25 +77,11 @@ tokens = [
     'ASIGNACION', 'MAS_ASIGNACION', 'MENOS_ASIGNACION',
     'MULTIPLICACION_ASIGNACION', 'DIVISION_ASIGNACION', 'MODULO_ASIGNACION',
     'IGUAL', 'NO_IGUAL', 'MAYOR', 'MENOR', 'MAYOR_IGUAL', 'MENOR_IGUAL',
-    'AND', 'OR', 'NOT', 'BITAND', 'BITOR', 'BITXOR', 'BITNOT',
-    'COMILLAS_ANGULARES_IZQ', 'COMILLAS_ANGULARES_DER',
+    'CONJUNCION', 'DISYUNCION', 'NEGACION',
 
     # Delimitadores
     'PARENTESIS_IZQ', 'PARENTESIS_DER', 'LLAVE_IZQ', 'LLAVE_DER', 'CORCHETE_IZQ', 'CORCHETE_DER',
-    'COMA', 'PUNTO', 'PUNTO_COMA', 'DOS_PUNTOS', 'PREGUNTA', 'FLECHA',
-
-    # --- INICIO tokens adicionales de Andres Layedra ---
-    'FLOAT_LITERAL',     # Ej: 36.6f
-    'TRUE_LITERAL',      # true como literal
-    'FALSE_LITERAL',     # false como literal
-    'XML_COMMENT',       # Comentarios de documentación ///
-    'DATE_LITERAL',      # Ej: "2025-06-14"
-    'HEX_LITERAL',       # Ej: 0x1F4
-    'BIN_LITERAL',      # Ej: 0b1010
-    'DECIMAL_LITERAL',
-    # --- FIN tokens adicionales de Andres Layedra ---
-
-
+    'COMA', 'PUNTO', 'PUNTO_COMA', 'DOS_PUNTOS'
 
 ] + list(reserved.values())
 
@@ -113,7 +102,7 @@ t_MULTIPLICACION_ASIGNACION = r'\*='
 t_DIVISION_ASIGNACION = r'/='
 t_MODULO_ASIGNACION = r'%='
 
-# --- INICIO tokens de Mario Alvarado ---
+
 t_IGUAL = r'=='
 t_NO_IGUAL = r'!='
 t_MAYOR = r'>'
@@ -121,17 +110,9 @@ t_MENOR = r'<'
 t_MAYOR_IGUAL = r'>='
 t_MENOR_IGUAL = r'<='
 
-t_AND = r'&&'
-t_OR = r'\|\|'
-t_NOT = r'!'
-# --- FIN tokens de Mario Alvarado ---
-
-t_BITAND = r'&'
-t_BITOR = r'\|'
-t_BITXOR = r'\^'
-t_BITNOT = r'~'
-t_COMILLAS_ANGULARES_IZQ = r'<<'
-t_COMILLAS_ANGULARES_DER = r'>>'
+t_CONJUNCION = r'&&'
+t_DISYUNCION = r'\|\|'
+t_NEGACION = r'!'
 
 t_PARENTESIS_IZQ = r'\('
 t_PARENTESIS_DER = r'\)'
@@ -144,9 +125,6 @@ t_COMA = r','
 t_PUNTO = r'\.'
 t_PUNTO_COMA = r';'
 t_DOS_PUNTOS = r':'
-t_PREGUNTA = r'\?'
-t_FLECHA = r'=>'
-
 
 # Reglas con acciones
 expecting_class_name = False
@@ -168,98 +146,62 @@ def t_IDENTIFICADOR(t):
 
     return t
 
-# --- INICIO 1 definiciones de tokens de Andres Layedra ---
-
-def t_FLOAT_LITERAL(t):
-    r'\d+\.\d+f'
-    t.value = float(t.value[:-1])  # Quita la 'f'
+def t_COMENTARIO_UNA_LINEA(t):
+    r'//.*'
     return t
 
-def t_DECIMAL_LITERAL(t):
-    r'\d+\.\d+([mM])'
-    t.value = float(t.value[:-1])
+def t_VALOR_FLOTANTE(t):
+    r'\d+\.\d+'
+    t.value = float(t.value)
     return t
 
-
-def t_DATE_LITERAL(t):
-    r'"\d{4}-\d{2}-\d{2}"'
-    t.value = t.value.strip('"')
+def t_VALOR_ENTERO(t):
+    r'\d+'
+    t.value = int(t.value)
     return t
 
-def t_HEX_LITERAL(t):
+def t_VALOR_STRING(t):
+    r'"([^"\\]|\\.)*"'
+    t.value = t.value[1:-1]  # Elimina las comillas
+    return t
+
+def t_VALOR_CHAR(t):
+    r"'([^'\\]|\\.)*'"
+    if len(t.value) != 3:  # Debe ser un solo carácter entre comillas
+        print(f"Error: Literal de carácter inválido '{t.value}' en la línea {t.lineno}")
+        t.type = 'ERROR'
+    else:
+        t.value = t.value[1]  # Elimina las comillas
+    return t
+
+def t_VALOR_HEXADECIMAL(t):
     r'0[xX][0-9A-Fa-f]+'
     t.value = int(t.value, 16)
     return t
 
-def t_BIN_LITERAL(t):
+def t_VALOR_BINARIO(t):
     r'0[bB][01]+'
     t.value = int(t.value, 2)
     return t
 
-
-# --- FIN 1 definiciones de tokens de Andres Layedra ---
-
-def t_NUMERO(t):
-    r'\d+(\.\d+)?([eE][+-]?\d+)?'
-    t.value = float(t.value) if '.' in t.value or 'e' in t.value.lower() else int(t.value)
-    return t
-
-def t_STRING_LITERAL(t):
-    r'\"([^\\\n]|(\\.))*?\"'
-    t.value = t.value[1:-1]
-    return t
-
-
-
-def t_CHAR_LITERAL(t):
-    r"\'(\\.|[^\\'])\'"
-    t.value = t.value[1:-1]  # elimina las comillas
-    return t
-
-# --- INICIO 2 definiciones de tokens de Andres Layedra ---
-
-def t_TRUE_LITERAL(t):
-    r'\btrue\b'
-    t.type = 'TRUE_LITERAL'
-    t.value = True
-    return t
-
-def t_FALSE_LITERAL(t):
-    r'\bfalse\b'
-    t.type = 'FALSE_LITERAL'
-    t.value = False
-    return t
-
-def t_XML_COMMENT(t):
-    r'\/\/\/[^\n]*'
-    return t
-
-
-
-# --- FIN 2 definiciones de tokens de Andres Layedra ---
-
 t_ignore = ' \t\r'
 
+def t_COMENTARIO_MULTILINEA(t):
+    r'/\*[\s\S]*?\*/'
+    pass  # Ignora comentarios multilínea
+
+# Regla para manejar nuevas líneas y actualizar el número de línea
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
-def t_comment(t):
-    r'//.*'
-    pass  # Ignora comentarios
-
-def t_multiline_comment(t):
-    r'/\*[\s\S]*?\*/'
-    pass  # Ignora comentarios multilínea
-
+# Regla para manejar errores de caracteres ilegales
 def t_error(t):
     print(f"Carácter ilegal '{t.value[0]}' en la línea {t.lineno}")
     t.lexer.skip(1)
 
 # Construir el lexer
 lexer = lex.lex()
-
-
 
 nombre_archivo = f"algoritmo-{usuario_git}.cs"
 
