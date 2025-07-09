@@ -1,7 +1,8 @@
+using System;
 public class Producto
 {
     string nombre = "Mouse inalámbrico";
-    float precio = 19.99;
+    float precio = 19.99f;
     int stock = 12;
 
     public void MostrarInfo()
@@ -110,7 +111,7 @@ public class DiagnosticoInventario
 {
     public void EjecutarAnalisis()
     {
-        float temperaturaAlmacen = 22.5;
+        float temperaturaAlmacen = 22.5f;
         bool productoActivo = true;
         string fechaRegistro = "2025-06-14";
         int codigoHex = 0x1F4;

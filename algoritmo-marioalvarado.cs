@@ -1,14 +1,27 @@
+using System;
+using System.Collections.Generic;
 public class Estudiante
 {
     string nombre = "Lucía";
-    float nota = 8.5;
+    List<float> notas = new List<float> { 8.5f, 7.0f, 9.2f };
 
     public void MostrarDatos()
     {
         Console.WriteLine("Nombre: " + nombre);
-        Console.WriteLine("Nota: " + nota);
 
-        if (nota >= 6)
+        int contador = 1;
+
+        foreach (float nota in notas)
+        {
+            Console.WriteLine("Nota " + contador + ": " + nota);
+            contador++;
+        }
+
+        float promedio = CalcularPromedio();
+        Console.WriteLine("Promedio: " + promedio);
+
+
+        if (promedio >= 6)
         {
             Console.WriteLine("Ha aprobado el curso.");
         }
@@ -18,17 +31,20 @@ public class Estudiante
         }
     }
 
-    public bool EstaAprobado()
+    private float CalcularPromedio()
     {
-        return nota >= 7;
+        float suma = 0;
+
+        foreach (float nota in notas)
+        {
+            suma += nota;
+        }
+        return suma / notas.Count;
     }
 
     public static void Main(string[] args)
     {
         Estudiante estudiante = new Estudiante();
         estudiante.MostrarDatos();
-
-        bool aprobado = estudiante.EstaAprobado();
-        Console.WriteLine("¿Aprobado?: " + aprobado);
     }
 }

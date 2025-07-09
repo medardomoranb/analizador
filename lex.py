@@ -38,6 +38,7 @@ reserved = {
     'enum': 'ENUM',
     'float': 'FLOAT',
     'for': 'FOR',
+    'foreach': 'FOREACH',
     'if': 'IF',
     'in': 'IN',
     'int': 'INT',
@@ -54,7 +55,10 @@ reserved = {
     'switch': 'SWITCH',
     'this': 'THIS',
     'void': 'VOID',
-    'while': 'WHILE'
+    'while': 'WHILE',
+    'using': 'USING',
+    'List': 'LIST', # por Mario Alvarado
+
 }
 
 special = {
@@ -79,6 +83,7 @@ tokens = [
     'VALOR_CHAR',
     'VALOR_HEXADECIMAL',       # Ej: 0x1F4
     'VALOR_BINARIO',      # Ej: 0b1010
+    'VALOR_BOOLEANO',  # true o false
 
     # Operadores
     'MAS', 'MENOS', 'MULTIPLICACION', 'DIVISION',
@@ -90,7 +95,7 @@ tokens = [
 
     # Delimitadores
     'PARENTESIS_IZQ', 'PARENTESIS_DER', 'LLAVE_IZQ', 'LLAVE_DER', 'CORCHETE_IZQ', 'CORCHETE_DER',
-    'COMA', 'PUNTO', 'PUNTO_COMA', 'DOS_PUNTOS'
+    'COMA', 'PUNTO', 'PUNTO_COMA', 'DOS_PUNTOS',
 
 ] + list(reserved.values()) + list(special.values())
 
@@ -139,6 +144,10 @@ t_DOS_PUNTOS = r':'
 expecting_class_name = False
 clases_declaradas = set()
 
+def t_VALOR_BOOLEANO(t):
+    r'\b(true|false)\b'
+    return t
+
 def t_IDENTIFICADOR(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     global expecting_class_name
@@ -163,8 +172,8 @@ def t_COMENTARIO_UNA_LINEA(t):
     return t
 
 def t_VALOR_FLOTANTE(t):
-    r'\d+\.\d+'
-    t.value = float(t.value)
+    r'\d+\.\d+([eE][+-]?\d+)?[fF]?'
+    t.value = float(t.value.rstrip('fF'))
     return t
 
 def t_VALOR_ENTERO(t):

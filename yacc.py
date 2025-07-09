@@ -16,14 +16,34 @@ precedence = (
 
 # Inicio del análisis
 def p_programa(p):
-    '''programa : clases'''
-    p[0] = p[1]
+    '''programa : using_directivas clases'''
+    p[0] = ("programa", p[1], p[2])
 
-# Reglas de Clases
+def p_using_directivas(p):
+    '''using_directivas : using_directiva
+                        | using_directiva using_directivas'''
+    pass
+
+def p_using_directiva(p):
+    '''using_directiva : USING namespace PUNTO_COMA'''
+
+def p_namespace(p):
+    '''namespace : IDENTIFICADOR
+                 | IDENTIFICADOR PUNTO namespace'''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = [p[1]] + p[3]
+
 def p_clases(p):
     '''clases : clase
               | clase clases'''
     pass
+
+# ========================
+# Reglas de Estructuras de Datos: class
+# Por Medardo Moran
+# ========================
     
 def p_clase(p):
     '''clase : PUBLIC CLASS IDENTIFICADOR LLAVE_IZQ miembros_clase LLAVE_DER'''
@@ -37,25 +57,47 @@ def p_miembros_clase(p):
 def p_miembro_clase(p):
     '''miembro_clase : declaracion_variable
                      | metodo
-                     | ENUM IDENTIFICADOR LLAVE_IZQ enumeradores LLAVE_DER
-                     | STRUCT IDENTIFICADOR LLAVE_IZQ struct_miembros LLAVE_DER'''
+                     | declaracion_struct
+                     | declaracion_enum'''
     pass
 
 # ========================
 # Reglas de Estructuras de Datos: ENUM y STRUCT
 # Por Andres Layedra
 # ========================
-def p_enumeradores(p):
-    '''enumeradores : IDENTIFICADOR
-                    | IDENTIFICADOR COMA enumeradores''' 
+
+def p_declaracion_struct(p):
+    '''declaracion_struct : modificador STRUCT IDENTIFICADOR LLAVE_IZQ struct_miembros LLAVE_DER
+                          | STRUCT IDENTIFICADOR LLAVE_IZQ struct_miembros LLAVE_DER'''
+    pass 
        
 def p_struct_miembros(p):
     '''struct_miembros : declaracion_variable
                        | declaracion_variable struct_miembros
                        | constructor_struct'''
-    
+    pass
+
 def p_constructor_struct(p):
     '''constructor_struct : PUBLIC IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER'''
+    pass
+
+def p_declaracion_enum(p):
+    '''declaracion_enum : modificador ENUM IDENTIFICADOR LLAVE_IZQ enumeradores LLAVE_DER
+                        | ENUM IDENTIFICADOR LLAVE_IZQ enumeradores LLAVE_DER'''
+    pass
+
+def p_enumeradores(p):
+    '''enumeradores : IDENTIFICADOR
+                    | IDENTIFICADOR COMA enumeradores'''
+    pass
+
+# ========================
+# Reglas de Estructuras de Datos: LIST
+# Por Mario Alvarado
+# ========================
+
+def p_declaracion_lista(p):
+    '''declaracion_lista : LIST MENOR tipo MAYOR IDENTIFICADOR ASIGNACION NEW LIST MENOR tipo MAYOR LLAVE_IZQ argumentos LLAVE_DER PUNTO_COMA'''
 
 # ========================
 # Reglas de Declaración de Variables y Métodos
@@ -63,7 +105,8 @@ def p_constructor_struct(p):
 def p_declaracion_variable(p):
     '''declaracion_variable : tipo IDENTIFICADOR PUNTO_COMA
                             | tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
-                            | tipo IDENTIFICADOR ASIGNACION NEW IDENTIFICADOR PARENTESIS_IZQ argumentos_opcional PARENTESIS_DER PUNTO_COMA'''
+                            | tipo IDENTIFICADOR ASIGNACION NEW IDENTIFICADOR PARENTESIS_IZQ argumentos_opcional PARENTESIS_DER PUNTO_COMA
+                            | declaracion_lista'''
     pass
     
 def p_tipo(p):
@@ -86,7 +129,8 @@ def p_modificador(p):
     '''modificador : PUBLIC
                     | PRIVATE
                     | PROTECTED'''
-    
+    pass
+
 def p_parametros_opcional(p):
     '''parametros_opcional : parametros
                            | empty'''
@@ -104,6 +148,7 @@ def p_cuerpo(p):
 
 def p_sentencia(p):
     '''sentencia : declaracion_variable
+                 | declaracion_struct
                  | llamada_funcion PUNTO_COMA
                  | asignacion
                  | sentencia_if
@@ -164,10 +209,20 @@ def p_operador(p):
                 | DISYUNCION'''
     pass
 
+# ========================
+# Reglas de Estructuras de Control: IF
+# Por Mario Alvarado
+# ========================
+
 def p_sentencia_if(p):
     '''sentencia_if : IF PARENTESIS_IZQ expresion PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER
                     | IF PARENTESIS_IZQ expresion PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER ELSE LLAVE_IZQ cuerpo LLAVE_DER'''
     pass
+
+# ========================
+# Reglas de Estructuras de Control: FOR
+# Por Medardo Moran
+# ========================
 
 def p_sentencia_for(p):
     '''sentencia_for : FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA actualizacion PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER'''
@@ -177,6 +232,11 @@ def p_actualizacion(p):
     '''actualizacion : IDENTIFICADOR INCREMENTO
                      | IDENTIFICADOR DECREMENTO'''
     pass
+
+# ========================
+# Reglas de Estructuras de Control: SWITCH
+# Por Andres Layedra
+# ========================
 
 def p_sentencia_switch(p):
     '''sentencia_switch : SWITCH PARENTESIS_IZQ expresion PARENTESIS_DER LLAVE_IZQ casos_switch LLAVE_DER'''
