@@ -57,14 +57,14 @@ for i, token in enumerate(tokens_extraidos):
         if prev and prev.type in {"INT", "FLOAT", "STRING", "CHAR", "BOOL"}:
             if token.value in variables_declaradas:
                 errores_semanticos.append(
-                    f"Línea {token.lineno}: Variable '{token.value}' ya fue declarada."
+                    f"[ERROR SEMÁNTICO] Línea {token.lineno}: Variable '{token.value}' ya fue declarada."
                 )
             else:
                 variables_declaradas.add(token.value)
         elif next_ and next_.type == "ASIGNACION":
             if token.value not in variables_declaradas:
                 errores_semanticos.append(
-                    f"Línea {token.lineno}: Variable '{token.value}' usada sin ser declarada."
+                    f"[ERROR SEMÁNTICO] Línea {token.lineno}: Variable '{token.value}' usada sin ser declarada."
                 )
 
 # -------------------------------
