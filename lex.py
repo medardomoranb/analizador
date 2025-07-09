@@ -57,6 +57,15 @@ reserved = {
     'while': 'WHILE'
 }
 
+special = {
+    'Write': 'WRITE',
+    'Read': 'READ',
+    'WriteLine': 'WRITELINE',
+    'Console': 'CONSOLE',
+    'Main': 'MAIN',
+    'args': 'ARGS'
+}
+
 # Lista de tokens
 tokens = [
     'IDENTIFICADOR',
@@ -83,7 +92,7 @@ tokens = [
     'PARENTESIS_IZQ', 'PARENTESIS_DER', 'LLAVE_IZQ', 'LLAVE_DER', 'CORCHETE_IZQ', 'CORCHETE_DER',
     'COMA', 'PUNTO', 'PUNTO_COMA', 'DOS_PUNTOS'
 
-] + list(reserved.values())
+] + list(reserved.values()) + list(special.values())
 
 # Expresiones regulares para tokens simples
 
@@ -139,7 +148,10 @@ def t_IDENTIFICADOR(t):
         clases_declaradas.add(t.value) # Añadir a conjunto de clases declaradas
         expecting_class_name = False
     else:
-        t.type = reserved.get(t.value, 'IDENTIFICADOR')
+        if t.value in special:
+            t.type = special[t.value]
+        else:
+            t.type = reserved.get(t.value, 'IDENTIFICADOR')
 
     if t.value == 'class':
         expecting_class_name = True

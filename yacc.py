@@ -4,330 +4,230 @@ import os
 import sys
 from lex import tokens  
 
-# -------------------------------
 # Variables para logs y errores
-# -------------------------------
 errores = []
 
-# -------------------------------
-# Reglas sintácticas principales
-# -------------------------------
+# Reglas de precedencia
+precedence = (
+    ('left', 'MAS', 'MENOS'),
+    ('left', 'MULTIPLICACION', 'DIVISION', 'MODULO'),
+    ('right', 'NEGACION'),
+)
 
-# Programa principal
-def p_program(p):
-    '''program : elementos_programa
-               | COMENTARIO_UNA_LINEA elementos_programa'''
+# Inicio del análisis
+def p_programa(p):
+    '''programa : clases'''
+    p[0] = p[1]
+
+# Reglas de Clases
+def p_clases(p):
+    '''clases : clase
+              | clase clases'''
     pass
-
-
-def p_elementos_programa(p):
-    '''elementos_programa : clase
-                          | enum_decl
-                          | struct_decl
-                          | elementos_programa clase
-                          | elementos_programa enum_decl
-                          | elementos_programa struct_decl
-                          | elementos_programa COMENTARIO_UNA_LINEA'''
-    pass
-
-def p_clase_list(p):
-    '''clase_list : clase
-                  | clase_list clase'''
-    pass
-
-def p_modificador(p):
-    '''modificador : lista_modificadores
-                   | empty'''
-    pass
-
-def p_lista_modificadores(p):
-    '''lista_modificadores : modificador_simple
-                           | lista_modificadores modificador_simple'''
-    pass
-
-def p_modificador_simple(p):
-    '''modificador_simple : PUBLIC
-                          | PRIVATE
-                          | PROTECTED
-                          | STATIC'''
-    pass
-
-
+    
 def p_clase(p):
-    '''clase : modificador CLASS NOMBRE_CLASE LLAVE_IZQ cuerpo_clase LLAVE_DER
-             | COMENTARIO_UNA_LINEA modificador CLASS NOMBRE_CLASE LLAVE_IZQ cuerpo_clase LLAVE_DER'''
+    '''clase : PUBLIC CLASS IDENTIFICADOR LLAVE_IZQ miembros_clase LLAVE_DER'''
     pass
 
-
-
-def p_cuerpo_clase(p):
-    '''cuerpo_clase : propiedad
-                    | metodo
-                    | enum_decl
-                    | struct_decl
-                    | clase
-                    | cuerpo_clase propiedad
-                    | cuerpo_clase metodo
-                    | cuerpo_clase enum_decl
-                    | cuerpo_clase struct_decl
-                    | cuerpo_clase clase
-                    | cuerpo_clase COMENTARIO_UNA_LINEA
-                    | COMENTARIO_UNA_LINEA'''
+def p_miembros_clase(p):
+    '''miembros_clase : miembro_clase
+                      | miembro_clase miembros_clase'''
     pass
 
-
-def p_propiedad(p):
-    '''propiedad : modificador tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
-                 | modificador tipo IDENTIFICADOR PUNTO_COMA
-                 | tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
-                 | tipo IDENTIFICADOR PUNTO_COMA
-                 | COMENTARIO_UNA_LINEA tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
-                 | COMENTARIO_UNA_LINEA tipo IDENTIFICADOR PUNTO_COMA'''
-    pass
-
-def p_metodo_main(p):
-    '''metodo : modificador tipo_main IDENTIFICADOR PARENTESIS_IZQ parametros_main PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER'''
-    pass
-
-def p_tipo_main(p):
-    '''tipo_main : VOID'''
-    pass
-
-def p_parametros_main(p):
-    '''parametros_main : tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR'''
-
-def p_metodo(p):
-    '''metodo : modificador tipo IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER
-              | modificador tipo IDENTIFICADOR PARENTESIS_IZQ tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER
-              | COMENTARIO_UNA_LINEA modificador tipo IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER
-              | COMENTARIO_UNA_LINEA modificador tipo IDENTIFICADOR PARENTESIS_IZQ tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER'''
-    pass
-
-def p_parametros(p):
-    '''parametros : parametro
-                  | parametros COMA parametro
-                  | COMENTARIO_UNA_LINEA parametros
-                  | empty'''
-    print("DEBUG parámetros:", [str(t) for t in p.slice])  # <-- Añade esto
-    pass
-
-
-def p_parametro(p):
-    '''parametro : tipo IDENTIFICADOR
-                 | tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR
-                 | tipo IDENTIFICADOR ASIGNACION expresion
-                 | tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR ASIGNACION expresion
-                 | COMENTARIO_UNA_LINEA tipo IDENTIFICADOR
-                 | COMENTARIO_UNA_LINEA tipo IDENTIFICADOR ASIGNACION expresion'''
-    pass
-
-
-# -------------------------------
-# Instrucciones dentro de métodos
-# -------------------------------
-def p_instrucciones(p):
-    '''instrucciones : instruccion
-                     | instrucciones instruccion
-                     | empty'''
-    pass
-
-def p_instruccion(p):
-    '''instruccion : impresion  
-                   | llamada
-                   | lectura
-                   | asignacion
-                   | control
-                   | instruccion_return
-                   | COMENTARIO_UNA_LINEA
-                   | propiedad'''
-    pass
-
-def p_imprimir(p):
-    '''impresion : IDENTIFICADOR PUNTO IDENTIFICADOR PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
-                 | IDENTIFICADOR PUNTO IDENTIFICADOR PARENTESIS_IZQ lista_expresiones PARENTESIS_DER PUNTO_COMA'''
-    pass    
-
-def p_lista_expresiones(p):
-    '''lista_expresiones : expresion
-                         | lista_expresiones COMA expresion'''
-    pass
-
-
-
-def p_lectura(p):
-    'lectura : IDENTIFICADOR PUNTO IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA'
-    pass
-
-def p_asignacion(p):
-    '''asignacion : tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
-                  | tipo IDENTIFICADOR ASIGNACION NEW IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA'''
-    pass
-
-
-def p_instruccion_return(p):
-    '''instruccion_return : RETURN expresion PUNTO_COMA'''
-    pass
-
-# -------------------------------
-# Expresiones y condiciones
-# -------------------------------
-def p_expresion_aritmetica(p):
-    '''expresion : expresion MAS expresion
-                 | expresion MENOS expresion
-                 | expresion MULTIPLICACION expresion
-                 | expresion DIVISION expresion
-                 | expresion MAYOR_IGUAL expresion
-                 | IDENTIFICADOR
-                 | VALOR_ENTERO
-                 | VALOR_FLOTANTE
-                 | VALOR_STRING
-                 | VALOR_CHAR
-                 | VALOR_HEXADECIMAL
-                 | VALOR_BINARIO'''
-    pass
-#---Expresiones adicionales de Andrés Layedra---
-def p_expresion_incremento(p):
-    '''expresion : IDENTIFICADOR INCREMENTO
-                 | IDENTIFICADOR DECREMENTO'''
-    pass
-
-
-def p_condicion_logica(p):
-    '''condicion : expresion MAYOR expresion
-                 | expresion MENOR expresion
-                 | expresion MAYOR_IGUAL expresion
-                 | expresion MENOR_IGUAL expresion
-                 | expresion IGUAL expresion
-                 | expresion NO_IGUAL expresion
-                 | condicion CONJUNCION condicion
-                 | condicion DISYUNCION condicion'''
-    pass
-
-def p_control_if(p):
-    '''control : IF PARENTESIS_IZQ condicion PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER
-               | IF PARENTESIS_IZQ condicion PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER ELSE LLAVE_IZQ instrucciones LLAVE_DER'''
+def p_miembro_clase(p):
+    '''miembro_clase : declaracion_variable
+                     | metodo
+                     | ENUM IDENTIFICADOR LLAVE_IZQ enumeradores LLAVE_DER
+                     | STRUCT IDENTIFICADOR LLAVE_IZQ struct_miembros LLAVE_DER'''
     pass
 
 # ========================
-# Reglas aportadas por Mario Alvarado
+# Reglas de Estructuras de Datos: ENUM y STRUCT
+# Por Andres Layedra
 # ========================
-
-# === 1. ESTRUCTURA DE DATOS ===
-# -------- Arreglo Simple ----------
-
-def p_arreglo_asignacion(p):
-    '''asignacion : tipo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR ASIGNACION LLAVE_IZQ lista_expresiones LLAVE_DER PUNTO_COMA'''
-    pass
-# int [] notas = {10,9,8};
-
-# === 2. ESTRUCTURA DE CONTROL ===
-# -------- CICLO WHILE ----------
-
-def p_control_while(p):
-    '''control : WHILE PARENTESIS_IZQ condicion PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER'''
-    pass
-
-# === 3. TIPO DE FUNCION ===
-
-def p_funcion_void_sin_parametros(p):
-    '''metodo : modificador VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER'''
-    pass
-# ejemplo: public void metodo() { ... }
-
+def p_enumeradores(p):
+    '''enumeradores : IDENTIFICADOR
+                    | IDENTIFICADOR COMA enumeradores''' 
+       
+def p_struct_miembros(p):
+    '''struct_miembros : declaracion_variable
+                       | declaracion_variable struct_miembros
+                       | constructor_struct'''
+    
+def p_constructor_struct(p):
+    '''constructor_struct : PUBLIC IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER'''
 
 # ========================
-# Reglas aportadas por Andrés Layedra
-# ========================
+# Reglas de Declaración de Variables y Métodos
 
-# === 1. ESTRUCTURA DE DATOS ===
-# -------- enum ----------
-def p_enum_decl(p):
-    'enum_decl : modificador ENUM IDENTIFICADOR LLAVE_IZQ lista_identificadores LLAVE_DER'
+def p_declaracion_variable(p):
+    '''declaracion_variable : tipo IDENTIFICADOR PUNTO_COMA
+                            | tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
+                            | tipo IDENTIFICADOR ASIGNACION NEW IDENTIFICADOR PARENTESIS_IZQ argumentos_opcional PARENTESIS_DER PUNTO_COMA'''
     pass
-
-
-def p_lista_identificadores(p):
-    '''lista_identificadores : IDENTIFICADOR
-                             | lista_identificadores COMA IDENTIFICADOR'''
-    pass
-
-# -------- struct ----------
-def p_struct_decl(p):
-    'struct_decl : modificador STRUCT IDENTIFICADOR LLAVE_IZQ cuerpo_clase LLAVE_DER'
-    pass
-
-def p_llamada(p):
-    '''llamada : IDENTIFICADOR PUNTO IDENTIFICADOR PARENTESIS_IZQ lista_expresiones PARENTESIS_DER PUNTO_COMA
-               | IDENTIFICADOR PUNTO IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA'''
-    pass
-
-
-# === 2. ESTRUCTURA DE CONTROL ===
-# -------- switch-case ----------
-def p_switch(p):
-    '''control : SWITCH PARENTESIS_IZQ expresion PARENTESIS_DER LLAVE_IZQ lista_casos default_case LLAVE_DER'''
-    pass
-
-def p_lista_casos(p):
-    '''lista_casos : lista_casos caso
-                   | caso'''
-    pass
-
-def p_caso(p):
-    'caso : CASE expresion DOS_PUNTOS instrucciones BREAK PUNTO_COMA'
-    pass
-
-def p_default_case(p):
-    '''default_case : DEFAULT DOS_PUNTOS instrucciones BREAK PUNTO_COMA
-                    | empty'''
-    pass
-
-# -------- ciclo for ----------
-def p_for(p):
-    '''control : FOR PARENTESIS_IZQ tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA condicion PUNTO_COMA expresion PARENTESIS_DER LLAVE_IZQ instrucciones LLAVE_DER'''
-    pass
-
-# -------- continue ----------
-def p_instruccion_continue(p):
-    'instruccion : CONTINUE PUNTO_COMA'
-    pass
-
-# -------- break ----------
-def p_instruccion_break(p):
-    'instruccion : BREAK PUNTO_COMA'
-    pass
-
-
-
-# -------------------------------
-# Tipos de datos
-# -------------------------------
+    
 def p_tipo(p):
     '''tipo : INT
             | FLOAT
             | STRING
             | CHAR
             | BOOL
-            | VOID
-            | IDENTIFICADOR'''
+            | IDENTIFICADOR'''  # Para tipos definidos por el usuario
     pass
 
+def p_metodo(p):
+    '''metodo : modificador tipo IDENTIFICADOR PARENTESIS_IZQ parametros_opcional PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER
+              | modificador VOID IDENTIFICADOR PARENTESIS_IZQ parametros_opcional PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER
+              | PUBLIC STATIC VOID MAIN PARENTESIS_IZQ STRING CORCHETE_IZQ CORCHETE_DER ARGS PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER
+              | PUBLIC STATIC VOID MAIN PARENTESIS_IZQ PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER'''
+    pass
+
+def p_modificador(p):
+    '''modificador : PUBLIC
+                    | PRIVATE
+                    | PROTECTED'''
+    
+def p_parametros_opcional(p):
+    '''parametros_opcional : parametros
+                           | empty'''
+    pass
+
+def p_parametros(p):
+    '''parametros : tipo IDENTIFICADOR
+                  | tipo IDENTIFICADOR COMA parametros'''
+    pass
+
+def p_cuerpo(p):
+    '''cuerpo : sentencia
+              | sentencia cuerpo'''
+    pass
+
+def p_sentencia(p):
+    '''sentencia : declaracion_variable
+                 | llamada_funcion PUNTO_COMA
+                 | asignacion
+                 | sentencia_if
+                 | sentencia_for
+                 | sentencia_switch
+                 | sentencia_return
+                 | sentencia_break
+                 | sentencia_continue
+                 | sentencia_console_write
+                 | sentencia_console_read'''
+    pass
+
+def p_llamada_funcion(p):
+    '''llamada_funcion : IDENTIFICADOR PARENTESIS_IZQ argumentos_opcional PARENTESIS_DER
+                       | IDENTIFICADOR PUNTO IDENTIFICADOR PARENTESIS_IZQ argumentos_opcional PARENTESIS_DER'''
+    pass
+
+def p_argumentos_opcional(p):
+    '''argumentos_opcional : argumentos
+                          | empty'''
+    pass
+
+def p_argumentos(p):
+    '''argumentos : expresion
+                  | expresion COMA argumentos'''
+    pass
+
+def p_asignacion(p):
+    '''asignacion : IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
+                  | IDENTIFICADOR PUNTO IDENTIFICADOR ASIGNACION expresion PUNTO_COMA'''
+    pass
+
+def p_expresion(p):
+    '''expresion : VALOR_ENTERO
+                 | VALOR_FLOTANTE
+                 | VALOR_STRING
+                 | VALOR_CHAR
+                 | VALOR_HEXADECIMAL
+                 | VALOR_BINARIO
+                 | IDENTIFICADOR
+                 | expresion operador expresion
+                 | PARENTESIS_IZQ expresion PARENTESIS_DER'''
+    pass
+
+def p_operador(p):
+    '''operador : MAS
+                | MENOS
+                | MULTIPLICACION
+                | DIVISION
+                | MODULO
+                | MAYOR
+                | MENOR
+                | MAYOR_IGUAL
+                | MENOR_IGUAL
+                | IGUAL
+                | NO_IGUAL
+                | CONJUNCION
+                | DISYUNCION'''
+    pass
+
+def p_sentencia_if(p):
+    '''sentencia_if : IF PARENTESIS_IZQ expresion PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER
+                    | IF PARENTESIS_IZQ expresion PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER ELSE LLAVE_IZQ cuerpo LLAVE_DER'''
+    pass
+
+def p_sentencia_for(p):
+    '''sentencia_for : FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA actualizacion PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER'''
+    pass
+
+def p_actualizacion(p):
+    '''actualizacion : IDENTIFICADOR INCREMENTO
+                     | IDENTIFICADOR DECREMENTO'''
+    pass
+
+def p_sentencia_switch(p):
+    '''sentencia_switch : SWITCH PARENTESIS_IZQ expresion PARENTESIS_DER LLAVE_IZQ casos_switch LLAVE_DER'''
+    pass
+
+def p_casos_switch(p):
+    '''casos_switch : caso_switch
+                    | caso_switch casos_switch'''
+    pass
+
+def p_caso_switch(p):
+    '''caso_switch : CASE VALOR_ENTERO DOS_PUNTOS cuerpo BREAK PUNTO_COMA
+                   | CASE VALOR_STRING DOS_PUNTOS cuerpo
+                   | DEFAULT DOS_PUNTOS cuerpo'''
+    pass
+
+def p_sentencia_return(p):
+    '''sentencia_return : RETURN expresion PUNTO_COMA
+                        | RETURN PUNTO_COMA'''
+    pass
+
+def p_sentencia_break(p):
+    '''sentencia_break : BREAK PUNTO_COMA'''
+    pass
+
+
+def p_sentencia_continue(p):
+    '''sentencia_continue : CONTINUE PUNTO_COMA'''
+    pass
+
+def p_sentencia_console_write(p):
+    '''sentencia_console_write : CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+                               | CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA'''
+    pass
+
+def p_sentencia_console_read(p):
+    '''sentencia_console_read : CONSOLE PUNTO READ PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA'''
+    pass
+      
 def p_empty(p):
     'empty :'
     pass
 
-# -------------------------------
 # Manejo de errores sintácticos
-# -------------------------------
 def p_error(p):
     if p:
-        errores.append(f"Error sintáctico en línea {p.lineno}: Token inesperado '{p.value}'")
+        errores.append(f"[ERROR SINTÁCTICO] Token inesperado: '{p.value}' en la línea {p.lineno}")
     else:
-        errores.append("Error sintáctico: Fin de archivo inesperado.")
+        errores.append("[ERROR SINTÁCTICO] Fin de archivo inesperado")
 
-# -------------------------------
 # Construcción del parser
-# -------------------------------
 parser = yacc.yacc()
 
 if len(sys.argv) > 1:
@@ -351,9 +251,7 @@ else:
         print("Opción inválida.")
         exit()
 
-# -------------------------------
 # Leer archivo personalizado
-# -------------------------------
 archivo_codigo = f"algoritmo-{usuario_git}.cs"
 
 try:
@@ -363,15 +261,10 @@ except FileNotFoundError:
     print(f" El archivo '{archivo_codigo}' no fue encontrado.")
     exit()
 
-
-# -------------------------------
 # Ejecutar el parser
-# -------------------------------
 parser.parse(data)
 
-# -------------------------------
 # Crear log de errores sintácticos
-# -------------------------------
 now = datetime.datetime.now()
 fecha_hora = now.strftime("%d%m%Y-%Hh%M")
 log_folder = "logs"
