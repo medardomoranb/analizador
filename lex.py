@@ -224,7 +224,7 @@ def t_error(t):
 # Construir el lexer
 lexer = lex.lex()
 
-nombre_archivo = f"algoritmo-{usuario_git}.cs"
+nombre_archivo = f"algoritmos/algoritmo-{usuario_git}.cs"
 
 try:
     with open(nombre_archivo, "r", encoding="utf-8") as file:

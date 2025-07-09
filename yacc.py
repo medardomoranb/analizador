@@ -312,7 +312,7 @@ else:
         exit()
 
 # Leer archivo personalizado
-archivo_codigo = f"algoritmo-{usuario_git}.cs"
+archivo_codigo = f"algoritmos/algoritmo-{usuario_git}.cs"
 
 try:
     with open(archivo_codigo, "r", encoding="utf-8") as f:
@@ -320,7 +320,7 @@ try:
 except FileNotFoundError:
     print(f" El archivo '{archivo_codigo}' no fue encontrado.")
     exit()
-
+    
 # Ejecutar el parser
 parser.parse(data)
 
