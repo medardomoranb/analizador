@@ -1,87 +1,50 @@
-import os
+# analizador.py
+from lex import lexer, tokens
+from yacc import parser, errores as errores_sintacticos
 import datetime
-import sys
-from lex import lexer  # importas lexer de lex.py
-from yacc import errores as errores_sintacticos
+import os
+import ply.lex as lex
+import ply.yacc as yacc
 
-if len(sys.argv) > 1:
-    usuario_git = sys.argv[1]
-else:
-    print("¿Quién está probando el análisis semántico?")
-    print("1. Medardo Moran")
-    print("2. Mario Alvarado")
-    print("3. Andres Layedra")
+def analisis_lexico(codigo):
+    lexer.input(codigo)
+    resultado = []
+    for tok in lexer:
+        resultado.append(f"{tok.type:15} -> {tok.value}")
+    return "\n".join(resultado)
 
-    opciones = {
-        "1": "medardomoran",
-        "2": "marioalvarado",
-        "3": "andreslayedra"
-    }
+def analisis_sintactico(codigo):
+    errores_sintacticos.clear()
+    parser.parse(codigo)
+    if errores_sintacticos:
+        return "\n".join(errores_sintacticos)
+    return "Análisis sintáctico sin errores."
 
-    opcion = input("Ingrese el número correspondiente (1-3): ").strip()
-    usuario_git = opciones.get(opcion)
+def analisis_semantico(codigo):
+    lexer.input(codigo)
+    tokens_extraidos = list(lexer)
 
-    if not usuario_git:
-        print("Opción inválida.")
-        exit()
+    variables_declaradas = set()
+    errores_semanticos = []
 
-# -------------------------------
-# Leer archivo fuente
-# -------------------------------
-archivo_codigo = f"algoritmos/algoritmo-{usuario_git}.cs"
+    for i, token in enumerate(tokens_extraidos):
+        if token.type == "IDENTIFICADOR":
+            prev = tokens_extraidos[i - 1] if i > 0 else None
+            next_ = tokens_extraidos[i + 1] if i < len(tokens_extraidos) - 1 else None
 
-try:
-    with open(archivo_codigo, "r", encoding="utf-8") as f:
-        data = f.read()
-except FileNotFoundError:
-    print(f"El archivo '{archivo_codigo}' no fue encontrado.")
-    exit()
+            if prev and prev.type in {"INT", "FLOAT", "STRING", "CHAR", "BOOL"}:
+                if token.value in variables_declaradas:
+                    errores_semanticos.append(
+                        f"[ERROR SEMÁNTICO] Línea {token.lineno}: Variable '{token.value}' ya fue declarada."
+                    )
+                else:
+                    variables_declaradas.add(token.value)
+            elif next_ and next_.type == "ASIGNACION":
+                if token.value not in variables_declaradas:
+                    errores_semanticos.append(
+                        f"[ERROR SEMÁNTICO] Línea {token.lineno}: Variable '{token.value}' usada sin ser declarada."
+                    )
 
-# -------------------------------
-# Análisis semántico personalizado
-# -------------------------------
-
-# Variables semánticas
-variables_declaradas = set()
-errores_semanticos = []
-
-# Ejecutar lexer y guardar identificadores y asignaciones
-lexer.input(data)
-tokens_extraidos = list(lexer)
-
-for i, token in enumerate(tokens_extraidos):
-    if token.type == "IDENTIFICADOR":
-        prev = tokens_extraidos[i - 1] if i > 0 else None
-        next_ = tokens_extraidos[i + 1] if i < len(tokens_extraidos) - 1 else None
-
-        if prev and prev.type in {"INT", "FLOAT", "STRING", "CHAR", "BOOL"}:
-            if token.value in variables_declaradas:
-                errores_semanticos.append(
-                    f"[ERROR SEMÁNTICO] Línea {token.lineno}: Variable '{token.value}' ya fue declarada."
-                )
-            else:
-                variables_declaradas.add(token.value)
-        elif next_ and next_.type == "ASIGNACION":
-            if token.value not in variables_declaradas:
-                errores_semanticos.append(
-                    f"[ERROR SEMÁNTICO] Línea {token.lineno}: Variable '{token.value}' usada sin ser declarada."
-                )
-
-# -------------------------------
-# Guardar log semántico
-# -------------------------------
-now = datetime.datetime.now()
-fecha_hora = now.strftime("%d%m%Y-%Hh%M")
-log_folder = "logs"
-os.makedirs(log_folder, exist_ok=True)
-log_file = f"semantico-{usuario_git}-{fecha_hora}.txt"
-log_path = os.path.join(log_folder, log_file)
-
-with open(log_path, "w", encoding="utf-8") as f:
     if errores_semanticos:
-        f.write("Errores semánticos encontrados:\n")
-        f.write("\n".join(errores_semanticos))
-    else:
-        f.write("Análisis semántico sin errores.")
-
-print(f" Análisis semántico completado. Log guardado en '{log_path}'")
+        return "\n".join(errores_semanticos)
+    return "Análisis semántico sin errores."

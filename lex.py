@@ -3,28 +3,6 @@ import datetime
 import os
 import sys
 
-
-if len(sys.argv) > 1:
-    usuario_git = sys.argv[1]
-else:
-    print("¿Quién está probando el programa?")
-    print("1. Medardo Moran")
-    print("2. Mario Alvarado")
-    print("3. Andres Layedra")
-
-    opciones = {
-        "1": "medardomoran",
-        "2": "marioalvarado",
-        "3": "andreslayedra"
-    }
-
-    opcion = input("Ingrese el número correspondiente (1-3): ").strip()
-    usuario_git = opciones.get(opcion)
-
-    if not usuario_git:
-        print("Opción no válida. Terminando el programa.")
-        exit()
-
 # Diccionario de palabras reservadas
 reserved = {
     'bool': 'BOOL',
@@ -223,35 +201,3 @@ def t_error(t):
 
 # Construir el lexer
 lexer = lex.lex()
-
-nombre_archivo = f"algoritmos/algoritmo-{usuario_git}.cs"
-
-try:
-    with open(nombre_archivo, "r", encoding="utf-8") as file:
-        data = file.read()
-except FileNotFoundError:
-    print(f" El archivo '{nombre_archivo}' no fue encontrado.")
-    exit()
-
-
-# Analizar y guardar logs
-logs = []
-
-# Prueba del lexer
-lexer.input(data)
-
-for tok in lexer:
-    logs.append(f"{tok.type:15} -> {tok.value}")
-
-# Guardar log
-now = datetime.datetime.now()
-fecha_hora = now.strftime("%d-%m-%Y-%Hh%M")
-log_filename = f"lexico-{usuario_git}-{fecha_hora}.txt"
-
-log_folder = "logs"
-os.makedirs(log_folder, exist_ok=True)
-
-with open(os.path.join(log_folder, log_filename), "w", encoding="utf-8") as f:
-    f.write("\n".join(logs))
-
-print(f" Análisis completado. Log guardado en '{os.path.join(log_folder, log_filename)}'")

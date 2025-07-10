@@ -1,105 +1,99 @@
 import tkinter as tk
-from tkinter import ttk, filedialog, messagebox
-import subprocess
-import sys
-import os
+from tkinter import messagebox
+from PIL import Image, ImageTk
+from analizador import analisis_lexico, analisis_sintactico, analisis_semantico
 
-class AnalizadorApp(tk.Tk):
-    def __init__(self):
-        super().__init__()
-        self.title("Analizador C# - LP")
-        self.geometry("700x500")
+class AnalizadorGUI:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("C# Shark - Analizador")
+        self.root.geometry("1100x700")
+        self.root.configure(bg="#121212")
 
-        # Variables
-        self.usuario_key = tk.StringVar(value="medardomoran")
-        self.archivo_path = None
+        # =============== Canvas con Scroll ===============
+        canvas = tk.Canvas(self.root, bg="#121212", highlightthickness=0)
+        canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        # Widgets
-        self.crear_widgets()
+        scrollbar = tk.Scrollbar(self.root, command=canvas.yview)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-    def crear_widgets(self):
-        # Selección de usuario
-        frame_usuario = ttk.LabelFrame(self, text="Seleccionar Usuario")
-        frame_usuario.pack(fill="x", padx=10, pady=5)
+        canvas.configure(yscrollcommand=scrollbar.set)
+        canvas.bind_all("<MouseWheel>", lambda e: canvas.yview_scroll(int(-1*(e.delta/120)), "units"))
 
-        usuarios = [("Medardo Moran", "medardomoran"),
-                    ("Mario Alvarado", "marioalvarado"),
-                    ("Andres Layedra", "andreslayedra")]
+        # Frame dentro del canvas
+        self.frame = tk.Frame(canvas, bg="#121212")
+        canvas.create_window((0, 0), window=self.frame, anchor="nw")
 
-        for text, val in usuarios:
-            ttk.Radiobutton(frame_usuario, text=text, variable=self.usuario_key, value=val).pack(side="left", padx=10, pady=5)
+        self.frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
 
-        # Selección archivo
-        frame_archivo = ttk.Frame(self)
-        frame_archivo.pack(fill="x", padx=10, pady=5)
+        # =============== Logo ===============
+        try:
+            logo_img = Image.open("resources/cshark_logo.png")
+            logo_img = logo_img.resize((120, 120), Image.Resampling.LANCZOS)
+            self.logo = ImageTk.PhotoImage(logo_img)
+            logo_label = tk.Label(self.frame, image=self.logo, bg="#121212")
+            logo_label.pack(pady=10)
+        except Exception as e:
+            print("Logo no cargado:", e)
 
-        ttk.Button(frame_archivo, text="Seleccionar archivo .cs", command=self.seleccionar_archivo).pack(side="left")
-        self.label_archivo = ttk.Label(frame_archivo, text="Ningún archivo seleccionado", width=60)
-        self.label_archivo.pack(side="left", padx=10)
+        # =============== Secciones ===============
+        self.crear_etiqueta("Código C# de entrada:")
+        self.codigo_text = self.crear_caja_texto(height=15)
 
-        # Botones para análisis
-        frame_botones = ttk.Frame(self)
-        frame_botones.pack(fill="x", padx=10, pady=10)
+        self.crear_botones()
 
-        ttk.Button(frame_botones, text="Ejecutar Análisis Léxico", command=self.ejecutar_lexico).pack(side="left", padx=5)
-        ttk.Button(frame_botones, text="Ejecutar Análisis Sintáctico", command=self.ejecutar_sintactico).pack(side="left", padx=5)
-        ttk.Button(frame_botones, text="Ejecutar Análisis Semántico", command=self.ejecutar_semantico).pack(side="left", padx=5)
+        self.lexico_text = self.crear_apartado_resultado("Análisis Léxico")
+        self.sintactico_text = self.crear_apartado_resultado("Análisis Sintáctico")
+        self.semantico_text = self.crear_apartado_resultado("Análisis Semántico")
 
-        # Textbox para resultados
-        frame_resultado = ttk.LabelFrame(self, text="Resultado")
-        frame_resultado.pack(fill="both", expand=True, padx=10, pady=5)
+    def crear_etiqueta(self, texto):
+        etiqueta = tk.Label(self.frame, text=texto, fg="#ffffff", bg="#121212", font=("Arial", 12, "bold"))
+        etiqueta.pack(pady=(10, 2))
 
-        self.text_resultado = tk.Text(frame_resultado, wrap="word", state="normal")
-        self.text_resultado.pack(fill="both", expand=True)
+    def crear_caja_texto(self, height=10):
+        caja = tk.Text(self.frame, height=height, width=120, bg="#2D033B", fg="#ffffff", insertbackground="white")
+        caja.pack(padx=10, pady=5)
+        return caja
 
-    def seleccionar_archivo(self):
-        path = filedialog.askopenfilename(filetypes=[("C# Files", "*.cs")])
-        if path:
-            self.archivo_path = path
-            nombre = os.path.basename(path)
-            self.label_archivo.config(text=nombre)
+    def crear_apartado_resultado(self, titulo):
+        self.crear_etiqueta(titulo)
+        return self.crear_caja_texto(height=10)
 
-    def ejecutar_analizador(self, script_name):
-        if not self.archivo_path:
-            messagebox.showwarning("Archivo no seleccionado", "Por favor, seleccione un archivo .cs para analizar.")
+    def crear_botones(self):
+        btn_frame = tk.Frame(self.frame, bg="#121212")
+        btn_frame.pack(pady=15)
+        self.boton_personalizado(btn_frame, "Analizar", self.analizar).grid(row=0, column=0, padx=15)
+        self.boton_personalizado(btn_frame, "Limpiar", self.limpiar).grid(row=0, column=1, padx=15)
+
+    def boton_personalizado(self, parent, texto, comando):
+        return tk.Button(
+            parent, text=texto, command=comando,
+            bg="#7B2CBF", fg="#ffffff", activebackground="#9D4EDD",
+            font=("Arial", 11, "bold"), padx=15, pady=5, bd=0
+        )
+
+    def analizar(self):
+        codigo = self.codigo_text.get("1.0", tk.END).strip()
+        if not codigo:
+            messagebox.showwarning("Advertencia", "Por favor ingresa código C#.")
             return
 
-        usuario = self.usuario_key.get()
-        python_executable = sys.executable
-        try:
-            # Ejecutar el script con argumentos
-            proceso = subprocess.run([python_executable, script_name, usuario],
-                                    capture_output=True, text=True, timeout=15)
+        self.lexico_text.delete("1.0", tk.END)
+        self.lexico_text.insert(tk.END, analisis_lexico(codigo))
 
-            salida = proceso.stdout
-            error = proceso.stderr
+        self.sintactico_text.delete("1.0", tk.END)
+        self.sintactico_text.insert(tk.END, analisis_sintactico(codigo))
 
-            resultado = ""
-            if salida:
-                resultado += f"Salida estándar:\n{salida}\n"
-            if error:
-                resultado += f"Errores:\n{error}\n"
-            if not salida and not error:
-                resultado = "No se obtuvo salida ni error."
+        self.semantico_text.delete("1.0", tk.END)
+        self.semantico_text.insert(tk.END, analisis_semantico(codigo))
 
-            self.text_resultado.delete("1.0", tk.END)
-            self.text_resultado.insert(tk.END, resultado)
-
-        except subprocess.TimeoutExpired:
-            messagebox.showerror("Error", f"El análisis con {script_name} tardó demasiado y fue cancelado.")
-        except Exception as e:
-            messagebox.showerror("Error", f"No se pudo ejecutar {script_name}:\n{e}")
-
-    def ejecutar_lexico(self):
-        self.ejecutar_analizador("lex.py")
-
-    def ejecutar_sintactico(self):
-        self.ejecutar_analizador("yacc.py")
-
-    def ejecutar_semantico(self):
-        self.ejecutar_analizador("semantico.py")
-
+    def limpiar(self):
+        self.codigo_text.delete("1.0", tk.END)
+        self.lexico_text.delete("1.0", tk.END)
+        self.sintactico_text.delete("1.0", tk.END)
+        self.semantico_text.delete("1.0", tk.END)
 
 if __name__ == "__main__":
-    app = AnalizadorApp()
-    app.mainloop()
+    root = tk.Tk()
+    app = AnalizadorGUI(root)
+    root.mainloop()
