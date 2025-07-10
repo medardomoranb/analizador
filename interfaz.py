@@ -7,7 +7,7 @@ class AnalizadorGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("C# Shark - Analizador")
-        self.root.geometry("1170x670")
+        self.root.geometry("1170x685")
         self.root.configure(bg="#121212")
 
         # === CONTENEDOR PRINCIPAL ===
@@ -69,9 +69,13 @@ class AnalizadorGUI:
         lineas_canvas = tk.Canvas(contenedor, width=40, bg="#1E1E1E", highlightthickness=0)
         lineas_canvas.pack(side=tk.LEFT, fill=tk.Y)
 
-        # Scrollbar
+        # Scrollbar vertical
         scrollbar = tk.Scrollbar(contenedor)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Scrollbar horizontal
+        scrollbar_x = tk.Scrollbar(contenedor, orient=tk.HORIZONTAL)
+        scrollbar_x.pack(side=tk.BOTTOM, fill=tk.X)
 
         # Text widget
         text_widget = tk.Text(
@@ -82,13 +86,15 @@ class AnalizadorGUI:
             yscrollcommand=lambda *args: (
                 scrollbar.set(*args),
                 self.actualizar_numeros_linea(lineas_canvas, text_widget)
-            )
+            ),
+            xscrollcommand=scrollbar_x.set
         )
         text_widget.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         scrollbar.config(command=lambda *args: (
             text_widget.yview(*args),
             self.actualizar_numeros_linea(lineas_canvas, text_widget)
         ))
+        scrollbar_x.config(command=text_widget.xview)
 
         # Vincular eventos
         text_widget.bind("<KeyRelease>", lambda e: self.actualizar_numeros_linea(lineas_canvas, text_widget))
@@ -99,20 +105,29 @@ class AnalizadorGUI:
         self.actualizar_numeros_linea(lineas_canvas, text_widget)
 
         return text_widget
-    
+
     def crear_caja_scroll(self, parent, height=10):
         frame = tk.Frame(parent, bg="#121212")
         frame.pack(pady=5, fill=tk.BOTH, expand=False)
 
-        text_widget = tk.Text(frame, height=height, width=60, bg="#2D033B", fg="#ffffff", insertbackground="white", wrap="none", font=("Consolas", 10))
+        # Scrollbar horizontal
+        scrollbar_x = tk.Scrollbar(frame, orient=tk.HORIZONTAL)
+        scrollbar_x.pack(side=tk.BOTTOM, fill=tk.X)
+
+        text_widget = tk.Text(
+            frame, height=height, width=60, bg="#2D033B", fg="#ffffff",
+            insertbackground="white", wrap="none", font=("Consolas", 10),
+            xscrollcommand=scrollbar_x.set
+        )
         text_widget.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         scrollbar = tk.Scrollbar(frame, command=text_widget.yview)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         text_widget.config(yscrollcommand=scrollbar.set)
+        scrollbar_x.config(command=text_widget.xview)
 
         return text_widget
-    
+
     def actualizar_numeros_linea(self, canvas, text_widget):
         canvas.delete("all")
         i = text_widget.index("@0,0")
