@@ -7,63 +7,127 @@ class AnalizadorGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("C# Shark - Analizador")
-        self.root.geometry("1100x700")
+        self.root.geometry("1170x670")
         self.root.configure(bg="#121212")
 
-        # =============== Canvas con Scroll ===============
-        canvas = tk.Canvas(self.root, bg="#121212", highlightthickness=0)
-        canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        # === CONTENEDOR PRINCIPAL ===
+        main_frame = tk.Frame(root, bg="#121212")
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        scrollbar = tk.Scrollbar(self.root, command=canvas.yview)
-        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        # === COLUMNA IZQUIERDA ===
+        izquierda = tk.Frame(main_frame, bg="#121212")
+        izquierda.pack(side=tk.LEFT, fill=tk.Y, padx=25, pady=10)
 
-        canvas.configure(yscrollcommand=scrollbar.set)
-        canvas.bind_all("<MouseWheel>", lambda e: canvas.yview_scroll(int(-1*(e.delta/120)), "units"))
-
-        # Frame dentro del canvas
-        self.frame = tk.Frame(canvas, bg="#121212")
-        canvas.create_window((0, 0), window=self.frame, anchor="nw")
-
-        self.frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-
-        # =============== Logo ===============
+        # Logo
         try:
             logo_img = Image.open("resources/cshark_logo.png")
-            logo_img = logo_img.resize((120, 120), Image.Resampling.LANCZOS)
+            logo_img = logo_img.resize((100, 100), Image.Resampling.LANCZOS)
             self.logo = ImageTk.PhotoImage(logo_img)
-            logo_label = tk.Label(self.frame, image=self.logo, bg="#121212")
-            logo_label.pack(pady=10)
+            logo_label = tk.Label(izquierda, image=self.logo, bg="#121212")
+            logo_label.pack(pady=5)
         except Exception as e:
             print("Logo no cargado:", e)
 
-        # =============== Secciones ===============
-        self.crear_etiqueta("Código C# de entrada:")
-        self.codigo_text = self.crear_caja_texto(height=15)
+        # Título
+        titulo_label = tk.Label(
+            izquierda,
+            text="Analizador de Código C#",
+            fg="#ffffff",
+            bg="#121212",
+            font=("Arial", 14, "bold")
+        )
+        titulo_label.pack(pady=5)
 
-        self.crear_botones()
+        # Caja de código con scrollbar
+        self.crear_etiqueta(izquierda, "Pega tu código C#:")
+        self.codigo_text = self.crear_caja_scroll_con_lineas(izquierda, height=25)
 
-        self.lexico_text = self.crear_apartado_resultado("Análisis Léxico")
-        self.sintactico_text = self.crear_apartado_resultado("Análisis Sintáctico")
-        self.semantico_text = self.crear_apartado_resultado("Análisis Semántico")
+        # Botones
+        btn_frame = tk.Frame(izquierda, bg="#121212")
+        btn_frame.pack(pady=10)
 
-    def crear_etiqueta(self, texto):
-        etiqueta = tk.Label(self.frame, text=texto, fg="#ffffff", bg="#121212", font=("Arial", 12, "bold"))
-        etiqueta.pack(pady=(10, 2))
+        self.boton_personalizado(btn_frame, "Analizar", self.analizar).grid(row=0, column=0, padx=10)
+        self.boton_personalizado(btn_frame, "Limpiar", self.limpiar).grid(row=0, column=1, padx=10)
 
-    def crear_caja_texto(self, height=10):
-        caja = tk.Text(self.frame, height=height, width=120, bg="#2D033B", fg="#ffffff", insertbackground="white")
-        caja.pack(padx=10, pady=5)
-        return caja
+        # === COLUMNA DERECHA ===
+        derecha = tk.Frame(main_frame, bg="#121212")
+        derecha.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-    def crear_apartado_resultado(self, titulo):
-        self.crear_etiqueta(titulo)
-        return self.crear_caja_texto(height=10)
+        self.lexico_text = self.crear_resultado(derecha, "Análisis Léxico")
+        self.sintactico_text = self.crear_resultado(derecha, "Análisis Sintáctico")
+        self.semantico_text = self.crear_resultado(derecha, "Análisis Semántico")
 
-    def crear_botones(self):
-        btn_frame = tk.Frame(self.frame, bg="#121212")
-        btn_frame.pack(pady=15)
-        self.boton_personalizado(btn_frame, "Analizar", self.analizar).grid(row=0, column=0, padx=15)
-        self.boton_personalizado(btn_frame, "Limpiar", self.limpiar).grid(row=0, column=1, padx=15)
+    def crear_etiqueta(self, parent, texto):
+        etiqueta = tk.Label(parent, text=texto, fg="#ffffff", bg="#121212", font=("Arial", 11, "bold"))
+        etiqueta.pack(anchor="w", pady=(5, 2))
+
+    def crear_caja_scroll_con_lineas(self, parent, height=10):
+        contenedor = tk.Frame(parent, bg="#121212")
+        contenedor.pack(pady=5, fill=tk.BOTH, expand=False)
+
+        # Canvas para los números de línea
+        lineas_canvas = tk.Canvas(contenedor, width=40, bg="#1E1E1E", highlightthickness=0)
+        lineas_canvas.pack(side=tk.LEFT, fill=tk.Y)
+
+        # Scrollbar
+        scrollbar = tk.Scrollbar(contenedor)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Text widget
+        text_widget = tk.Text(
+            contenedor,
+            height=height, width=80, font=("Consolas", 10),
+            bg="#2D033B", fg="#ffffff",
+            insertbackground="white", wrap="none",
+            yscrollcommand=lambda *args: (
+                scrollbar.set(*args),
+                self.actualizar_numeros_linea(lineas_canvas, text_widget)
+            )
+        )
+        text_widget.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        scrollbar.config(command=lambda *args: (
+            text_widget.yview(*args),
+            self.actualizar_numeros_linea(lineas_canvas, text_widget)
+        ))
+
+        # Vincular eventos
+        text_widget.bind("<KeyRelease>", lambda e: self.actualizar_numeros_linea(lineas_canvas, text_widget))
+        text_widget.bind("<MouseWheel>", lambda e: self.actualizar_numeros_linea(lineas_canvas, text_widget))
+        text_widget.bind("<ButtonRelease-1>", lambda e: self.actualizar_numeros_linea(lineas_canvas, text_widget))
+
+        # Inicial
+        self.actualizar_numeros_linea(lineas_canvas, text_widget)
+
+        return text_widget
+    
+    def crear_caja_scroll(self, parent, height=10):
+        frame = tk.Frame(parent, bg="#121212")
+        frame.pack(pady=5, fill=tk.BOTH, expand=False)
+
+        text_widget = tk.Text(frame, height=height, width=60, bg="#2D033B", fg="#ffffff", insertbackground="white", wrap="none", font=("Consolas", 10))
+        text_widget.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        scrollbar = tk.Scrollbar(frame, command=text_widget.yview)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        text_widget.config(yscrollcommand=scrollbar.set)
+
+        return text_widget
+    
+    def actualizar_numeros_linea(self, canvas, text_widget):
+        canvas.delete("all")
+        i = text_widget.index("@0,0")
+        while True:
+            dline = text_widget.dlineinfo(i)
+            if dline is None:
+                break
+            y = dline[1]
+            linea = str(i).split(".")[0]
+            canvas.create_text(35, y, anchor="ne", text=linea, fill="#aaaaaa", font=("Consolas", 10))
+            i = text_widget.index(f"{i}+1line")
+
+    def crear_resultado(self, parent, titulo):
+        self.crear_etiqueta(parent, titulo)
+        return self.crear_caja_scroll(parent, height=10)
 
     def boton_personalizado(self, parent, texto, comando):
         return tk.Button(
@@ -97,3 +161,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = AnalizadorGUI(root)
     root.mainloop()
+
