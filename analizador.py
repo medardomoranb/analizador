@@ -76,6 +76,11 @@ def analisis_semantico(codigo):
                             f"[ERROR SEMÁNTICO] Línea {token.lineno}: Asignación incompatible. "
                             f"Se esperaba '{tipo_esperado}', pero se asignó '{tipo_asignado}'."
                         )
+                       
+        # ========================
+        # Reglas Semánticas
+        # Por Andres Layedra
+        # ======================== 
 
         # 5. División por cero
         if token.type == "DIVISION":
@@ -84,16 +89,21 @@ def analisis_semantico(codigo):
                 errores_semanticos.append(
                     f"[ERROR SEMÁNTICO] Línea {token.lineno}: División por cero detectada."
                 )
-        """
+
         # 6. Instancia de clase no declarada
         if token.type == "NEW":
             siguiente = tokens_extraidos[i + 1] if i + 1 < len(tokens_extraidos) else None
             if siguiente and siguiente.type == "IDENTIFICADOR":
-                if siguiente.value not in clases_declaradas:
+                if siguiente.value not in clases_usadas:
                     errores_semanticos.append(
                         f"[ERROR SEMÁNTICO] Línea {siguiente.lineno}: Clase '{siguiente.value}' no declarada."
                     )
-                clases_usadas.add(siguiente.value)"""
+                clases_usadas.add(siguiente.value)
+
+        # ========================
+        # Reglas Semánticas
+        # Por Medardo Moran
+        # ======================== 
 
         # 7. Registro de métodos definidos
         if token.type == "IDENTIFICADOR" and next_ and next_.type == "PARENTESIS_IZQ":
@@ -111,19 +121,12 @@ def analisis_semantico(codigo):
 
         i += 1
 
-    # 9. Verificar variables no usadas
-    for var in variables_declaradas:
-        if var not in usos_variables:
-            errores_semanticos.append(
-                f"[ADVERTENCIA] Variable '{var}' fue declarada pero no utilizada."
-            )
-
     # 10. Verificar métodos inexistentes o mal llamados
     for nombre, num_args, linea in metodos_llamados:
         if nombre not in metodos_definidos:
             errores_semanticos.append(
                 f"[ERROR SEMÁNTICO] Línea {linea}: Método '{nombre}' no está definido."
-            )
+            )    
         elif metodos_definidos[nombre] != num_args:
             errores_semanticos.append(
                 f"[ERROR SEMÁNTICO] Línea {linea}: Método '{nombre}' llamado con {num_args} argumento(s), "

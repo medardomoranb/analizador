@@ -1,0 +1,10 @@
+[ERROR SEMÁNTICO] Línea 495: Variable 'anios' ya fue declarada.
+[ERROR SEMÁNTICO] Línea 495: Variable 'incluyeDanios' ya fue declarada.
+[ERROR SEMÁNTICO] Línea 579: Variable 'p' usada sin ser declarada.
+[ERROR SEMÁNTICO] Línea 579: Clase 'Producto' no declarada.
+[ERROR SEMÁNTICO] Línea 585: Variable 'd' usada sin ser declarada.
+[ERROR SEMÁNTICO] Línea 585: Clase 'DiagnosticoInventario' no declarada.
+[ERROR SEMÁNTICO] Línea 495: Método 'Garantia' no está definido.
+[ERROR SEMÁNTICO] Línea 579: Método 'Producto' no está definido.
+[ERROR SEMÁNTICO] Línea 585: Método 'DiagnosticoInventario' no está definido.
+[ERROR SEMÁNTICO] Línea 587: Método 'MostrarMensaje' no está definido.

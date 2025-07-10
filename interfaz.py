@@ -1,5 +1,8 @@
 import tkinter as tk
+import datetime
+import os
 from tkinter import messagebox
+from tkinter import simpledialog
 from PIL import Image, ImageTk
 from analizador import analisis_lexico, analisis_sintactico, analisis_semantico
 
@@ -48,6 +51,7 @@ class AnalizadorGUI:
 
         self.boton_personalizado(btn_frame, "Analizar", self.analizar).grid(row=0, column=0, padx=10)
         self.boton_personalizado(btn_frame, "Limpiar", self.limpiar).grid(row=0, column=1, padx=10)
+        self.boton_personalizado(btn_frame, "Guardar Logs", self.guardar_logs).grid(row=0, column=2, padx=10)
 
         # === COLUMNA DERECHA ===
         derecha = tk.Frame(main_frame, bg="#121212")
@@ -171,6 +175,36 @@ class AnalizadorGUI:
         self.lexico_text.delete("1.0", tk.END)
         self.sintactico_text.delete("1.0", tk.END)
         self.semantico_text.delete("1.0", tk.END)
+
+    def guardar_logs(self):
+        nombre = simpledialog.askstring("Guardar Logs", "Ingresa tu nombre:")
+        if not nombre:
+            messagebox.showwarning("Advertencia", "Debes ingresar un nombre para guardar los archivos.")
+            return
+
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        carpeta_logs = "logs"
+
+        # Crear carpeta si no existe
+        os.makedirs(carpeta_logs, exist_ok=True)
+
+        lexico = self.lexico_text.get("1.0", tk.END).strip()
+        sintactico = self.sintactico_text.get("1.0", tk.END).strip()
+        semantico = self.semantico_text.get("1.0", tk.END).strip()
+
+        try:
+            with open(os.path.join(carpeta_logs, f"lexico-{nombre}-{timestamp}.txt"), "w", encoding="utf-8") as f:
+                f.write(lexico)
+            with open(os.path.join(carpeta_logs, f"sintactico-{nombre}-{timestamp}.txt"), "w", encoding="utf-8") as f:
+                f.write(sintactico)
+            with open(os.path.join(carpeta_logs, f"semantico-{nombre}-{timestamp}.txt"), "w", encoding="utf-8") as f:
+                f.write(semantico)
+            messagebox.showinfo("Éxito", f"Logs guardados en carpeta '{carpeta_logs}'.")
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudieron guardar los archivos:\n{e}")
+
+
+    
 
 if __name__ == "__main__":
     root = tk.Tk()
