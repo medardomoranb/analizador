@@ -196,8 +196,10 @@ def t_newline(t):
 
 # Regla para manejar errores de caracteres ilegales
 def t_error(t):
-    print(f"Carácter ilegal '{t.value[0]}' en la línea {t.lineno}")
+    t.type = 'ERROR_LÉXICO!'
+    t.value = t.value[0]
     t.lexer.skip(1)
+    return t
 
 # Construir el lexer
 lexer = lex.lex()

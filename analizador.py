@@ -18,33 +18,160 @@ def analisis_sintactico(codigo):
     parser.parse(codigo)
     if errores_sintacticos:
         return "\n".join(errores_sintacticos)
-    return "Análisis sintáctico sin errores."
+    return "Análisis realizado correctamente."
 
 def analisis_semantico(codigo):
     lexer.input(codigo)
     tokens_extraidos = list(lexer)
 
     variables_declaradas = set()
+    tipos_variables = {}
+    usos_variables = set()
+    clases_usadas = set()
+    metodos_definidos = {}
+    metodos_llamados = []
+
     errores_semanticos = []
 
-    for i, token in enumerate(tokens_extraidos):
+    i = 0
+    while i < len(tokens_extraidos):
+        token = tokens_extraidos[i]
+        prev = tokens_extraidos[i - 1] if i > 0 else None
+        next_ = tokens_extraidos[i + 1] if i < len(tokens_extraidos) - 1 else None
+
+        # ========================
+        # Reglas Semánticas
+        # Por Mario Alvarado
+        # ========================
+
+        # 1. Declaración de variable
+
         if token.type == "IDENTIFICADOR":
-            prev = tokens_extraidos[i - 1] if i > 0 else None
-            next_ = tokens_extraidos[i + 1] if i < len(tokens_extraidos) - 1 else None
+            usos_variables.add(token.value)
 
             if prev and prev.type in {"INT", "FLOAT", "STRING", "CHAR", "BOOL"}:
+                # 2. Doble declaración
                 if token.value in variables_declaradas:
                     errores_semanticos.append(
                         f"[ERROR SEMÁNTICO] Línea {token.lineno}: Variable '{token.value}' ya fue declarada."
                     )
                 else:
                     variables_declaradas.add(token.value)
+                    tipos_variables[token.value] = prev.type
+
+            # 3. Uso sin declaración
             elif next_ and next_.type == "ASIGNACION":
                 if token.value not in variables_declaradas:
                     errores_semanticos.append(
                         f"[ERROR SEMÁNTICO] Línea {token.lineno}: Variable '{token.value}' usada sin ser declarada."
                     )
+                else:
+                    # 4. Asignación con tipo incompatible
+                    valor = tokens_extraidos[i + 2] if i + 2 < len(tokens_extraidos) else None
+                    tipo_esperado = tipos_variables[token.value]
+                    tipo_asignado = tipo_valor(valor)
+
+                    if tipo_asignado and tipo_esperado != tipo_asignado:
+                        errores_semanticos.append(
+                            f"[ERROR SEMÁNTICO] Línea {token.lineno}: Asignación incompatible. "
+                            f"Se esperaba '{tipo_esperado}', pero se asignó '{tipo_asignado}'."
+                        )
+
+        # 5. División por cero
+        if token.type == "DIVISION":
+            siguiente = tokens_extraidos[i + 1] if i + 1 < len(tokens_extraidos) else None
+            if siguiente and siguiente.type == "VALOR_ENTERO" and siguiente.value == 0:
+                errores_semanticos.append(
+                    f"[ERROR SEMÁNTICO] Línea {token.lineno}: División por cero detectada."
+                )
+        """
+        # 6. Instancia de clase no declarada
+        if token.type == "NEW":
+            siguiente = tokens_extraidos[i + 1] if i + 1 < len(tokens_extraidos) else None
+            if siguiente and siguiente.type == "IDENTIFICADOR":
+                if siguiente.value not in clases_declaradas:
+                    errores_semanticos.append(
+                        f"[ERROR SEMÁNTICO] Línea {siguiente.lineno}: Clase '{siguiente.value}' no declarada."
+                    )
+                clases_usadas.add(siguiente.value)"""
+
+        # 7. Registro de métodos definidos
+        if token.type == "IDENTIFICADOR" and next_ and next_.type == "PARENTESIS_IZQ":
+            # Verifica si es definición de método
+            tipo_antes = tokens_extraidos[i - 1] if i > 0 else None
+            if tipo_antes and tipo_antes.type in {"INT", "FLOAT", "STRING", "CHAR", "BOOL", "VOID"}:
+                num_params = contar_parametros(tokens_extraidos, i + 2)
+                metodos_definidos[token.value] = num_params
+
+        # 8. Registro de llamadas a métodos
+        if token.type == "IDENTIFICADOR" and next_ and next_.type == "PARENTESIS_IZQ":
+            if token.value not in metodos_definidos:
+                num_args = contar_parametros(tokens_extraidos, i + 2)
+                metodos_llamados.append((token.value, num_args, token.lineno))
+
+        i += 1
+
+    # 9. Verificar variables no usadas
+    for var in variables_declaradas:
+        if var not in usos_variables:
+            errores_semanticos.append(
+                f"[ADVERTENCIA] Variable '{var}' fue declarada pero no utilizada."
+            )
+
+    # 10. Verificar métodos inexistentes o mal llamados
+    for nombre, num_args, linea in metodos_llamados:
+        if nombre not in metodos_definidos:
+            errores_semanticos.append(
+                f"[ERROR SEMÁNTICO] Línea {linea}: Método '{nombre}' no está definido."
+            )
+        elif metodos_definidos[nombre] != num_args:
+            errores_semanticos.append(
+                f"[ERROR SEMÁNTICO] Línea {linea}: Método '{nombre}' llamado con {num_args} argumento(s), "
+                f"pero se esperaban {metodos_definidos[nombre]}."
+            )
 
     if errores_semanticos:
         return "\n".join(errores_semanticos)
-    return "Análisis semántico sin errores."
+    return "Análisis realizado correctamente."
+
+def tipo_valor(token):
+    if not token:
+        return None
+    if token.type == "VALOR_ENTERO":
+        return "INT"
+    elif token.type == "VALOR_FLOTANTE":
+        return "FLOAT"
+    elif token.type == "VALOR_STRING":
+        return "STRING"
+    elif token.type == "VALOR_CHAR":
+        return "CHAR"
+    elif token.type == "VALOR_BOOLEANO":
+        return "BOOL"
+    elif token.type == "VALOR_HEXADECIMAL":
+        return "INT"
+    elif token.type == "VALOR_BINARIO":
+        return "INT"
+    return None  # Desconocido o expresión compleja
+
+def contar_parametros(tokens, start_idx):
+    count = 0
+    profundidad = 1
+    i = start_idx
+    esperando_valor = True
+
+    while i < len(tokens):
+        t = tokens[i]
+        if t.type == "PARENTESIS_DER":
+            profundidad -= 1
+            if profundidad == 0:
+                break
+        elif t.type == "PARENTESIS_IZQ":
+            profundidad += 1
+        elif t.type == "COMA" and profundidad == 1:
+            count += 1
+            esperando_valor = True
+        elif esperando_valor and t.type.startswith("VALOR_") or t.type == "IDENTIFICADOR":
+            count += 1
+            esperando_valor = False
+        i += 1
+    return count
