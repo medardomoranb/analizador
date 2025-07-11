@@ -1,1 +1,0 @@
-[ERROR SINTÁCTICO] Token inesperado: 'Persona' en la línea 772

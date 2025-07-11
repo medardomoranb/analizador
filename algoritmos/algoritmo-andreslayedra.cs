@@ -51,11 +51,6 @@ public class Producto
         public int anios;
         public bool incluyeDanios;
 
-        public Garantia(int anios, bool incluyeDanios)
-        {
-            this.anios = anios;
-            this.incluyeDanios = incluyeDanios;
-        }
     }
 }
 
@@ -127,6 +122,11 @@ public class DiagnosticoInventario
         {
             Console.WriteLine("Producto inactivo.");
         }
+    }
+
+    public void MostrarMensaje()
+    {
+        Console.WriteLine("Listo para la venta");
     }
 
 }
