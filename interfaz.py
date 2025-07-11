@@ -23,7 +23,7 @@ class AnalizadorGUI:
 
         # Logo
         try:
-            logo_img = Image.open("resources/cshark_logo.png")
+            logo_img = Image.open("cshark_logo.png")
             logo_img = logo_img.resize((100, 100), Image.Resampling.LANCZOS)
             self.logo = ImageTk.PhotoImage(logo_img)
             logo_label = tk.Label(izquierda, image=self.logo, bg="#121212")
