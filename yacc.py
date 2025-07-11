@@ -110,7 +110,8 @@ def p_declaracion_variable(p):
                             | tipo IDENTIFICADOR ASIGNACION NEW IDENTIFICADOR PARENTESIS_IZQ argumentos_opcional PARENTESIS_DER PUNTO_COMA
                             | declaracion_lista'''
     pass
-    
+
+
 def p_tipo(p):
     '''tipo : INT
             | FLOAT
@@ -259,7 +260,7 @@ def p_casos_switch(p):
     pass
 
 def p_caso_switch(p):
-    '''caso_switch : CASE VALOR_ENTERO DOS_PUNTOS cuerpo BREAK PUNTO_COMA
+    '''caso_switch : CASE VALOR_ENTERO DOS_PUNTOS cuerpo
                    | CASE VALOR_STRING DOS_PUNTOS cuerpo
                    | DEFAULT DOS_PUNTOS cuerpo'''
     pass
