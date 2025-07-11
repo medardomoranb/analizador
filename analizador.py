@@ -15,12 +15,14 @@ def analisis_lexico(codigo):
 
 def analisis_sintactico(codigo):
     errores_sintacticos.clear()
-    parser.parse(codigo)
+    lexer.lineno = 1
+    parser.parse(codigo, lexer=lexer)
     if errores_sintacticos:
         return "\n".join(errores_sintacticos)
     return "Análisis realizado correctamente."
 
 def analisis_semantico(codigo):
+    lexer.lineno = 1 
     lexer.input(codigo)
     tokens_extraidos = list(lexer)
 
