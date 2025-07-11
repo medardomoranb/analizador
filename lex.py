@@ -150,6 +150,16 @@ def t_COMENTARIO_UNA_LINEA(t):
     r'//.*'
     return t
 
+def t_VALOR_HEXADECIMAL(t):
+    r'0[xX][0-9A-Fa-f]+'
+    t.value = int(t.value, 16)
+    return t
+
+def t_VALOR_BINARIO(t):
+    r'0[bB][01]+'
+    t.value = int(t.value, 2)
+    return t
+
 def t_VALOR_FLOTANTE(t):
     r'\d+\.\d+([eE][+-]?\d+)?[fF]?'
     t.value = float(t.value.rstrip('fF'))
@@ -174,15 +184,7 @@ def t_VALOR_CHAR(t):
         t.value = t.value[1]  # Elimina las comillas
     return t
 
-def t_VALOR_HEXADECIMAL(t):
-    r'0[xX][0-9A-Fa-f]+'
-    t.value = int(t.value, 16)
-    return t
 
-def t_VALOR_BINARIO(t):
-    r'0[bB][01]+'
-    t.value = int(t.value, 2)
-    return t
 
 t_ignore = ' \t\r'
 

@@ -101,7 +101,7 @@ public class Inventario
     }
 }
 
-// comentario
+
 public class DiagnosticoInventario
 {
     public void EjecutarAnalisis()
