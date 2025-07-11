@@ -145,7 +145,7 @@ def analisis_semantico(codigo):
         if token.type == "NEW":
             siguiente = tokens_extraidos[i + 1] if i + 1 < len(tokens_extraidos) else None
             if siguiente and siguiente.type == "IDENTIFICADOR":
-                if siguiente.value not in clases_usadas:
+                if siguiente.value not in clases_declaradas:
                     errores_semanticos.append(
                         f"[ERROR SEMÁNTICO] Línea {siguiente.lineno}: Clase '{siguiente.value}' no declarada."
                     )
