@@ -46,7 +46,7 @@ def p_clases(p):
 # ========================
     
 def p_clase(p):
-    '''clase : PUBLIC CLASS IDENTIFICADOR LLAVE_IZQ miembros_clase LLAVE_DER'''
+    '''clase : PUBLIC CLASS NOMBRE_CLASE LLAVE_IZQ miembros_clase LLAVE_DER'''
     pass
 
 def p_miembros_clase(p):
@@ -97,7 +97,8 @@ def p_enumeradores(p):
 # ========================
 
 def p_declaracion_lista(p):
-    '''declaracion_lista : LIST MENOR tipo MAYOR IDENTIFICADOR ASIGNACION NEW LIST MENOR tipo MAYOR LLAVE_IZQ argumentos LLAVE_DER PUNTO_COMA'''
+    '''declaracion_lista : LIST MENOR tipo MAYOR IDENTIFICADOR ASIGNACION NEW LIST MENOR tipo MAYOR LLAVE_IZQ argumentos LLAVE_DER PUNTO_COMA
+                         | LIST MENOR tipo MAYOR IDENTIFICADOR ASIGNACION NEW LIST MENOR tipo MAYOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA'''
 
 # ========================
 # Reglas de Declaración de Variables y Métodos
@@ -105,6 +106,7 @@ def p_declaracion_lista(p):
 def p_declaracion_variable(p):
     '''declaracion_variable : tipo IDENTIFICADOR PUNTO_COMA
                             | tipo IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
+                            | tipo IDENTIFICADOR ASIGNACION llamada_funcion PUNTO_COMA
                             | tipo IDENTIFICADOR ASIGNACION NEW IDENTIFICADOR PARENTESIS_IZQ argumentos_opcional PARENTESIS_DER PUNTO_COMA
                             | declaracion_lista'''
     pass
@@ -153,6 +155,7 @@ def p_sentencia(p):
                  | asignacion
                  | sentencia_if
                  | sentencia_for
+                 | sentencia_foreach
                  | sentencia_switch
                  | sentencia_return
                  | sentencia_break
@@ -163,7 +166,8 @@ def p_sentencia(p):
 
 def p_llamada_funcion(p):
     '''llamada_funcion : IDENTIFICADOR PARENTESIS_IZQ argumentos_opcional PARENTESIS_DER
-                       | IDENTIFICADOR PUNTO IDENTIFICADOR PARENTESIS_IZQ argumentos_opcional PARENTESIS_DER'''
+                       | IDENTIFICADOR PUNTO IDENTIFICADOR PARENTESIS_IZQ argumentos_opcional PARENTESIS_DER
+                       | IDENTIFICADOR PUNTO COUNT'''
     pass
 
 def p_argumentos_opcional(p):
@@ -178,6 +182,7 @@ def p_argumentos(p):
 
 def p_asignacion(p):
     '''asignacion : IDENTIFICADOR ASIGNACION expresion PUNTO_COMA
+                  | IDENTIFICADOR MAS_ASIGNACION expresion PUNTO_COMA 
                   | IDENTIFICADOR PUNTO IDENTIFICADOR ASIGNACION expresion PUNTO_COMA'''
     pass
 
@@ -188,7 +193,9 @@ def p_expresion(p):
                  | VALOR_CHAR
                  | VALOR_HEXADECIMAL
                  | VALOR_BINARIO
+                 | VALOR_BOOLEANO
                  | IDENTIFICADOR
+                 | llamada_funcion
                  | expresion operador expresion
                  | PARENTESIS_IZQ expresion PARENTESIS_DER'''
     pass
