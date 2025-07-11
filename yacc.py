@@ -153,7 +153,6 @@ def p_sentencia(p):
                  | asignacion
                  | sentencia_if
                  | sentencia_for
-                 | sentencia_foreach
                  | sentencia_switch
                  | sentencia_return
                  | sentencia_break
@@ -227,10 +226,6 @@ def p_sentencia_if(p):
 
 def p_sentencia_for(p):
     '''sentencia_for : FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA actualizacion PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER'''
-    pass
-
-def p_sentencia_foreach(p):
-    '''sentencia_foreach : FOREACH PARENTESIS_IZQ tipo IDENTIFICADOR IN IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER'''
     pass
 
 def p_actualizacion(p):
