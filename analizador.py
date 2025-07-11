@@ -164,11 +164,16 @@ def analisis_semantico(codigo):
                 num_params = contar_parametros(tokens_extraidos, i + 2)
                 metodos_definidos[token.value] = num_params
 
-        # 8. Registro de llamadas a métodos
+        # 8. Registro de llamadas a métodos (Ignorar llamadas a constructores new Clase())
         if token.type == "IDENTIFICADOR" and next_ and next_.type == "PARENTESIS_IZQ":
-            if token.value not in metodos_definidos:
-                num_args = contar_parametros(tokens_extraidos, i + 2)
-                metodos_llamados.append((token.value, num_args, token.lineno))
+            prev_2 = tokens_extraidos[i - 1] if i > 0 else None
+            if prev_2 and prev_2.type == "NEW":
+                # Es constructor, no se registra como método normal
+                pass
+            else:
+                if token.value not in metodos_definidos:
+                    num_args = contar_parametros(tokens_extraidos, i + 2)
+                    metodos_llamados.append((token.value, num_args, token.lineno))
 
         i += 1
 
