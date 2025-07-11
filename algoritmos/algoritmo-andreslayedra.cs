@@ -48,8 +48,8 @@ public class Producto
 
     public struct Garantia
     {
-        public int anios;
-        public bool incluyeDanios;
+        int anios;
+        bool incluyeDanios;
 
     }
 }

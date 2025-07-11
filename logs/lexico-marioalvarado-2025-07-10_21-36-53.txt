@@ -140,7 +140,7 @@ IDENTIFICADOR   -> suma
 DIVISION        -> /
 IDENTIFICADOR   -> notas
 PUNTO           -> .
-IDENTIFICADOR   -> Count
+COUNT           -> Count
 PUNTO_COMA      -> ;
 LLAVE_DER       -> }
 PUBLIC          -> public

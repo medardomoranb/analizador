@@ -45,7 +45,8 @@ special = {
     'WriteLine': 'WRITELINE',
     'Console': 'CONSOLE',
     'Main': 'MAIN',
-    'args': 'ARGS'
+    'args': 'ARGS',
+    'Count': 'COUNT'
 }
 
 # Lista de tokens

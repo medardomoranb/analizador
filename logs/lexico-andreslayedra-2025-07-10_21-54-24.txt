@@ -143,11 +143,9 @@ PUBLIC          -> public
 STRUCT          -> struct
 IDENTIFICADOR   -> Garantia
 LLAVE_IZQ       -> {
-PUBLIC          -> public
 INT             -> int
 IDENTIFICADOR   -> anios
 PUNTO_COMA      -> ;
-PUBLIC          -> public
 BOOL            -> bool
 IDENTIFICADOR   -> incluyeDanios
 PUNTO_COMA      -> ;

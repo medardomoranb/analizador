@@ -11,7 +11,7 @@ public class Estudiante
         notas.Add(9.5f);
         notas.Add(6.5f);
     }
-    
+
     public void MostrarDatos()
     {
         Console.WriteLine("Nombre: " + nombre);
