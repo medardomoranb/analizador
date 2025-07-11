@@ -100,7 +100,7 @@ def analisis_semantico(codigo):
         if token.type == "IDENTIFICADOR":
             usos_variables.add(token.value)
 
-            if prev and prev.type in {"INT", "FLOAT", "STRING", "CHAR", "BOOL"}:
+            if prev and prev.type in {"INT", "FLOAT", "STRING", "CHAR", "BOOL", "IDENTIFICADOR"}:
                 # 2. Doble declaración
                 if token.value in variables_declaradas:
                     errores_semanticos.append(
