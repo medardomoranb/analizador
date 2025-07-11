@@ -228,6 +228,10 @@ def p_sentencia_for(p):
     '''sentencia_for : FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA actualizacion PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER'''
     pass
 
+def p_sentencia_foreach(p):
+    '''sentencia_foreach : FOREACH PARENTESIS_IZQ tipo IDENTIFICADOR IN IDENTIFICADOR PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER'''
+    pass
+
 def p_actualizacion(p):
     '''actualizacion : IDENTIFICADOR INCREMENTO
                      | IDENTIFICADOR DECREMENTO'''
