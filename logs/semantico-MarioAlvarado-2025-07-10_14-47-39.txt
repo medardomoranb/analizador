@@ -1,5 +1,0 @@
-[ERROR SEMÁNTICO] Línea 104: Variable 'notas' usada sin ser declarada.
-[ERROR SEMÁNTICO] Línea 136: Variable 'nota' ya fue declarada.
-[ERROR SEMÁNTICO] Línea 145: Variable 'estudiante' usada sin ser declarada.
-[ERROR SEMÁNTICO] Línea 145: Clase 'Estudiante' no declarada.
-[ERROR SEMÁNTICO] Línea 145: Método 'Estudiante' no está definido.

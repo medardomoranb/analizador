@@ -1,3 +1,0 @@
-[ERROR SEMÁNTICO] Línea 697: Variable 'p' usada sin ser declarada.
-[ERROR SEMÁNTICO] Línea 697: Clase 'Persona' no declarada.
-[ERROR SEMÁNTICO] Línea 697: Método 'Persona' no está definido.

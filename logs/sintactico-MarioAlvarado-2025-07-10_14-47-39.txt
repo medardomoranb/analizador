@@ -1,1 +1,0 @@
-[ERROR SINTÁCTICO] Token inesperado: 'Estudiante' en la línea 52

@@ -2,20 +2,19 @@ using System;
 using System.Collections.Generic;
 public class Estudiante
 {
-    string nombre = "Lucía";
-    List<float> notas = new List<float> { 8.5f, 7.0f, 9.2f };
+    string nombre;
+    List<float> notas = new List<float>();
 
+    public void addData()
+    {
+        nombre = "Astrid";
+        notas.Add(9.5f);
+        notas.Add(6.5f);
+    }
+    
     public void MostrarDatos()
     {
         Console.WriteLine("Nombre: " + nombre);
-
-        int contador = 1;
-
-        foreach (float nota in notas)
-        {
-            Console.WriteLine("Nota " + contador + ": " + nota);
-            contador++;
-        }
 
         float promedio = CalcularPromedio();
         Console.WriteLine("Promedio: " + promedio);
@@ -45,6 +44,7 @@ public class Estudiante
     public static void Main(string[] args)
     {
         Estudiante estudiante = new Estudiante();
+        estudiante.addData();
         estudiante.MostrarDatos();
     }
 }

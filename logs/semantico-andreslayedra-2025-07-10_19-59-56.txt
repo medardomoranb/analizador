@@ -1,0 +1,4 @@
+[ERROR SEMÁNTICO] Línea 639: Variable 'anios' ya fue declarada.
+[ERROR SEMÁNTICO] Línea 639: Variable 'incluyeDanios' ya fue declarada.
+[ERROR SEMÁNTICO] Línea 639: Método 'Garantia' no está definido.
+[ERROR SEMÁNTICO] Línea 731: Método 'MostrarMensaje' no está definido.
