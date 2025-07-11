@@ -233,7 +233,7 @@ def p_sentencia_if(p):
 # ========================
 
 def p_sentencia_for(p):
-    '''sentencia_for : FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA actualizacion PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER'''
+    '''sentencia_for : FOR PARENTESIS_IZQ declaracion_variable expresion PUNTO_COMA actualizacion PARENTESIS_DER LLAVE_IZQ cuerpo LLAVE_DER'''
     pass
 
 def p_sentencia_foreach(p):
